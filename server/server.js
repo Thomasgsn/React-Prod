@@ -1,16 +1,15 @@
-import express, { json } from "express";
-import cors from "cors";
-import { createConnection } from "mysql";
+const express = require('express')
+const cors = require('cors')
+const mysql = require('mysql')
 
 const app = express();
-app.use(express.json())
 app.use(cors());
 
 app.listen(8081, () => {
   console.log("Server running on port 8081");
 });
 
-const db = createConnection({
+const db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "",
