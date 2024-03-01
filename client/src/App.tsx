@@ -4,7 +4,6 @@ import Register from './Components/Register/Register'
 
 import './App.css'
 
-
 import {
   createBrowserRouter,
   RouterProvider

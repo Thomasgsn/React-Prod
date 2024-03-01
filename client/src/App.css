@@ -282,7 +282,7 @@ video {
   }
 }
 
- @media screen and (max-width: 602) {
+@media screen and (max-width: 602) {
   .loginPage,
   .registerPage {
     .container {
@@ -342,63 +342,64 @@ video {
       }
     }
   }
-} 
+}
 @media screen and (max-width: 678) {
-  .loginPage, .registerPage{
-    .container{
-      .videoDiv{
-        .textDiv{
-          .title{
+  .loginPage,
+  .registerPage {
+    .container {
+      .videoDiv {
+        .textDiv {
+          .title {
             font-size: 25px;
           }
 
-          p{
+          p {
             padding: 1rem;
           }
         }
 
-        .footerDiv{
-          .text{
+        .footerDiv {
+          .text {
             font-size: 12px;
           }
 
           .btn {
-          padding: .8rem 1.5rem;
+            padding: 0.8rem 1.5rem;
           }
         }
       }
 
-      .formDiv{
-        .headerDiv{
+      .formDiv {
+        .headerDiv {
           padding: 1.5rem 0;
-          
-          h3{
+
+          h3 {
             font-size: 20px;
           }
         }
 
-        .form{
-          .inputDiv{
-            input{
+        .form {
+          .inputDiv {
+            input {
               width: 100%;
               max-width: 200px;
             }
           }
         }
-
       }
     }
   }
 }
 
 @media screen and (max-width: 927) {
-  .loginPage, .registerPage{
-    .container{
-     width: 85%;
+  .loginPage,
+  .registerPage {
+    .container {
+      width: 85%;
     }
   }
 }
 
-::-webkit-scrollbar{
+::-webkit-scrollbar {
   display: none;
 }
