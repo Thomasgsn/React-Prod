@@ -1,24 +1,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+/* @import "light.css"; */
+@import "dark.css";
 
-:root {
-  /* Color */
-  --primaryColor: hsl(94, 55%, 56%);
-  --hoverColor: hsl(93, 75%, 76%);
-  --palegreenColor: hsl(96, 75%, 89%);
-  --whiteColor: hsl(0, 0%, 100%);
-  --blackColor: hsl(0, 0%, 18%);
-  --greyText: hsl(0, 0%, 75%);
-  --bgColor: hsl(113, 11%, 85%);
-  --inputColor: hsl(330, 12%, 97%);
-
-  /* Font */
-  --biggestFontSize: 2.5rem;
-  --h1FontSize: 1.5rem;
-  --h2FontSize: 1.25rem;
-  --h3FontSize: 1rem;
-  --normalFontSize: 0.938rem;
-  --smallFontSize: 0.813rem;
-  --smallestFontSize: 0.75rem;
+:root{
+    /* Font */
+    --biggestFontSize: 2.5rem;
+    --h1FontSize: 1.5rem;
+    --h2FontSize: 1.25rem;
+    --h3FontSize: 1rem;
+    --normalFontSize: 0.938rem;
+    --smallFontSize: 0.813rem;
+    --smallestFontSize: 0.75rem;
 }
 
 * {
@@ -27,6 +19,10 @@
   box-sizing: border-box;
 
   font-family: "Montserrat", sans-serif;
+}
+
+body{
+  background: var(--bgColor);
 }
 
 .flex {
@@ -236,12 +232,12 @@ video {
         }
 
         .btn {
+          margin-top: 1rem;
           padding: 0.8rem;
           background: var(--primaryColor);
           border-radius: 10px;
           color: var(--whiteColor);
           align-items: center;
-          margin: auto;
           justify-content: center;
           font-size: 16px;
           width: 100%;
@@ -282,7 +278,7 @@ video {
   }
 }
 
-@media screen and (max-width: 602) {
+@media screen and (max-width: 602px) {
   .loginPage,
   .registerPage {
     .container {
@@ -343,7 +339,7 @@ video {
     }
   }
 }
-@media screen and (max-width: 678) {
+@media screen and (max-width: 678px) {
   .loginPage,
   .registerPage {
     .container {
@@ -391,7 +387,7 @@ video {
   }
 }
 
-@media screen and (max-width: 927) {
+@media screen and (max-width: 927px) {
   .loginPage,
   .registerPage {
     .container {

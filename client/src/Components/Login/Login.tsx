@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   IconUserShield,
   IconArrowNarrowRight,
@@ -16,18 +16,24 @@ const Login = () => {
   const randomIndex = Math.floor(Math.random() * videos.length);
   const randomVideo = videos[randomIndex];
 
-  const [loginUsername, setLoginUsername] = useState('');
-  const [loginPassword, setLoginPassword] = useState('');
+  const navigateTo = useNavigate();
 
-  const loginUser = (e) => {
+  const [loginUsername, setLoginUsername] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+
+  const loginUser = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    Axios.post('http://localhost:8081/login', {
+    Axios.post("http://localhost:8081/login", {
       LoginUsername: loginUsername,
-      LoginPassword: loginPassword
-    }).then((response: any)=> {
-      console.log(response)
-    })
-  }
+      LoginPassword: loginPassword,
+    }).then((response) => {
+      if (response.data.error || response.data.message) {
+        navigateTo("/");
+      } else {
+        navigateTo("/dashboard");
+      }
+    });
+  };
 
   return (
     <div className="loginPage flex">
@@ -55,18 +61,24 @@ const Login = () => {
           </div>
 
           <form action="" className="form grid">
-            <span className="showMessage">Login</span>
-            <div className="inputDiv">
-              <label htmlFor="username">Username</label>
-              <div className="input flex">
-                <IconUserShield className="icon" />
-                <input type="text" id="username" placeholder="Enter Username"
-                onChange={(event) => {
-                    setLoginUsername(event.target.value);
-                  }}/>
-              </div>
+            <span className="message">no message</span>
 
-              <div className="inputDiv">
+            <div className="inputDiv">
+              <div>
+                <label htmlFor="username">Username</label>
+                <div className="input flex">
+                  <IconUserShield className="icon" />
+                  <input
+                    type="text"
+                    id="username"
+                    placeholder="Enter Username"
+                    onChange={(event) => {
+                      setLoginUsername(event.target.value);
+                    }}
+                  />
+                </div>
+              </div>
+              <div>
                 <label htmlFor="password">Password</label>
                 <div className="input flex">
                   <IconShieldLock className="icon" />
@@ -76,18 +88,18 @@ const Login = () => {
                     placeholder="Enter password"
                     onChange={(event) => {
                       setLoginPassword(event.target.value);
-                    }}/>
+                    }}
+                  />
                 </div>
-
-                <button type="submit" className="btn flex" onClick={loginUser}>
-                  <span>Login</span>
-                  <IconArrowNarrowRight className="icon" />
-                </button>
               </div>
+              <button type="submit" className="btn flex" onClick={loginUser}>
+                <span>Login</span>
+                <IconArrowNarrowRight className="icon" />
+              </button>
             </div>
             <span className="forgotPassword">
-                Forgot your password ? <a href="">click Here</a>
-              </span>
+              Forgot your password ? <a href="">click Here</a>
+            </span>
           </form>
         </div>
       </div>

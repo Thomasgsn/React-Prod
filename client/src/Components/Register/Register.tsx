@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   IconUserShield,
   IconArrowNarrowRight,
@@ -17,17 +17,26 @@ const Register = () => {
   const randomIndex = Math.floor(Math.random() * videos.length);
   const randomVideo = videos[randomIndex];
 
+  const navigateTo = useNavigate();
+
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const resetFields = () => {
+    setEmail("");
+    setUsername("");
+    setPassword("");
+  };
 
-  const createUser = () => {
+  const createUser = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
     Axios.post("http://localhost:8081/register", {
       Email: email,
       Username: username,
       Password: password,
     }).then(() => {
-      console.log("User has been created");
+      navigateTo("/");
+      resetFields;
     });
   };
 

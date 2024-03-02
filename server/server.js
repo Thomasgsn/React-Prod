@@ -1,8 +1,9 @@
-const express = require('express')
-const cors = require('cors')
-const mysql = require('mysql')
+const express = require("express");
+const cors = require("cors");
+const mysql = require("mysql");
 
 const app = express();
+app.use(express.json());
 app.use(cors());
 
 app.listen(8081, () => {
@@ -27,30 +28,27 @@ app.post("/register", (req, res) => {
   db.query(SQL, Values, (err, results) => {
     if (err) {
       res.send(err);
-    }
-    else{
-        console.log('User inserted successfully!')
-        res.send({Message: 'User added!'})
+    } else {
+      console.log("User inserted successfully!");
+      res.send({ Message: "User added!" });
     }
   });
 });
 
 app.post("/login", (req, res) => {
-    const sendLoginUsername = req.body.LoginUsername;
-    const sendLoginPassword = req.body.LoginPassword;
-  
-    const SQL = "SELECT * FROM User WHERE username = ? && password = ?";
-    const Values = [sendLoginUsername, sendLoginPassword];
+  const sentLoginUsername = req.body.LoginUsername;
+  const sentLoginPassword = req.body.LoginPassword;
 
-    db.query(SQL, Values, (err, results) => {
-        if (err) {
-          res.send(err);
-        }
-        if (results.length > 0){
-            res.send(results)
-        }
-        else{
-            console.log({message: `Credentials don't match!`})
-        }
-      });
+  const SQL = "SELECT * FROM user WHERE username = ? && password = ?";
+  const Values = [sentLoginUsername, sentLoginPassword];
+
+  db.query(SQL, Values, (err, results) => {
+    console.log(results)
+    if (err) {
+      res.send({ error: err });
+  }
+    if (results.length > 0) {
+      res.send(results);
+    }
+  });
 });
