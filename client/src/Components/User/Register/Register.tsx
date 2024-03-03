@@ -1,16 +1,18 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Axios from "axios";
+
 import {
-  IconUserShield,
-  IconArrowNarrowRight,
-  IconShieldLock,
+  IconArrowRight,
+  IconLock,
+  IconUser,
   IconMail,
 } from "@tabler/icons-react";
-import "./Register.css";
-import v1 from "../assets/login_movie/1.mp4";
-import v2 from "../assets/login_movie/2.mp4";
-import oftyn from "../assets/oftyn.png";
-import Axios from "axios";
+
+import "../User.css";
+import v1 from "../../assets/login_movie/1.mp4";
+import v2 from "../../assets/login_movie/2.mp4";
+import oftyn from "../../assets/oftyn.png";
 
 const Register = () => {
   const videos = [v1, v2];
@@ -19,11 +21,11 @@ const Register = () => {
 
   const navigateTo = useNavigate();
 
-  const [email, setEmail] = useState("");
+  const [mail, setMail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const resetFields = () => {
-    setEmail("");
+    setMail("");
     setUsername("");
     setPassword("");
   };
@@ -31,7 +33,7 @@ const Register = () => {
   const createUser = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     Axios.post("http://localhost:8081/register", {
-      Email: email,
+      Mail: mail,
       Username: username,
       Password: password,
     }).then(() => {
@@ -70,7 +72,7 @@ const Register = () => {
             <div className="inputDiv">
               <label htmlFor="username">Username</label>
               <div className="input flex">
-                <IconUserShield className="icon" />
+                <IconUser className="icon" />
                 <input
                   type="text"
                   id="username"
@@ -81,15 +83,15 @@ const Register = () => {
                 />
               </div>
 
-              <label htmlFor="email">Email</label>
+              <label htmlFor="Mail">Mail</label>
               <div className="input flex">
                 <IconMail className="icon" />
                 <input
                   type="text"
-                  id="email"
-                  placeholder="Enter Email"
+                  id="Mail"
+                  placeholder="Enter Mail"
                   onChange={(event) => {
-                    setEmail(event.target.value);
+                    setMail(event.target.value);
                   }}
                 />
               </div>
@@ -97,7 +99,7 @@ const Register = () => {
               <div className="inputDiv">
                 <label htmlFor="password">Password</label>
                 <div className="input flex">
-                  <IconShieldLock className="icon" />
+                  <IconLock className="icon" />
                   <input
                     type="password"
                     id="password"
@@ -110,7 +112,7 @@ const Register = () => {
 
                 <button type="submit" className="btn flex" onClick={createUser}>
                   <span>Register</span>
-                  <IconArrowNarrowRight className="icon" />
+                  <IconArrowRight className="icon" />
                 </button>
               </div>
             </div>

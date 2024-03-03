@@ -1,15 +1,17 @@
-import { Link, useNavigate } from "react-router-dom";
-import {
-  IconUserShield,
-  IconArrowNarrowRight,
-  IconShieldLock,
-} from "@tabler/icons-react";
-import "./Login.css";
-import v1 from "../assets/login_movie/1.mp4";
-import v2 from "../assets/login_movie/2.mp4";
-import oftyn from "../assets/oftyn.png";
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Axios from "axios";
+
+import {
+  IconArrowRight,
+  IconLock,
+  IconUser,
+} from "@tabler/icons-react";
+
+import "../User.css";
+import v1 from "../../assets/login_movie/1.mp4";
+import v2 from "../../assets/login_movie/2.mp4";
+import oftyn from "../../assets/oftyn.png";
 
 const Login = () => {
   const videos = [v1, v2];
@@ -30,7 +32,7 @@ const Login = () => {
       if (response.data.error || response.data.message) {
         navigateTo("/");
       } else {
-        navigateTo("/dashboard");
+        navigateTo("/home");
       }
     });
   };
@@ -67,7 +69,7 @@ const Login = () => {
               <div>
                 <label htmlFor="username">Username</label>
                 <div className="input flex">
-                  <IconUserShield className="icon" />
+                  <IconUser className="icon" />
                   <input
                     type="text"
                     id="username"
@@ -81,7 +83,7 @@ const Login = () => {
               <div>
                 <label htmlFor="password">Password</label>
                 <div className="input flex">
-                  <IconShieldLock className="icon" />
+                  <IconLock className="icon" />
                   <input
                     type="password"
                     id="password"
@@ -94,7 +96,7 @@ const Login = () => {
               </div>
               <button type="submit" className="btn flex" onClick={loginUser}>
                 <span>Login</span>
-                <IconArrowNarrowRight className="icon" />
+                <IconArrowRight className="icon" />
               </button>
             </div>
             <span className="forgotPassword">

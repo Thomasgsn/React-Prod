@@ -22,7 +22,7 @@ app.post("/register", (req, res) => {
   const sendUsername = req.body.Username;
   const sendPassword = req.body.Password;
 
-  const SQL = "INSERT INTO User (email, username, password) VALUES (?,?,?)";
+  const SQL = "INSERT INTO `user` (email, username, password) VALUES (?,?,?)";
   const Values = [sendEmail, sendUsername, sendPassword];
 
   db.query(SQL, Values, (err, results) => {
@@ -39,16 +39,39 @@ app.post("/login", (req, res) => {
   const sentLoginUsername = req.body.LoginUsername;
   const sentLoginPassword = req.body.LoginPassword;
 
-  const SQL = "SELECT * FROM user WHERE username = ? && password = ?";
+  const SQL = "SELECT * FROM `user` WHERE username = ? && password = ?";
   const Values = [sentLoginUsername, sentLoginPassword];
 
   db.query(SQL, Values, (err, results) => {
-    console.log(results)
     if (err) {
       res.send({ error: err });
-  }
+    }
     if (results.length > 0) {
       res.send(results);
     }
+  });
+});
+
+app.get("/home", (req, res) => {
+  const SQLreco = "SELECT * FROM `recommendation` ORDER BY id DESC LIMIT 4";
+  const SQLnb = "SELECT COUNT(*) as nb FROM `recommendation`";
+  const SQLnbArtist =
+    "SELECT COUNT(DISTINCT artist) AS nbArtist FROM `recommendation`";
+
+  db.query(SQLreco, (errReco, dataReco) => {
+    db.query(SQLnb, (errNb, dataNb) => {
+      db.query(SQLnbArtist, (errNbArtist, dataNbArtist) => {
+        if (errReco) return res.json(errReco);
+        if (errNb) return res.json(errNb);
+        if (errNbArtist) return res.json(errNbArtist);
+
+        const result = {
+          reco: dataReco,
+          nb: dataNb,
+          nbArtist: dataNbArtist,
+        };
+        return res.json(result);
+      });
+    });
   });
 });
