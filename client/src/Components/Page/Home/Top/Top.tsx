@@ -32,10 +32,10 @@ const Top = () => {
           <h1>
             Welcome to the <i>_oftyn shop</i>.
           </h1>
-          <p>Hello IconUser, Welcome back!</p>
+          <p>Hello <span className="welcomeUser">User</span>, Welcome back!</p>
         </div>
-        <div className="IconSearchBar flex">
-          <input type="text" placeholder="IconSearch" />
+        <div className="searchBar flex">
+          <input type="text" placeholder="Search" />
           <IconSearch className="icon" />
         </div>
 
@@ -43,7 +43,7 @@ const Top = () => {
           <a href="#notification">
             <IconBell className="icon" />
           </a>
-          <a href="#IconUser">
+          <a href="#User">
             <IconUser className="icon" />
           </a>
         </div>

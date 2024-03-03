@@ -2,7 +2,7 @@
 @import "../../../../light.css";
 /* @import "../../../../dark.css"; */
 
-.playlistSection {
+.myPlaylistSection {
   flex-basis: 70%;
   .heading {
     width: 100%;
@@ -41,8 +41,8 @@
 
     .singleItem {
       position: relative;
-      width: 150px;
-      height: 170px;
+      width: 170px;
+      height: 200px;
       display: flex;
       flex-direction: column;
       padding: 1rem;
@@ -53,20 +53,17 @@
       &:hover {
         background: var(--itemCardHover);
         box-shadow: 0 2px 2px var(--inputColor);
+        transform: translateY(-3px);
       }
 
       img {
-        max-width: 100px;
-      }
-
-      .icon {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        color: var(--primaryColor);
+        max-width: 150px;
       }
 
       h3 {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
         font-size: var(--smallestFontSize);
         color: var(--blackColor);
         padding: 1rem 0;
@@ -74,14 +71,13 @@
     }
   }
 
-  .sellers {
+  .recommendation {
     width: 100%;
     justify-content: space-between;
     gap: 1rem;
     align-items: flex-start;
 
-    .topSellers,
-    .featuredSellers {
+    .lastReco {
       .heading {
         padding: 1rem 0;
 
@@ -132,7 +128,7 @@
 
 @media screen and (max-width: 990px) {
   .playlistSection {
-    .sellers {
+    .recommendation {
       .card {
         flex-direction: column;
       }
@@ -150,7 +146,7 @@
 
 @media screen and (max-width: 490px) {
   .playlistSection {
-    .sellers {
+    .recommendation {
       flex-direction: column;
       .card {
         flex-direction: row;

@@ -1,8 +1,8 @@
 import Top from "./Top/Top";
 import Activity from "./Activity/Activity";
-import Listening from "./Playlist/Playlist";
+import Listening from "./MyPlaylist/MyPlaylist";
 
-import './Body.css'
+import './Home.css'
 
 const Body = () => {
   return (

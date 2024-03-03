@@ -17,4 +17,4 @@ Open [http://localhost:5173](http://localhost:5173) for client side.
 Docs
 
 Chakra : [Chakra Docs](https://chakra-ui.com/getting-started)
-Lucide : [Lucide Docs](https://lucide.dev/)
+Tabler : [Tabler Dos](https://tabler.io/icons)

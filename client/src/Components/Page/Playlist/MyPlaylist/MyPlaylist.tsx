@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
-import { Tooltip } from '@chakra-ui/react'
-import {
-  IconArrowNarrowRight,
-  IconHeart
-} from "@tabler/icons-react";
+import { Tooltip } from "@chakra-ui/react";
+import { IconArrowNarrowRight } from "@tabler/icons-react";
 
-import "./Playlist.css";
+import "./MyPlaylist.css";
 
-const Playlist = () => {
+const MyPlaylist = () => {
   const [reco, setReco] = useState([]);
   const [nb, setNb] = useState(0);
   const [nbArtist, setNbArtist] = useState(0);
@@ -26,7 +23,7 @@ const Playlist = () => {
   }, []);
 
   return (
-    <div className="playlistSection">
+    <div className="myPlaylistSection">
       <div className="heading flex">
         <h1>My Playlist</h1>
         <button className="btn flex">
@@ -35,50 +32,38 @@ const Playlist = () => {
         </button>
       </div>
       <div className="secContainer flex">
-        <div className="singleItem">
-          <IconHeart className="icon" />
+        <a href="" className="singleItem">
           <img
             src="https://t2.genius.com/unsafe/340x340/https%3A%2F%2Fimages.genius.com%2F8467a617c94ddf00a30396b6ba279d3e.1000x1000x1.jpg"
             alt="Favorite Song"
           />
           <h3>AAMO - DANS L'TRAP</h3>
-        </div>
-        <div className="singleItem">
-          <IconHeart className="icon" />
+        </a>
+        <a href="" className="singleItem">
           <img
             src="https://t2.genius.com/unsafe/340x340/https%3A%2F%2Fimages.genius.com%2F8467a617c94ddf00a30396b6ba279d3e.1000x1000x1.jpg"
             alt="Favorite Song"
           />
           <h3>AAMO - DANS L'TRAP</h3>
-        </div>
-        <div className="singleItem">
-          <IconHeart className="icon" />
+        </a>
+        <a href="" className="singleItem">
           <img
             src="https://t2.genius.com/unsafe/340x340/https%3A%2F%2Fimages.genius.com%2F8467a617c94ddf00a30396b6ba279d3e.1000x1000x1.jpg"
             alt="Favorite Song"
           />
           <h3>AAMO - DANS L'TRAP</h3>
-        </div>
-        <div className="singleItem">
-          <IconHeart className="icon" />
+        </a>
+        <a href="" className="singleItem">
           <img
             src="https://t2.genius.com/unsafe/340x340/https%3A%2F%2Fimages.genius.com%2F8467a617c94ddf00a30396b6ba279d3e.1000x1000x1.jpg"
             alt="Favorite Song"
           />
           <h3>AAMO - DANS L'TRAP</h3>
-        </div>
-        <div className="singleItem">
-          <IconHeart className="icon" />
-          <img
-            src="https://t2.genius.com/unsafe/340x340/https%3A%2F%2Fimages.genius.com%2F8467a617c94ddf00a30396b6ba279d3e.1000x1000x1.jpg"
-            alt="Favorite Song"
-          />
-          <h3>AAMO - DANS L'TRAP</h3>
-        </div>
+        </a>
       </div>
 
-      <div className="sellers flex">
-        <div className="topSellers">
+      <div className="recommendation flex">
+        <div className="lastReco">
           <div className="heading flex">
             <h3>French Recommendation</h3>
             <button className="btn flex">
@@ -90,11 +75,13 @@ const Playlist = () => {
           <div className="card flex">
             <div className="users">
               {reco.map((r: any) => (
-                <Tooltip label="Tooltip">
-                  <img
-                    src={`../recommendations/${r.artist}.jpg`}
-                    alt={r.artist}
-                  />
+                <Tooltip fontSize="xl" label={r.artist}>
+                  <a href="">
+                    <img
+                      src={`../recommendations/${r.artist}.jpg`}
+                      alt={r.artist}
+                    />
+                  </a>
                 </Tooltip>
               ))}
             </div>
@@ -106,46 +93,9 @@ const Playlist = () => {
             </div>
           </div>
         </div>
-
-        {/* <div className="featuredSellers">
-          <div className="heading flex">
-            <h3>Featured Sellers</h3>
-            <button className="btn flex">
-              See All
-              <MoveRight />
-            </button>
-          </div>
-
-          <div className="card flex">
-            <div className="users">
-              <img
-                src="https://placehold.co/600x400/purple/grey?text=User"
-                alt="User Image"
-              />
-              <img
-                src="https://placehold.co/600x400/orange/white?text=User"
-                alt="User Image"
-              />
-              <img
-                src="https://placehold.co/600x400/green/grey?text=User"
-                alt="User Image"
-              />
-              <img
-                src="https://placehold.co/600x400/grey/white?text=User"
-                alt="User Image"
-              />
-            </div>
-            <div className="cardText">
-              <span>
-                28.556 prod sold <br />
-                <small>28 sellers</small>
-              </span>
-            </div>
-          </div>
-        </div> */}
       </div>
     </div>
   );
 };
 
-export default Playlist;
+export default MyPlaylist;
