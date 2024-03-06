@@ -20,7 +20,7 @@ const Activity = () => {
             alt="Customer Image"
           />
           <div className="customerDetails">
-            <span className="name">User 1</span>
+            <span className="name">_oftyn</span>
             <small>Created a new prod</small>
           </div>
           <div className="duration">
@@ -33,7 +33,7 @@ const Activity = () => {
             alt="Customer Image"
           />
           <div className="customerDetails">
-            <span className="name">User 1</span>
+            <span className="name">_oftyn</span>
             <small>Created a new prod</small>
           </div>
           <div className="duration">
@@ -46,7 +46,7 @@ const Activity = () => {
             alt="Customer Image"
           />
           <div className="customerDetails">
-            <span className="name">User 1</span>
+            <span className="name">_oftyn</span>
             <small>Created a new prod</small>
           </div>
           <div className="duration">
@@ -59,7 +59,7 @@ const Activity = () => {
             alt="Customer Image"
           />
           <div className="customerDetails">
-            <span className="name">User 1</span>
+            <span className="name">_oftyn</span>
             <small>Created a new prod</small>
           </div>
           <div className="duration">

@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -24,6 +25,22 @@ const Top = () => {
   const navigateToAllProds = () => {
     navigateTo("/home");
   };
+
+  const [prodMounth, setProdMounth] = useState(0);
+  const [prodTotal, setProdTotal] = useState(0);
+
+
+  useEffect(() => {
+    fetch("http://localhost:8081/home")
+      .then((response) => response.json())
+      .then((data) => {
+        setProdMounth(data.reco);
+        setProdTotal(data.nb.nb);
+      })
+      .catch((error) =>
+        console.error("Erreur lors de la récupération des données :", error)
+      );
+  }, []);
 
   return (
     <div className="topSection">
@@ -71,18 +88,18 @@ const Top = () => {
         <div className="leftCard flex">
           <div className="main flex">
             <div className="textDiv">
-              <h1>My Stats</h1>
+              <h1>My Prods</h1>
               <div className="flex">
                 <span>
-                  This Mounth <br /> <small>4 Orders</small>
+                  This Mounth <br /> <small>4 Prods done</small>
                 </span>
                 <span>
-                  Total <br /> <small>142 Orders</small>
+                  All Time <br /> <small>{prodTotal} Prods done</small>
                 </span>
               </div>
 
               <span className="flex link">
-                Go to my orders
+                Go to my Shop
                 <IconArrowNarrowRight className="icon" />
               </span>
             </div>

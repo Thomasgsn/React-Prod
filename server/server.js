@@ -57,21 +57,31 @@ app.get("/home", (req, res) => {
   const SQLnb = "SELECT COUNT(*) as nb FROM `recommendation`";
   const SQLnbArtist =
     "SELECT COUNT(DISTINCT artist) AS nbArtist FROM `recommendation`";
+  // const SQLprodMonth = "";
+  const SQLprodTotal = "SELECT COUNT(*) from `prod`";
 
   db.query(SQLreco, (errReco, dataReco) => {
     db.query(SQLnb, (errNb, dataNb) => {
       db.query(SQLnbArtist, (errNbArtist, dataNbArtist) => {
-        if (errReco) return res.json(errReco);
-        if (errNb) return res.json(errNb);
-        if (errNbArtist) return res.json(errNbArtist);
+        // db.query(SQLprodMonth, (errProdMonth, dataProdMonth) => {
+          db.query(SQLprodTotal, (errProdTotal, dataProdTotal) => {
+            if (errReco) return res.json(errReco);
+            if (errNb) return res.json(errNb);
+            if (errNbArtist) return res.json(errNbArtist);
+            // if (errProdMonth) return res.json(errProdMonth);
+            if (errProdTotal) return res.json(errProdTotal);
 
-        const result = {
-          reco: dataReco,
-          nb: dataNb,
-          nbArtist: dataNbArtist,
-        };
-        return res.json(result);
+            const result = {
+              reco: dataReco,
+              nb: dataNb,
+              nbArtist: dataNbArtist,
+              // prodMonth: dataProdMonth,
+              prodTotal: dataProdTotal,
+            };
+            return res.json(result);
+          });
+        });
       });
-    });
+    // });
   });
 });
