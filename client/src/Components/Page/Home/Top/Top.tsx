@@ -26,16 +26,16 @@ const Top = () => {
     navigateTo("/home");
   };
 
-  const [prodMounth, setProdMounth] = useState(0);
-  const [prodTotal, setProdTotal] = useState(0);
-
+  // const [prodMounth, setProdMounth] = useState(0);
+  const [prodTotal, setProdTotal] = useState([]);
+  const [prodMounth, setProdMounth] = useState([]);
 
   useEffect(() => {
     fetch("http://localhost:8081/home")
       .then((response) => response.json())
       .then((data) => {
-        setProdMounth(data.reco);
-        setProdTotal(data.nb.nb);
+        setProdMounth(data.prodMonth);
+        setProdTotal(data.prodTotal);
       })
       .catch((error) =>
         console.error("Erreur lors de la récupération des données :", error)
@@ -49,7 +49,9 @@ const Top = () => {
           <h1>
             Welcome to the <i>_oftyn shop</i>.
           </h1>
-          <p>Hello <span className="welcomeUser">User</span>, Welcome back!</p>
+          <p>
+            Hello <span className="welcomeUser">User</span>, Welcome back!
+          </p>
         </div>
         <div className="searchBar flex">
           <input type="text" placeholder="Search" />
@@ -60,7 +62,7 @@ const Top = () => {
           <a href="#notification">
             <IconBell className="icon" />
           </a>
-          <a href="#User">
+          <a href="#user">
             <IconUser className="icon" />
           </a>
         </div>
@@ -91,10 +93,22 @@ const Top = () => {
               <h1>My Prods</h1>
               <div className="flex">
                 <span>
-                  This Mounth <br /> <small>4 Prods done</small>
+                  This Mounth <br />{" "}
+                  <small>
+                    {prodMounth.map((p: any) => (
+                      <>{p.nbProdMounth}</>
+                    ))}{" "}
+                    Prods done
+                  </small>
                 </span>
                 <span>
-                  All Time <br /> <small>{prodTotal} Prods done</small>
+                  All Time <br />{" "}
+                  <small>
+                    {prodTotal.map((p: any) => (
+                      <>{p.nbProd}</>
+                    ))}{" "}
+                    Prods done
+                  </small>
                 </span>
               </div>
 

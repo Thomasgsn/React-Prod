@@ -6,6 +6,10 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+const currentDay = new Date().getDate();
+const currentMonth = new Date().getMonth() + 1;
+const currentYear = new Date().getFullYear();
+
 app.listen(8081, () => {
   console.log("Server running on port 8081");
 });
@@ -18,7 +22,7 @@ const db = mysql.createConnection({
 });
 
 app.post("/register", (req, res) => {
-  const sendEmail = req.body.Email;
+  const sendEmail = req.body.Mail;
   const sendUsername = req.body.Username;
   const sendPassword = req.body.Password;
 
@@ -53,35 +57,55 @@ app.post("/login", (req, res) => {
 });
 
 app.get("/home", (req, res) => {
-  const SQLreco = "SELECT * FROM `recommendation` ORDER BY id DESC LIMIT 4";
+  const SQLprodMonth = `SELECT COUNT(*) as nbProdMounth from prod WHERE MONTH(releaseDate) = ${currentMonth}`;
+  const SQLprodTotal = "SELECT COUNT(*) as nbProd from `prod`";
+  const SQLPlaylist = "SELECT * FROM `typebeat`";
+  const SQLartistReco =
+    "SELECT recommendation_artist.nom FROM recommendation JOIN recommendation_artist ON recommendation.idArtist = recommendation_artist.id ORDER BY recommendation.id DESC LIMIT 5;";
   const SQLnb = "SELECT COUNT(*) as nb FROM `recommendation`";
   const SQLnbArtist =
-    "SELECT COUNT(DISTINCT artist) AS nbArtist FROM `recommendation`";
-  // const SQLprodMonth = "";
-  const SQLprodTotal = "SELECT COUNT(*) from `prod`";
+    "SELECT COUNT(*) AS nbArtist FROM `recommendation_artist`";
 
-  db.query(SQLreco, (errReco, dataReco) => {
-    db.query(SQLnb, (errNb, dataNb) => {
-      db.query(SQLnbArtist, (errNbArtist, dataNbArtist) => {
-        // db.query(SQLprodMonth, (errProdMonth, dataProdMonth) => {
-          db.query(SQLprodTotal, (errProdTotal, dataProdTotal) => {
-            if (errReco) return res.json(errReco);
-            if (errNb) return res.json(errNb);
-            if (errNbArtist) return res.json(errNbArtist);
-            // if (errProdMonth) return res.json(errProdMonth);
-            if (errProdTotal) return res.json(errProdTotal);
+  db.query(SQLprodMonth, (errProdMonth, dataProdMonth) => {
+    db.query(SQLprodTotal, (errProdTotal, dataProdTotal) => {
+      db.query(SQLPlaylist, (errPlaylist, dataPlaylist) => {
+        db.query(SQLartistReco, (errArtistReco, dataArtistReco) => {
+          db.query(SQLnb, (errNb, dataNb) => {
+            db.query(SQLnbArtist, (errNbArtist, dataNbArtist) => {
+              // Détection d'erreur
+              if (errProdMonth) return res.json(errProdMonth);
+              if (errProdTotal) return res.json(errProdTotal);
+              if (errPlaylist) return res.json(errPlaylist);
+              if (errArtistReco) return res.json(errArtistReco);
+              if (errNb) return res.json(errNb);
+              if (errNbArtist) return res.json(errNbArtist);
 
-            const result = {
-              reco: dataReco,
-              nb: dataNb,
-              nbArtist: dataNbArtist,
-              // prodMonth: dataProdMonth,
-              prodTotal: dataProdTotal,
-            };
-            return res.json(result);
+              const result = {
+                artistReco: dataArtistReco,
+                nb: dataNb,
+                nbArtist: dataNbArtist,
+                prodTotal: dataProdTotal,
+                prodMonth: dataProdMonth,
+                playlist: dataPlaylist,
+              };
+              return res.json(result);
+            });
           });
         });
       });
-    // });
+    });
+  });
+});
+
+app.get("/test", (req, res) => {
+  const SQLAAMO =
+    "SELECT recommendation.* FROM recommendation JOIN recommendation_artist ON recommendation.idArtist = recommendation_artist.id WHERE recommendation_artist.nom = 'AAMO';";
+
+  db.query(SQLAAMO, (errAAMO, dataAAMO) => {
+    if (errAAMO) return res.json(errAAMO);
+    const result = {
+      AAMO: dataAAMO,
+    };
+    return res.json(result);
   });
 });

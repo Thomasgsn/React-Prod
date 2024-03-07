@@ -8,10 +8,11 @@ const Page = () => {
   const Body = () => {
     const body = window.location.pathname
     console.log(body)
-    if (body === '/shop') return <Playlist />
-    if (body === '/prod') return <Playlist />
+    if (body === '/home') return <Home />
+    if (body === '/shop') return <Home />
+    if (body === '/prod') return <Home />
     if (body === '/playlist') return <Playlist />
-    if (body === '/recommendation') return <Playlist />
+    if (body === '/recommendation') return <>  <Playlist /></>
     
     return <Home />
     
