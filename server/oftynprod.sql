@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : lun. 04 mars 2024 à 16:33
+-- Généré le : jeu. 07 mars 2024 à 15:46
 -- Version du serveur : 8.2.0
 -- Version de PHP : 8.2.13
 
@@ -86,21 +86,46 @@ INSERT INTO `prod` (`id`, `name`, `tag`, `cover`, `BPM`, `key`, `price`, `releas
 DROP TABLE IF EXISTS `recommendation`;
 CREATE TABLE IF NOT EXISTS `recommendation` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `artist` varchar(255) NOT NULL,
+  `idArtist` int NOT NULL,
   `song` varchar(255) NOT NULL,
   `genre` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf16 COMMENT='Mes recommandations de sons';
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf16 COMMENT='Mes recommandations de sons';
 
 --
 -- Déchargement des données de la table `recommendation`
 --
 
-INSERT INTO `recommendation` (`id`, `artist`, `song`, `genre`) VALUES
-(4, 'AAMO', 'DANS L\'TRAP', 'RAP'),
-(1, 'Werenoi', 'Casse Bélier', 'RAP'),
-(2, 'ENOCK', 'VISION', 'RAP'),
-(3, 'Lesram', 'Du peu que j\'ai eu', 'RAP');
+INSERT INTO `recommendation` (`id`, `idArtist`, `song`, `genre`) VALUES
+(4, 1, 'DANS L\'TRAP', 'RAP'),
+(1, 2, 'Casse Bélier', 'RAP'),
+(2, 3, 'VISION', 'RAP'),
+(3, 4, 'Du peu que j\'ai eu', 'RAP'),
+(5, 5, 'BELLE CHANSON', 'RAP');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `recommendation_artist`
+--
+
+DROP TABLE IF EXISTS `recommendation_artist`;
+CREATE TABLE IF NOT EXISTS `recommendation_artist` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nom` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `recommendation_artist`
+--
+
+INSERT INTO `recommendation_artist` (`id`, `nom`) VALUES
+(1, 'AAMO'),
+(2, 'Werenoi'),
+(3, 'ENOCK'),
+(4, 'Lesram'),
+(5, 'HOUDI');
 
 -- --------------------------------------------------------
 
@@ -111,7 +136,7 @@ INSERT INTO `recommendation` (`id`, `artist`, `song`, `genre`) VALUES
 DROP TABLE IF EXISTS `typebeat`;
 CREATE TABLE IF NOT EXISTS `typebeat` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `libelle` varchar(11) NOT NULL,
+  `name` varchar(11) CHARACTER SET utf16 COLLATE utf16_general_ci NOT NULL,
   `photo` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf16;
@@ -120,7 +145,7 @@ CREATE TABLE IF NOT EXISTS `typebeat` (
 -- Déchargement des données de la table `typebeat`
 --
 
-INSERT INTO `typebeat` (`id`, `libelle`, `photo`) VALUES
+INSERT INTO `typebeat` (`id`, `name`, `photo`) VALUES
 (1, 'Trap', ''),
 (2, 'Drill', ''),
 (3, 'Boom Bap', ''),
@@ -142,7 +167,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `email` varchar(255) DEFAULT NULL,
   `role` varchar(11) NOT NULL COMMENT 'Admin / User',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf16;
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf16;
 
 --
 -- Déchargement des données de la table `user`
@@ -150,7 +175,8 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 INSERT INTO `user` (`id`, `username`, `password`, `email`, `role`) VALUES
 (3, 'oftyn', 'password', 'oftynprod@gmail.com', ''),
-(7, 'test', 'test', 'test@email.com', '');
+(7, 'test', 'test', 'test@email.com', ''),
+(10, 'admin', 'admin', 'admin@mail.com', '');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

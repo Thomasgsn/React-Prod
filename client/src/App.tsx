@@ -1,7 +1,12 @@
-import Page from "./Components/Page/Page";
 import Login from "./Components/User/Login/Login";
 import Register from "./Components/User/Register/Register";
 import OnEnter from "./Components/User/OnEnter/OnEnter";
+import Home from "./Components/Home/Home";
+import Shop from "./Components/Shop/Shop";
+import Prods from "./Components/Prods/Prods";
+import Prod from "./Components/Prod/Prod";
+import Playlist from "./Components/Playlist/Playlist";
+import Recommendation from "./Components/Recommendation/Recommendation";
 
 import "./App.css";
 
@@ -36,7 +41,7 @@ const router = createBrowserRouter([
     path: "/home",
     element: (
       <div>
-        <Page />
+        <Home />
       </div>
     ),
   },
@@ -44,14 +49,23 @@ const router = createBrowserRouter([
     path: "/shop",
     element: (
       <div>
-        <Page />
+        <Shop />
       </div>
     ),
-  },{
-    path: "/prod",
+  },
+  {
+    path: "/prods",
     element: (
       <div>
-        <Page />
+        <Prods />
+      </div>
+    ),
+  },
+  {
+    path: "/prod/:id",
+    element: (
+      <div>
+        <Prod />
       </div>
     ),
   },
@@ -59,14 +73,14 @@ const router = createBrowserRouter([
     path: "/playlist",
     element: (
       <div>
-        <Page />
+        <Playlist />
       </div>
     ),
   },{
     path: "/recommendation",
     element: (
       <div>
-        <Page />
+        <Recommendation />
       </div>
     ),
   },
