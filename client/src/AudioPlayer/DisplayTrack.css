@@ -1,0 +1,35 @@
+.display {
+    padding: .8rem 1rem;
+    margin-left: 4.5rem;
+  .trackInfo {
+    justify-content: center;
+    .trackCover {
+      width: 8rem;
+      img {
+        border-radius: 0.5rem;
+      }
+
+      .noCover {
+        height: 8rem;
+        border-radius: 0.5rem;
+        background: var(--hoverColor);
+        .audioIcon {
+          margin: auto;
+          width: 3rem;
+          height: 3rem;
+        }
+      }
+    }
+
+    .text {
+        margin-left: 2rem;
+        text-align: center;
+        font-size: var(--normalFontSize);
+
+        .title{
+            font-size: var(--h2FontSize);
+            font-weight: 500;
+        }
+    }
+  }
+}

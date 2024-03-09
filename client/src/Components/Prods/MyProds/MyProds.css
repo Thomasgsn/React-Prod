@@ -37,13 +37,12 @@
 
     .singleItem {
       position: relative;
-      width: 180px;
-      height: 200px;
+      width: 225px;
+      height: 250px;
       display: flex;
       flex-direction: column;
-      padding: 1rem;
+      padding: .8rem;
       border-radius: 10px;
-      background: var(--itemCardColor);
       transition: 0.3s ease;
 
       &:hover {
@@ -53,9 +52,29 @@
       }
 
       img {
-        border-radius: .25rem;
-        width: 150px;
-        height: 150px;
+        border-radius: 0.25rem;
+        object-fit: cover;
+        width: 200px;
+        height: 200px;
+      }
+
+      .price {
+        position: absolute;
+        background: red;
+        right: 0;
+        margin-top: 5px;
+        padding: 3px 12px 3px 10px;
+        border-top-left-radius: 1rem;
+        border-bottom-left-radius: 1rem;
+        border-top-right-radius: 3px;
+        border-bottom-right-radius: 3px;
+
+
+        p {
+          font-size: var(--smallFontSize);
+          color: var(--whiteColor);
+          font-weight: 500;
+        }
       }
 
       h3 {
@@ -69,87 +88,13 @@
       }
     }
   }
-
-  .recommendation {
-    width: 100%;
-    justify-content: space-between;
-    gap: 1rem;
-    align-items: flex-start;
-
-    .lastReco {
-      .heading {
-        padding: 1rem 0;
-
-        .btn {
-          padding: 0.5rem 1rem;
-        }
-      }
-
-      .card {
-        padding: 1rem 1.5rem;
-        border-radius: 1rem;
-        background: var(--whiteColor);
-        gap: 1rem;
-        box-shadow: 0 2px 4px var(--inputColor);
-
-        .users {
-          padding-right: 1rem;
-          border-right: 2px solid var(--greyText);
-
-          img {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--inputColor);
-            transition: 0.5s ease;
-
-            &:hover {
-              transform: translateY(-10px);
-            }
-          }
-        }
-
-        .cardText {
-          span {
-            color: var(--blackColor);
-            font-weight: 500;
-
-            small {
-              font-weight: 400;
-            }
-          }
-        }
-      }
-    }
-  }
 }
 
-@media screen and (max-width: 990px) {
-  .ProdSection {
-    .recommendation {
-      .card {
-        flex-direction: column;
-      }
-    }
-  }
-}
 
 @media screen and (max-width: 918px) {
-  .ProdSection {
+  .prodSection {
     .singleItem {
       width: 200px !important;
-    }
-  }
-}
-
-@media screen and (max-width: 490px) {
-  .ProdSection {
-    .recommendation {
-      flex-direction: column;
-      .card {
-        flex-direction: row;
-      }
     }
   }
 }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Recommendation from "../../assets/Recommendation/Recommendation";
 
 import "./MyPlaylist.css";
@@ -12,16 +12,22 @@ const MyPlaylist = () => {
     navigateTo("/playlist");
   };
 
+  const { id } = useParams();
+
   useEffect(() => {
-    fetch("http://localhost:8081/prod/1")
-      .then((response) => response.json())
-      .then((prodDetail) => {
-        setProd(prodDetail[0]);
-      })
-      .catch((error) =>
-        console.error("Erreur lors de la récupération des données :", error)
-      );
-  }, []);
+    fetch(`http://localhost:8081/prod/${id}`)
+    .then((response) => response.json())
+    .then((prodDetail) => {
+      setProd(prodDetail[0]);
+    })
+    .catch((error) =>
+      console.error("Erreur lors de la récupération des données :", error)
+    );
+  }, [id]);
+
+  if (!prod) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="myPlaylistSection">

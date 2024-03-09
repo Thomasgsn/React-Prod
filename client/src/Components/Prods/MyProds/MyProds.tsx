@@ -32,6 +32,9 @@ const MyProds = () => {
         {prods.map((p: any) => (
           <a href={"/prod/" + p.id} className="singleItem">
             <img src={"/cover_prods/" + p.cover} alt={p.name} />
+            <div className="price flex">
+              {p.price !== 0 ? <p>{p.price} €</p> : <p>[FREE]</p>}
+            </div>
             <h3>{p.name}</h3>
           </a>
         ))}

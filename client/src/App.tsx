@@ -12,6 +12,13 @@ import "./App.css";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+
+
+import AudioPlayer from "./AudioPlayer/AudioPlayer";
+
+
+
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -81,6 +88,14 @@ const router = createBrowserRouter([
     element: (
       <div>
         <Recommendation />
+      </div>
+    ),
+  },
+  {
+    path: "/audio",
+    element: (
+      <div>
+        <AudioPlayer />
       </div>
     ),
   },

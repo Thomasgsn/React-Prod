@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Tooltip } from "@chakra-ui/react";
 import { IconArrowNarrowRight } from "@tabler/icons-react";
 
 import "./MyPlaylist.css";
+import Recommendation from "../Recommendation";
 
 const MyPlaylist = () => {
   const [artistReco, setArtistReco] = useState([]);
@@ -53,44 +53,7 @@ const MyPlaylist = () => {
           </a>
         ))}
       </div>
-
-      <div className="recommendation flex">
-        <div className="lastReco">
-          <div className="heading flex">
-            <h3>French Recommendation</h3>
-            <button onClick={navigateToRecommendation} className="btn flex">
-              See All
-              <IconArrowNarrowRight className="icon" />
-            </button>
-          </div>
-
-          <div className="card flex">
-            <div className="users">
-              {artistReco.map((a: any) => (
-                <Tooltip fontSize="xl" label={a.nom}>
-                  <a href="">
-                    <img src={`../recommendations/${a.nom}.jpg`} alt={a.nom} />
-                  </a>
-                </Tooltip>
-              ))}
-            </div>
-            <div className="cardText">
-              <span>
-                {nb.map((n: any) => (
-                  <>{n.nb}</>
-                ))}{" "}
-                recommendations <br />
-                <small>
-                  {nbArtist.map((n: any) => (
-                    <>{n.nbArtist}</>
-                  ))}{" "}
-                  artist different.
-                </small>
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Recommendation />
     </div>
   );
 };

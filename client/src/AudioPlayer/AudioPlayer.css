@@ -1,0 +1,27 @@
+.open {
+  transform: translate(-50%, 0%);
+  transition: rotate 0.3s ease;
+  transition: transform 0s;
+}
+
+.audioPlayer {
+  background: var(--primarySecondColor);
+  position: absolute;
+  width: 95%;
+  height: 10rem;
+  bottom: 0;
+  left: 50%;
+  justify-content: space-between;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.opened {
+  transform: translate(-50%, 0);
+
+}
+
+.closed {
+  transform: translate(-50%, 100%);
+}

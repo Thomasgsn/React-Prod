@@ -1,5 +1,5 @@
 import "./Sidebar.css";
-import oftyn from "../../media/oftyn.png";
+import oftyn from "../media/oftyn.png";
 import {
   IconHome,
   IconMusic,

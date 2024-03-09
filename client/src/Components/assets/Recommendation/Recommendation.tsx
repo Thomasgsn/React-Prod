@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IconArrowNarrowRight } from "@tabler/icons-react";
-import { Tooltip } from "@chakra-ui/react";
+
+import "./Recommendation.css"
 
 const Recommendation = () => {
 
@@ -12,15 +13,15 @@ const Recommendation = () => {
     };
 
     const [artistReco, setArtistReco] = useState([]);
-    const [nb, setNb] = useState([]);
+    const [nbReco, setNbReco] = useState([]);
     const [nbArtist, setNbArtist] = useState([]);
 
     useEffect(() => {
-        fetch("http://localhost:8081/home")
+        fetch("http://localhost:8081/recovignette")
           .then((response) => response.json())
           .then((data) => {
             setArtistReco(data.artistReco);
-            setNb(data.nb);
+            setNbReco(data.nbReco);
             setNbArtist(data.nbArtist);
           })
           .catch((error) =>
@@ -41,18 +42,17 @@ const Recommendation = () => {
           </div>
 
           <div className="card flex">
-            <div className="users">
+            <div className="users flex">
               {artistReco.map((a: any) => (
-                <Tooltip fontSize="xl" label={a.nom}>
                   <a href="">
                     <img src={`../recommendations/${a.nom}.jpg`} alt={a.nom} />
+                    <p>{a.nom}</p>
                   </a>
-                </Tooltip>
               ))}
             </div>
             <div className="cardText">
               <span>
-                {nb.map((n: any) => (
+                {nbReco.map((n: any) => (
                   <>{n.nb}</>
                 ))}{" "}
                 recommendations <br />

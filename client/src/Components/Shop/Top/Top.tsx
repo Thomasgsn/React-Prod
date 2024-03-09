@@ -10,8 +10,8 @@ import {
 } from "@tabler/icons-react";
 
 import "./Top.css";
-import v1 from "../../media/login_movie/1.mp4";
-import v2 from "../../media/login_movie/2.mp4";
+import v1 from "../../assets/media/login_movie/1.mp4";
+import v2 from "../../assets/media/login_movie/2.mp4";
 
 const Top = () => {
   const videos = [v1, v2];

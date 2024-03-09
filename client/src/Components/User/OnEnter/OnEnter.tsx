@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import { IconUserPlus, IconUser } from "@tabler/icons-react";
 
 import "../User.css";
-import v1 from "../../media/login_movie/1.mp4";
-import v2 from "../../media/login_movie/2.mp4";
-import oftyn from "../../media/oftyn.png";
+import v1 from "../../assets/media/login_movie/1.mp4";
+import v2 from "../../assets/media/login_movie/2.mp4";
+import oftyn from "../../assets/media/oftyn.png";
 
 const OnEnter = () => {
   const videos = [v1, v2];
