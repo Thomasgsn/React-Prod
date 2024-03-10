@@ -38,7 +38,7 @@ const StatsProd = () => {
               This Mounth <br />{" "}
               <small>
                 {prodMounth.map((p: any) => (
-                  <>{p.nbProdMounth}</>
+                  <span key={p.nbProdMounth}>{p.nbProdMounth}</span>
                 ))}{" "}
                 Prods done
               </small>
@@ -47,7 +47,7 @@ const StatsProd = () => {
               All Time <br />{" "}
               <small>
                 {prodTotal.map((p: any) => (
-                  <>{p.nbProd}</>
+                  <span key={p.nbProd}>{p.nbProd}</span>
                 ))}{" "}
                 Prods done
               </small>

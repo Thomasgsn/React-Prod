@@ -13,8 +13,9 @@ const Shop = () => {
         <div className="mainContent">
           <Top />
           <div className="bottom flex">
-            <Listening />
-            <Activity />
+            {/* <Listening />
+            <Activity /> */}
+            <p>Maintenance</p>
           </div>
         </div>
       </div>

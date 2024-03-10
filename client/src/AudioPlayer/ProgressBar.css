@@ -1,8 +1,8 @@
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
-  background: transparent;
   cursor: pointer;
+  border-radius: 1rem;
 }
 
 input[type="range"]:focus {
@@ -10,7 +10,6 @@ input[type="range"]:focus {
 }
 
 input[type="range"]::-webkit-slider-runnable-track {
-  background-color: #add8e6;
   border-radius: 0.5rem;
   height: 0.3rem;
 }

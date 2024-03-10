@@ -31,7 +31,7 @@ const Sidebar = () => {
           </li>
 
           <li className="listItem">
-            <a href="/home" className="menuLink flex">
+            <a href="/shop" className="menuLink flex">
               <IconBrandSafari className="icon" />
               <span className="smallText">
                 Explore <span className="removeText">Shop</span>
@@ -40,14 +40,14 @@ const Sidebar = () => {
           </li>
 
           <li className="listItem">
-            <a href="/home" className="menuLink flex">
+            <a href="/prods" className="menuLink flex">
               <IconMusic className="icon" />
               <span className="smallText">All Prods</span>
             </a>
           </li>
 
           <li className="listItem">
-            <a href="/home" className="menuLink flex">
+            <a href="/prods" className="menuLink flex">
               <IconFileDownload className="icon" />
               <span className="smallText">Free Prods</span>
             </a>
@@ -59,7 +59,7 @@ const Sidebar = () => {
         <h3 className="divTitle">_oftyn Menu</h3>
         <ul className="menuList grid">
           <li className="listItem">
-            <a href="/home" className="menuLink flex">
+            <a href="/aboutme" className="menuLink flex">
               <IconUserCircle className="icon" />
               <span className="smallText">About Me</span>
             </a>
@@ -73,7 +73,7 @@ const Sidebar = () => {
           </li>
 
           <li className="listItem">
-            <a href="/home" className="menuLink flex">
+            <a href="/contacts" className="menuLink flex">
               <IconNotebook className="icon" />
               <span className="smallText">Contacts</span>
             </a>

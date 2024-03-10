@@ -1,5 +1,3 @@
-import { IconMusic } from "@tabler/icons-react";
-
 import "./DisplayTrack.css";
 
 const DisplayTrack = ({
@@ -14,29 +12,33 @@ const DisplayTrack = ({
     setDuration(seconds);
     progressBarRef.current.max = seconds;
   };
+
   return (
-    <div className="display ">
-      <audio
-        src={currentTrack.src}
-        ref={audioRef}
-        onEnded={handleNext}
-        onLoadedMetadata={onLoadedMetadata}
-      />
-      <div className="trackInfo flex">
-        <div className="trackCover">
-          {currentTrack.thumbnail ? (
-            <img src={currentTrack.thumbnail} alt="audio avatar" />
-          ) : (
-            <div className="noCover flex">
-              <IconMusic className="audioIcon" />
+    <div>
+      {currentTrack && (
+        <div className="display ">
+          <audio
+            src={`/prods/audio_prods/${currentTrack.name}${currentTrack.id}.mp3`}
+            ref={audioRef}
+            onEnded={handleNext}
+            onLoadedMetadata={onLoadedMetadata}
+          />
+          <div className="trackInfo flex">
+            <div className="trackCover">
+              {currentTrack && (
+                <img
+                  src={`/prods/cover_prods/${currentTrack.name}${currentTrack.id}.jpg`}
+                  alt={`${currentTrack.name} prod By. _oftyn`}
+                />
+              )}
             </div>
-          )}
+            <div className="text">
+              {currentTrack && <p className="title">{currentTrack.name}</p>}
+              <p>_oftyn</p>
+            </div>
+          </div>
         </div>
-        <div className="text">
-          <p className="title">{currentTrack.title}</p>
-          <p>{currentTrack.author}</p>
-        </div>
-      </div>
+      )}
     </div>
   );
 };

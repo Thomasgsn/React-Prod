@@ -8,13 +8,16 @@ import Prod from "./Components/Prod/Prod";
 import Playlist from "./Components/Playlist/Playlist";
 import Recommendation from "./Components/Recommendation/Recommendation";
 
+import AudioPlayer from "./AudioPlayer/AudioPlayer";
+
 import "./App.css";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+import Testniyazi from './Testniyazi'
 
 
-import AudioPlayer from "./AudioPlayer/AudioPlayer";
+
 
 
 
@@ -49,6 +52,7 @@ const router = createBrowserRouter([
     element: (
       <div>
         <Home />
+        {/* <AudioPlayer /> */}
       </div>
     ),
   },

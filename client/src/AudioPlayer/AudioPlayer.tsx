@@ -1,26 +1,34 @@
-import { useRef, useState } from "react";
-import { tracks } from "../Components/assets/media/prods/prods.js";
+import { useEffect, useRef, useState } from "react";
 
-// import components
 import DisplayTrack from "./DisplayTrack";
 import Controls from "./Controls";
 
-import {IconChevronUp} from '@tabler/icons-react'
+import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 
 import "./AudioPlayer.css";
 
 const AudioPlayer = () => {
-  const [isClicked, setIsClicked] = useState(false);
+  useEffect(() => {
+    fetch("http://localhost:8081/audioplayer")
+      .then((response) => response.json())
+      .then((dataPlayer) => {
+        setTracks(dataPlayer);
+      })
+      .catch((error) =>
+        console.error("Erreur lors de la récupération des données :", error)
+      );
+  }, []);
 
-  const openPlayer = () => {
-    setIsClicked(!isClicked);
-  };
-
-
+  const [tracks, setTracks] = useState([]);
   const [trackIndex, setTrackIndex] = useState(0);
   const [currentTrack, setCurrentTrack] = useState(tracks[trackIndex]);
 
+  useEffect(() => {
+    setCurrentTrack(tracks[trackIndex]);
+  }, [tracks, trackIndex, currentTrack]);
+
   const [duration, setDuration] = useState(0);
+  const [isClicked, setIsClicked] = useState(false);
 
   const audioRef = useRef();
   const progressBarRef = useRef();
@@ -35,9 +43,23 @@ const AudioPlayer = () => {
     }
   };
 
+  const esfdf = () => {
+    console.log(currentTrack);
+    console.log(audioRef);
+  };
+
+  const openPlayer = () => {
+    setIsClicked(!isClicked);
+  };
+
   return (
-    <div className={`audioPlayer flex ${isClicked ? 'opened' : 'closed'} `} >
-      <IconChevronUp onClick={openPlayer} className="icon open" />
+    <div className={`audioPlayer flex ${isClicked ? "opened" : "closed"} `}>
+      {isClicked ? (
+        <IconChevronDown onClick={openPlayer} className="icon open" />
+      ) : (
+        <IconChevronUp onClick={openPlayer} className="icon open" />
+      )}
+
       <DisplayTrack
         {...{
           currentTrack,
@@ -48,9 +70,21 @@ const AudioPlayer = () => {
         }}
       />
       <Controls
-        {...{ audioRef, progressBarRef, duration, handleNext, setTrackIndex }}
+        {...{
+          audioRef,
+          progressBarRef,
+          duration,
+          tracks,
+          trackIndex,
+          setTrackIndex,
+          setCurrentTrack,
+          setTrackIndex,
+        }}
       />
-      <div style={{ width: "50rem", height: "10rem", background: "red" }}></div>
+      {/* <div style={{ width: "50rem", height: "10rem", background: "red" }}></div> */}
+      <button style={{ width: "5rem", height: "5rem" }} onClick={esfdf}>
+        currentTrack
+      </button>
     </div>
   );
 };

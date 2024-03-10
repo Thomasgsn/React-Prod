@@ -15,8 +15,8 @@ const MyProds = () => {
   useEffect(() => {
     fetch("http://localhost:8081/prods")
       .then((response) => response.json())
-      .then((data) => {
-        setProds(data.prods);
+      .then((dataProds) => {
+        setProds(dataProds);
       })
       .catch((error) =>
         console.error("Erreur lors de la récupération des données :", error)
@@ -31,7 +31,7 @@ const MyProds = () => {
       <div className="secContainer flex">
         {prods.map((p: any) => (
           <a href={"/prod/" + p.id} className="singleItem">
-            <img src={"/cover_prods/" + p.cover} alt={p.name} />
+            <img src={"/cover_prods/" + p.name + p.id +".jpg"} alt={p.name} />
             <div className="price flex">
               {p.price !== 0 ? <p>{p.price} €</p> : <p>[FREE]</p>}
             </div>

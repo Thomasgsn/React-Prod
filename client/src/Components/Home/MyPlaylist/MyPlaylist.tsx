@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IconArrowNarrowRight } from "@tabler/icons-react";
 import Recommendation from "../../assets/Recommendation/Recommendation";
-
 import "./MyPlaylist.css";
 
 const MyPlaylist = () => {
@@ -17,8 +16,8 @@ const MyPlaylist = () => {
   useEffect(() => {
     fetch("http://localhost:8081/home")
       .then((response) => response.json())
-      .then((data) => {
-        setPlaylist(data.playlist);
+      .then((dataPlaylist) => {
+        setPlaylist(dataPlaylist);
       })
       .catch((error) =>
         console.error("Erreur lors de la récupération des données :", error)
@@ -36,9 +35,9 @@ const MyPlaylist = () => {
       </div>
       <div className="secContainer flex">
         {playlist.map((p: any) => (
-          <a href={"/playlist/" + p.name.toLowerCase()} className="singleItem">
+          <a key={p.id} href={"/playlist/" + p.name.toLowerCase()} className="singleItem">
             <img
-              src={"/cover_prods/" + p.cover}
+              src={"/cover_prods/" + p.prod_name + p.prod_id + ".jpg"}
               alt={p.name}
             />
             <h3>{p.name}</h3>

@@ -37,7 +37,6 @@ const MyPlaylist = () => {
           <p>id : {prod.id}</p>
           <p>name : {prod.name}</p>
           <p>tag : {prod.tag}</p>
-          <p>cover : {prod.cover}</p>
           <p>BPM : {prod.BPM} bpm</p>
           <p>key : {prod.key}</p>
           <p>price : {prod.price} €</p>

@@ -44,7 +44,7 @@ const Recommendation = () => {
           <div className="card flex">
             <div className="users flex">
               {artistReco.map((a: any) => (
-                  <a href="">
+                  <a key={a.nom} href="">
                     <img src={`../recommendations/${a.nom}.jpg`} alt={a.nom} />
                     <p>{a.nom}</p>
                   </a>
@@ -53,12 +53,12 @@ const Recommendation = () => {
             <div className="cardText">
               <span>
                 {nbReco.map((n: any) => (
-                  <>{n.nb}</>
+                  <span key={n.nb}>{n.nb}</span>
                 ))}{" "}
                 recommendations <br />
                 <small>
                   {nbArtist.map((n: any) => (
-                    <>{n.nbArtist}</>
+                    <span key={n.nbArtist}>{n.nbArtist}</span>
                   ))}{" "}
                   artist different.
                 </small>

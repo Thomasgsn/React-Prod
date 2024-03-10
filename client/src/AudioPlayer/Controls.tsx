@@ -19,25 +19,41 @@ const Controls = ({
   duration,
   tracks,
   trackIndex,
-  setTrackIndex,
   setCurrentTrack,
+  setTrackIndex,
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [timeProgress, setTimeProgress] = useState(0);
+
+  const [volume, setVolume] = useState(80);
+  const [muteVolume, setMuteVolume] = useState(false);
+
+  const playAnimationRef = useRef();
 
   const togglePlayPause = () => {
     setIsPlaying((prev) => !prev);
   };
 
-  useEffect(() => {
-    if (isPlaying) {
-      audioRef.current.play();
+  const handlePrevious = () => {
+    if (trackIndex === 0) {
+      let lastTrackIndex = tracks.length - 1;
+      setTrackIndex(lastTrackIndex);
+      setCurrentTrack(tracks[lastTrackIndex]);
     } else {
-      audioRef.current.pause();
+      setTrackIndex((prev) => prev - 1);
+      setCurrentTrack(tracks[trackIndex - 1]);
     }
-  }, [isPlaying, audioRef]);
+  };
 
-  const playAnimationRef = useRef();
+  const handleNext = () => {
+    if (trackIndex >= tracks.length - 1) {
+      setTrackIndex(0);
+      setCurrentTrack(tracks[0]);
+    } else {
+      setTrackIndex((prev) => prev + 1);
+      setCurrentTrack(tracks[trackIndex + 1]);
+    }
+  };
 
   const repeat = useCallback(() => {
     const currentTime = audioRef.current.currentTime;
@@ -52,44 +68,24 @@ const Controls = ({
   }, [audioRef, duration, progressBarRef, setTimeProgress]);
 
   useEffect(() => {
-    if (isPlaying) {
-      audioRef.current.play();
-    } else {
-      audioRef.current.pause();
-    }
-    playAnimationRef.current = requestAnimationFrame(repeat);
+    if (audioRef && audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.play();
+        playAnimationRef.current = requestAnimationFrame(repeat);
+      } else {
+        audioRef.current.pause();
+        cancelAnimationFrame(playAnimationRef.current);
+      }
+  }
   }, [isPlaying, audioRef, repeat]);
 
-  const handlePrevious = () => {
-    if (trackIndex === 0) {
-      const lastTrackIndex = tracks.length - 1;
-      setTrackIndex(lastTrackIndex);
-      setCurrentTrack(tracks[lastTrackIndex]);
-    } else {
-      setTrackIndex((prev: number) => prev - 1);
-      setCurrentTrack(tracks[trackIndex - 1]);
-    }
-  };
-
-  const handleNext = () => {
-    if (trackIndex >= tracks.length - 1) {
-      setTrackIndex(0);
-      setCurrentTrack(tracks[0]);
-    } else {
-      setTrackIndex((prev: number) => prev + 1);
-      setCurrentTrack(tracks[trackIndex + 1]);
-    }
-  };
-
-  const [volume, setVolume] = useState(80);
-  const [muteVolume, setMuteVolume] = useState(false);
-
   useEffect(() => {
-    if (audioRef) {
+    if (audioRef && audioRef.current) {
       audioRef.current.volume = volume / 100;
       audioRef.current.muted = muteVolume;
     }
-  }, [volume, audioRef, muteVolume]);
+  }, [volume, muteVolume, audioRef]);
+
 
   return (
     <div className="controlsDiv">

@@ -30,9 +30,9 @@
   .volume {
     input[type="range"] {
       position: absolute;
-      width: 6rem;
-      top: 105px;
-      left: -5px;
+      width: 5rem;
+      top: 100px;
+      left: 4px;
       transform: rotate(-90deg);
     }
     .btn {

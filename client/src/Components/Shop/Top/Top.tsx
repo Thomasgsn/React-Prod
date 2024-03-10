@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import StatsProd from "../../assets/StatsProds/StatsProd";
 
 import {
   IconArrowNarrowRight,
@@ -25,22 +25,6 @@ const Top = () => {
   const navigateToAllProds = () => {
     navigateTo("/home");
   };
-
-  // const [prodMounth, setProdMounth] = useState(0);
-  const [prodTotal, setProdTotal] = useState([]);
-  const [prodMounth, setProdMounth] = useState([]);
-
-  useEffect(() => {
-    fetch("http://localhost:8081/home")
-      .then((response) => response.json())
-      .then((data) => {
-        setProdMounth(data.prodMonth);
-        setProdTotal(data.prodTotal);
-      })
-      .catch((error) =>
-        console.error("Erreur lors de la récupération des données :", error)
-      );
-  }, []);
 
   return (
     <div className="topSection">
@@ -86,51 +70,7 @@ const Top = () => {
             <video src={randomVideo} autoPlay muted loop></video>
           </div>
         </div>
-
-        <div className="leftCard flex">
-          <div className="main flex">
-            <div className="textDiv">
-              <h1>My Prods</h1>
-              <div className="flex">
-                <span>
-                  This Mounth <br />{" "}
-                  <small>
-                    {prodMounth.map((p: any) => (
-                      <>{p.nbProdMounth}</>
-                    ))}{" "}
-                    Prods done
-                  </small>
-                </span>
-                <span>
-                  All Time <br />{" "}
-                  <small>
-                    {prodTotal.map((p: any) => (
-                      <>{p.nbProd}</>
-                    ))}{" "}
-                    Prods done
-                  </small>
-                </span>
-              </div>
-
-              <span className="flex link">
-                Go to my Shop
-                <IconArrowNarrowRight className="icon" />
-              </span>
-            </div>
-
-            <div className="sidebarCard">
-              <IconInfoCircle className="icon" />
-              <div className="cardContent">
-                <div className="circle1"></div>
-                <div className="circle2"></div>
-
-                <h3>Report a bug!</h3>
-                <p>You find a bug, tell me about it.</p>
-                <button className="btn">Report</button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <StatsProd />
       </div>
     </div>
   );

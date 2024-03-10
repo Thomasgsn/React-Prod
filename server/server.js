@@ -23,7 +23,6 @@ const db = mysql.createConnection({
 });
 
 // connection
-
 app.post("/register", (req, res) => {
   const sendEmail = req.body.Mail;
   const sendUsername = req.body.Username;
@@ -52,59 +51,23 @@ app.post("/login", (req, res) => {
 });
 
 // page
-
 app.get("/home", (req, res) => {
-  const SQLprodMonth = `SELECT COUNT(*) as nbProdMounth from prod WHERE MONTH(releaseDate) = ${currentMonth}`;
-  const SQLprodTotal = "SELECT COUNT(*) as nbProd from `prod`";
   const SQLPlaylist =
-    "SELECT tb.id AS id, tb.name AS name, p.cover AS cover FROM typebeat tb JOIN prod p ON tb.id = p.idTb JOIN (SELECT idTb, MAX(releaseDate) AS maxReleaseDate FROM prod WHERE releaseDate IS NOT NULL GROUP BY idTb) latest_prod ON p.idTb = latest_prod.idTb AND p.releaseDate = latest_prod.maxReleaseDate WHERE p.releaseDate IS NOT NULL;";
-
-  db.query(SQLprodMonth, (errProdMonth, dataProdMonth) => {
-    db.query(SQLprodTotal, (errProdTotal, dataProdTotal) => {
+    "SELECT tb.id AS id, tb.name AS name, p.id AS prod_id, p.name AS prod_name FROM typebeat tb JOIN prod p ON tb.id = p.idTb JOIN (SELECT idTb, MAX(releaseDate) AS maxReleaseDate FROM prod WHERE releaseDate IS NOT NULL GROUP BY idTb) latest_prod ON p.idTb = latest_prod.idTb AND p.releaseDate = latest_prod.maxReleaseDate WHERE p.releaseDate IS NOT NULL;";
       db.query(SQLPlaylist, (errPlaylist, dataPlaylist) => {
-        // Détection d'erreur
-        if (errProdMonth) return res.json(errProdMonth);
-        if (errProdTotal) return res.json(errProdTotal);
         if (errPlaylist) return res.json(errPlaylist);
 
-        const result = {
-          prodTotal: dataProdTotal,
-          prodMonth: dataProdMonth,
-          playlist: dataPlaylist,
-        };
-        return res.json(result);
-      });
-    });
+        return res.json(dataPlaylist);
   });
 });
 
 app.get("/prods", (req, res) => {
   const SQLprods = "SELECT * from `prod` ORDER BY releaseDate DESC";
-  const SQLprodMonth = `SELECT COUNT(*) as nbProdMounth from prod WHERE MONTH(releaseDate) = ${currentMonth}`;
-  const SQLprodTotal = "SELECT COUNT(*) as nbProd from `prod`";
-  const SQLPlaylist =
-    "SELECT tb.id AS id, tb.name AS name, p.cover AS cover FROM typebeat tb JOIN prod p ON tb.id = p.idTb JOIN (SELECT idTb, MAX(releaseDate) AS maxReleaseDate FROM prod WHERE releaseDate IS NOT NULL GROUP BY idTb) latest_prod ON p.idTb = latest_prod.idTb AND p.releaseDate = latest_prod.maxReleaseDate WHERE p.releaseDate IS NOT NULL;";
 
   db.query(SQLprods, (errProds, dataProds) => {
-    db.query(SQLprodMonth, (errProdMonth, dataProdMonth) => {
-      db.query(SQLprodTotal, (errProdTotal, dataProdTotal) => {
-        db.query(SQLPlaylist, (errPlaylist, dataPlaylist) => {
-          // Détection d'erreur
-          if (errProds) return res.json(errProds);
-          if (errProdMonth) return res.json(errProdMonth);
-          if (errProdTotal) return res.json(errProdTotal);
-          if (errPlaylist) return res.json(errPlaylist);
+    if (errProds) return res.json(errProds);
 
-          const result = {
-            prods: dataProds,
-            prodTotal: dataProdTotal,
-            prodMonth: dataProdMonth,
-            playlist: dataPlaylist,
-          };
-          return res.json(result);
-        });
-      });
-    });
+    return res.json(dataProds);
   });
 });
 
@@ -120,7 +83,6 @@ app.get("/prod/:id", (req, res) => {
 });
 
 // assets
-
 app.get("/recovignette", (req, res) => {
   const SQLartistReco =
     "SELECT DISTINCT recommendation_artist.nom FROM recommendation JOIN recommendation_artist ON recommendation.idArtist = recommendation_artist.id ORDER BY recommendation.id DESC LIMIT 5;";
@@ -161,5 +123,16 @@ app.get("/statsprod", (req, res) => {
       };
       return res.json(result);
     });
+  });
+});
+
+// player
+app.get("/audioplayer", (req, res) => {
+  const SQLplayer = "SELECT * from `prod` ORDER BY releaseDate DESC";
+
+  db.query(SQLplayer, (errPlayer, dataPlayer) => {
+    if (errPlayer) return res.json(errPlayer);
+
+    return res.json(dataPlayer);
   });
 });

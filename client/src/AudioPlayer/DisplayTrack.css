@@ -1,35 +1,40 @@
 .display {
-    padding: .8rem 1rem;
-    margin-left: 4.5rem;
+  padding: 0.8rem 1rem;
+  margin-left: 7rem;
+
   .trackInfo {
     justify-content: center;
+    gap: 1rem;
+
     .trackCover {
-      width: 8rem;
       img {
         border-radius: 0.5rem;
+        width: 4rem;
+        height: 4rem;
+        object-fit: cover;
       }
 
-      .noCover {
-        height: 8rem;
-        border-radius: 0.5rem;
-        background: var(--hoverColor);
-        .audioIcon {
-          margin: auto;
-          width: 3rem;
-          height: 3rem;
-        }
+      .audioIcon {
+        margin: auto;
+        width: 3rem;
+        height: 3rem;
       }
     }
 
     .text {
-        margin-left: 2rem;
-        text-align: center;
-        font-size: var(--normalFontSize);
+      margin-left: 2rem;
+      font-size: var(--normalFontSize);
+      width: 15rem;
 
-        .title{
-            font-size: var(--h2FontSize);
-            font-weight: 500;
-        }
+      .title {
+        font-size: var(--h2FontSize);
+        color: black;
+        font-weight: 500;
+      }
+
+      p{
+        color: rgb(140, 140, 140);
+      }
     }
   }
 }

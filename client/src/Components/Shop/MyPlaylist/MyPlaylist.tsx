@@ -6,9 +6,6 @@ import "./MyPlaylist.css";
 import Recommendation from "../../Recommendation/Recommendation";
 
 const MyPlaylist = () => {
-  const [artistReco, setArtistReco] = useState([]);
-  const [nb, setNb] = useState([]);
-  const [nbArtist, setNbArtist] = useState([]);
   const [playlist, setPlaylist] = useState([]);
 
   const navigateTo = useNavigate();
@@ -22,11 +19,8 @@ const MyPlaylist = () => {
   useEffect(() => {
     fetch("http://localhost:8081/home")
       .then((response) => response.json())
-      .then((data) => {
-        setArtistReco(data.artistReco);
-        setNb(data.nb);
-        setNbArtist(data.nbArtist);
-        setPlaylist(data.playlist);
+      .then((dataPlaylist) => {
+        setPlaylist(dataPlaylist);
       })
       .catch((error) =>
         console.error("Erreur lors de la récupération des données :", error)
