@@ -1,3 +1,5 @@
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
 import Login from "./Components/User/Login/Login";
 import Register from "./Components/User/Register/Register";
 import OnEnter from "./Components/User/OnEnter/OnEnter";
@@ -11,16 +13,6 @@ import Recommendation from "./Components/Recommendation/Recommendation";
 import AudioPlayer from "./AudioPlayer/AudioPlayer";
 
 import "./App.css";
-
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
-import Testniyazi from './Testniyazi'
-
-
-
-
-
-
 
 const router = createBrowserRouter([
   {
@@ -69,6 +61,7 @@ const router = createBrowserRouter([
     element: (
       <div>
         <Prods />
+        <AudioPlayer />
       </div>
     ),
   },
@@ -77,17 +70,20 @@ const router = createBrowserRouter([
     element: (
       <div>
         <Prod />
+        <AudioPlayer />
       </div>
     ),
   },
   {
-    path: "/playlist",
+    path: "/playlist/:playlistname",
     element: (
       <div>
         <Playlist />
+        <AudioPlayer />
       </div>
     ),
-  },{
+  },
+  {
     path: "/recommendation",
     element: (
       <div>

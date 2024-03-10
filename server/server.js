@@ -37,7 +37,7 @@ app.post("/register", (req, res) => {
   });
 });
 
-app.post("/login", (req, res) => {
+app.get("/login", (req, res) => {
   const sentLoginUsername = req.body.LoginUsername;
   const sentLoginPassword = req.body.LoginPassword;
 
@@ -79,6 +79,17 @@ app.get("/prod/:id", (req, res) => {
     if (errProd) return res.json(errProd);
 
     res.json(prodDetail);
+  });
+});
+
+app.get("/playlist/:playlistname", (req, res) => {
+  const playlistName = req.params.playlistname;
+  const SQL = `SELECT prod.* FROM prod JOIN typebeat ON prod.idTB = typebeat.id WHERE typebeat.name = '${playlistName}';`;
+
+  db.query(SQL, (errPlaylist, playlistProd) => {
+    if (errPlaylist) return res.json(errPlaylist);
+
+    res.json(playlistProd);
   });
 });
 

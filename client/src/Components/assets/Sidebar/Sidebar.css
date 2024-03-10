@@ -90,7 +90,6 @@
       top: -8px;
       right: 50%;
       transform: translate(50%);
-      z-index: 9;
     }
 
     .cardContent {
@@ -118,7 +117,6 @@
       .btn {
         position: relative;
         color: var(--textColor);
-        z-index: 9;
       }
 
       .circle1,

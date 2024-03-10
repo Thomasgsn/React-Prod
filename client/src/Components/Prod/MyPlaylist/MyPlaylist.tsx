@@ -42,6 +42,7 @@ const MyPlaylist = () => {
           <p>price : {prod.price} €</p>
           <p>releaseDate : {prod.releaseDate}</p>
           <p>idTB : {prod.idTB}</p>
+          <img src={`/prods/cover_prods/${prod.name}${prod.id}.jpg`} alt={`${prod.name} By. _oftyn`} />
         </div>
       </div>
       <Recommendation />

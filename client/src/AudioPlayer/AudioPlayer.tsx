@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 
 import DisplayTrack from "./DisplayTrack";
 import Controls from "./Controls";
@@ -8,16 +9,30 @@ import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import "./AudioPlayer.css";
 
 const AudioPlayer = () => {
+  // useEffect(() => {
+  //   fetch("http://localhost:8081/audioplayer")
+  //     .then((response) => response.json())
+  //     .then((dataPlayer) => {
+  //       setTracks(dataPlayer);
+  //     })
+  //     .catch((error) =>
+  //       console.error("Erreur lors de la récupération des données :", error)
+  //     );
+  // }, []);
+
+  const { id } = useParams();
+
+
   useEffect(() => {
-    fetch("http://localhost:8081/audioplayer")
-      .then((response) => response.json())
-      .then((dataPlayer) => {
-        setTracks(dataPlayer);
-      })
-      .catch((error) =>
-        console.error("Erreur lors de la récupération des données :", error)
-      );
-  }, []);
+    fetch(`http://localhost:8081/prod/${id}`)
+    .then((response) => response.json())
+    .then((prodDetail) => {
+      setTracks(prodDetail);
+    })
+    .catch((error) =>
+      console.error("Erreur lors de la récupération des données :", error)
+    );
+}, [id]);
 
   const [tracks, setTracks] = useState([]);
   const [trackIndex, setTrackIndex] = useState(0);
@@ -46,7 +61,8 @@ const AudioPlayer = () => {
   const esfdf = () => {
     console.log(currentTrack);
     console.log(audioRef);
-  };
+  console.log(id)
+};
 
   const openPlayer = () => {
     setIsClicked(!isClicked);

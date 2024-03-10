@@ -37,7 +37,7 @@ const MyPlaylist = () => {
         {playlist.map((p: any) => (
           <a key={p.id} href={"/playlist/" + p.name.toLowerCase()} className="singleItem">
             <img
-              src={"/cover_prods/" + p.prod_name + p.prod_id + ".jpg"}
+              src={"/prods/cover_prods/" + p.prod_name + p.prod_id + ".jpg"}
               alt={p.name}
             />
             <h3>{p.name}</h3>

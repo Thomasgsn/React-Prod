@@ -30,8 +30,8 @@ const MyProds = () => {
       </div>
       <div className="secContainer flex">
         {prods.map((p: any) => (
-          <a href={"/prod/" + p.id} className="singleItem">
-            <img src={"/cover_prods/" + p.name + p.id +".jpg"} alt={p.name} />
+          <a key={p.name} href={"/prod/" + p.id} className="singleItem">
+            <img src={"/prods/cover_prods/" + p.name + p.id +".jpg"} alt={`${p.name} By. _oftyn`} />
             <div className="price flex">
               {p.price !== 0 ? <p>{p.price} €</p> : <p>[FREE]</p>}
             </div>
