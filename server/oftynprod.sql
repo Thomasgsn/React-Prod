@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : mer. 13 mars 2024 à 08:44
+-- Généré le : mer. 13 mars 2024 à 12:35
 -- Version du serveur : 8.2.0
--- Version de PHP : 8.3.0
+-- Version de PHP : 8.2.13
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 DROP TABLE IF EXISTS `comment`;
 CREATE TABLE IF NOT EXISTS `comment` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `text` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `text` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `idUser` int NOT NULL,
   `idProd` int NOT NULL,
   PRIMARY KEY (`id`)
@@ -132,7 +132,7 @@ CREATE TABLE IF NOT EXISTS `recommendation` (
   `song` varchar(255) NOT NULL,
   `genre` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf16 COMMENT='Mes recommandations de sons';
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf16 COMMENT='Mes recommandations de sons';
 
 --
 -- Déchargement des données de la table `recommendation`
@@ -147,7 +147,8 @@ INSERT INTO `recommendation` (`id`, `idArtist`, `song`, `genre`) VALUES
 (7, 5, 'HLM PARASOL', 'RAP'),
 (6, 6, 'À ma guise', 'RAP'),
 (8, 7, 'MA CHIENNE DE TRAPLIFE', 'RAP'),
-(9, 7, 'ZAZA PART.2', 'RAP');
+(9, 7, 'ZAZA PART.2', 'RAP'),
+(10, 8, 'Creeper', 'RAP');
 
 -- --------------------------------------------------------
 
@@ -158,9 +159,9 @@ INSERT INTO `recommendation` (`id`, `idArtist`, `song`, `genre`) VALUES
 DROP TABLE IF EXISTS `recommendation_artist`;
 CREATE TABLE IF NOT EXISTS `recommendation_artist` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `nom` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `nom` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `recommendation_artist`
@@ -173,7 +174,8 @@ INSERT INTO `recommendation_artist` (`id`, `nom`) VALUES
 (4, 'Lesram'),
 (5, 'HOUDI'),
 (6, 'Zamdane'),
-(7, 'La Fève');
+(7, 'La Fève'),
+(8, 'Jolagreen');
 
 -- --------------------------------------------------------
 
