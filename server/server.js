@@ -45,19 +45,23 @@ app.get("/login", (req, res) => {
   const Values = [sentLoginUsername, sentLoginPassword];
 
   db.query(SQL, Values, (err, results) => {
-    if (err) { return res.send({ error: err });}
-    if (results.length > 0) { return res.send(results);}
+    if (err) {
+      return res.send({ error: err });
+    }
+    if (results.length > 0) {
+      return res.send(results);
+    }
   });
 });
 
 app.get("/user", (req, res) => {
-  const SQL ='SELECT * FROM user'
+  const SQL = "SELECT * FROM user";
 
   db.query(SQL, (err, result) => {
-    if (err) return res.json(err)
-    return res.json(result)
-  })
-})
+    if (err) return res.json(err);
+    return res.json(result);
+  });
+});
 
 // page
 app.get("/home", (req, res) => {
@@ -72,12 +76,53 @@ app.get("/home", (req, res) => {
 });
 
 app.get("/prods", (req, res) => {
-  const SQLprods = "SELECT * from `prod` ORDER BY releaseDate DESC";
+  const filterBy = req.query.filterBy;
+  const searchBy = req.query.searchBy;
+
+  let SQLprods = "SELECT * FROM `prod`";
+
+  if (searchBy && searchBy != "") {
+    SQLprods += ` WHERE name LIKE '%${searchBy}%' OR tag LIKE '%${searchBy}%' OR name LIKE '${searchBy}%' OR tag LIKE '${searchBy}%' OR name LIKE '%${searchBy}' OR tag LIKE '%${searchBy}'`;
+  }
+
+  switch (filterBy) {
+    case "price":
+      SQLprods += " ORDER BY price ASC";
+      break;
+
+    case "priceinv":
+      SQLprods += " ORDER BY price DESC";
+      break;
+
+    case "date":
+      SQLprods += " ORDER BY releaseDate DESC";
+      break;
+
+    case "dateinv":
+      SQLprods += " ORDER BY releaseDate ASC";
+      break;
+
+    case "type":
+      SQLprods += " ORDER BY idTB ASC";
+      break;
+
+    case "typeinv":
+      SQLprods += " ORDER BY idTB DESC";
+      break;
+
+    default:
+      break;
+  }
 
   db.query(SQLprods, (errProds, dataProds) => {
-    if (errProds) return res.json(errProds);
+    if (errProds) {
+      console.error("Erreur lors de la récupération des produits :", errProds);
+      return res.status(500).json({
+        error: "Une erreur est survenue lors de la récupération des produits.",
+      });
+    }
 
-    return res.json(dataProds);
+    res.json(dataProds);
   });
 });
 
@@ -110,19 +155,11 @@ app.get("/playlists", (req, res) => {
   });
 });
 
-app.get("/playlist/:playlistname", (req, res) => {
-  const playlistName = req.params.playlistname;
+app.get("/playlist/:playlistName", (req, res) => {
+  const playlistName = req.params.playlistName;
 
   if (playlistName === "free") {
-    const SQL = `SELECT * FROM prod WHERE price = 0}';`;
-
-    db.query(SQL, (errPlaylist, playlistProd) => {
-      if (errPlaylist) return res.json(errPlaylist);
-
-      res.json(playlistProd);
-    });
-  } else {
-    const SQL = `SELECT prod.* FROM prod JOIN typebeat ON prod.idTB = typebeat.id WHERE typebeat.name = '${playlistName}';`;
+    const SQL = `SELECT * FROM prod WHERE price = 0';`;
 
     db.query(SQL, (errPlaylist, playlistProd) => {
       if (errPlaylist) return res.json(errPlaylist);
@@ -130,6 +167,14 @@ app.get("/playlist/:playlistname", (req, res) => {
       res.json(playlistProd);
     });
   }
+
+  const SQL = `SELECT prod.* FROM prod JOIN typebeat ON prod.idTB = typebeat.id WHERE typebeat.name = '${playlistName}' ORDER BY prod.releaseDate DESC;`;
+
+  db.query(SQL, (errPlaylist, playlistProd) => {
+    if (errPlaylist) return res.json(errPlaylist);
+
+    res.json(playlistProd);
+  });
 });
 
 // assets

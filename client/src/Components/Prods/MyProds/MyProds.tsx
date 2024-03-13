@@ -1,36 +1,14 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import Recommendation from "../../assets/Recommendation/Recommendation";
-
 import "./MyProds.css";
 
-const MyProds = () => {
-  const [prods, setProds] = useState([]);
-
-  const navigateTo = useNavigate();
-  const navigateToPlaylist = () => {
-    navigateTo("/playlist");
-  };
-
-    useEffect(() => {
-      fetch("http://localhost:8081/prods")
-        .then((response) => response.json())
-        .then((dataProds) => {
-          setProds(dataProds);
-        })
-        .catch((error) =>
-          console.error("Erreur lors de la récupération des données :", error)
-        );
-    }, []);
-  
-
+const MyProds = ({ prods }) => {
   return (
     <div className="myProdSection">
       <div className="heading flex">
         <h1>My Prods</h1>
+        <p>{prods.length} prods</p>
       </div>
       <div className="secContainer flex">
-        {prods.map((p: any) => (
+        {prods.map((p) => (
           <a key={p.name} href={"/prod/" + p.id} className="singleItem">
             <img
               src={"/prods/cover_prods/" + p.name + p.id + ".jpg"}
@@ -43,7 +21,6 @@ const MyProds = () => {
           </a>
         ))}
       </div>
-      <Recommendation />
     </div>
   );
 };

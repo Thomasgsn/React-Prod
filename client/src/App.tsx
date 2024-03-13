@@ -82,7 +82,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/playlist/:playlistname",
+    path: "/playlist/:playlistName",
     element: (
       <div>
         <Playlist />

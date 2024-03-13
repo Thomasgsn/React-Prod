@@ -7,11 +7,6 @@ import "./MyPlaylist.css";
 const MyPlaylist = () => {
   const [prod, setProd] = useState([]);
 
-  const navigateTo = useNavigate();
-  const navigateToPlaylist = () => {
-    navigateTo("/playlist");
-  };
-
   const { id } = useParams();
 
   useEffect(() => {

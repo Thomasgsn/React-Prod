@@ -64,7 +64,7 @@ video {
 }
 
 .btn:hover {
-  color: cornflowerblue;
+  color: var(--hoverColor);
   background-color: var(--primarySecondColor);
 }
 

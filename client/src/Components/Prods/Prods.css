@@ -1,10 +1,10 @@
-.mainContent{
+.mainContent {
   width: 82%;
   height: 100%;
   padding: 2rem;
   overflow: auto;
 
-  .bottom{
+  .bottom {
     margin-top: 2rem;
     gap: 2rem;
     align-items: flex-start;
@@ -12,12 +12,12 @@
 }
 
 @media screen and (max-width: 918px) {
-  .bottom{
+  .bottom {
     flex-direction: column;
   }
 }
 
-.homePage {
+.prodsPage {
   align-items: center;
   justify-content: center;
   margin: auto;
@@ -30,7 +30,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(var(--bgColor), var(--whiteColor), var(--bgColor));
+    background: linear-gradient(
+      var(--bgColor),
+      var(--whiteColor),
+      var(--bgColor)
+    );
     overflow: hidden;
     border-radius: 1rem;
     box-shadow: 2px 2px 8px var(--greyText);

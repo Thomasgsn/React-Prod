@@ -1,6 +1,6 @@
 import Top from "./Top/Top";
 import Activity from "./Activity/Activity";
-import Listening from "./MyPlaylist/MyPlaylist";
+import ThisPlaylist from "./ThisPlaylist/ThisPlaylist";
 import Sidebar from "../assets/Sidebar/Sidebar";
 
 import "./Playlist.css";
@@ -13,7 +13,7 @@ const Playlist = () => {
         <div className="mainContent">
           <Top />
           <div className="bottom flex">
-            <Listening />
+            <ThisPlaylist />
             <Activity />
           </div>
         </div>
