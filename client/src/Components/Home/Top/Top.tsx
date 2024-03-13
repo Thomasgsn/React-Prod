@@ -1,17 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import StatsProd from "../../assets/StatsProds/StatsProd";
 
-import {
-  IconUser,
-  IconBell,
-  IconSearch,
-} from "@tabler/icons-react";
+import { IconUser, IconBell } from "@tabler/icons-react";
 
 import "./Top.css";
 import v1 from "../../assets/media/login_movie/1.mp4";
 import v2 from "../../assets/media/login_movie/2.mp4";
 
-const Top = () => {
+const Top = ({ username }) => {
   const videos = [v1, v2];
   const randomIndex = Math.floor(Math.random() * videos.length);
   const randomVideo = videos[randomIndex];
@@ -32,14 +28,9 @@ const Top = () => {
             Welcome to the <i>_oftyn shop</i>.
           </h1>
           <p>
-            Hello <span className="welcomeUser">User</span>, Welcome back!
+            Hello <span className="welcomeUser">{ username }</span>, Welcome back!
           </p>
         </div>
-        <div className="searchBar flex">
-          <input type="text" placeholder="Search" />
-          <IconSearch className="icon" />
-        </div>
-
         <div className="adminDiv flex">
           <a href="#notification">
             <IconBell className="icon" />

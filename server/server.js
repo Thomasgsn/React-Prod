@@ -1,11 +1,34 @@
 const express = require("express");
 const cors = require("cors");
 const mysql = require("mysql");
+const session = require("express-session");
+const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
 const port = "8081";
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(
+  session({
+    secret: "secret",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false,
+      maxAge: 1000 * 60 * 60 * 24,
+    },
+  })
+);
 
 const currentDay = new Date().getDate();
 const currentMonth = new Date().getMonth() + 1;
@@ -37,30 +60,30 @@ app.post("/register", (req, res) => {
   });
 });
 
-app.get("/login", (req, res) => {
+app.post("/login", (req, res) => {
   const sentLoginUsername = req.body.LoginUsername;
   const sentLoginPassword = req.body.LoginPassword;
 
-  const SQL = "SELECT * FROM `user` WHERE username = ? && password = ?";
+  const SQL = "SELECT * FROM `user` WHERE username = ? and password = ?";
   const Values = [sentLoginUsername, sentLoginPassword];
 
-  db.query(SQL, Values, (err, results) => {
-    if (err) {
-      return res.send({ error: err });
-    }
-    if (results.length > 0) {
-      return res.send(results);
+  db.query(SQL, Values, (err, result) => {
+    if (err) return res.json({ Message: err });
+    if (result.length > 0) {
+      req.session.username = result[0].username;
+      return res.json({ Login: true, username: req.session.username });
+    } else {
+      return res.json({ Login: false });
     }
   });
 });
 
 app.get("/user", (req, res) => {
-  const SQL = "SELECT * FROM user";
-
-  db.query(SQL, (err, result) => {
-    if (err) return res.json(err);
-    return res.json(result);
-  });
+  if (req.session.username) {
+    return res.json({ valid: true, username: req.session.username });
+  } else {
+    return res.json({ valid: false });
+  }
 });
 
 // page
@@ -78,11 +101,15 @@ app.get("/home", (req, res) => {
 app.get("/prods", (req, res) => {
   const filterBy = req.query.filterBy;
   const searchBy = req.query.searchBy;
+  const priceRange = req.query.priceRange;
+  let price = priceRange.split('-');
 
-  let SQLprods = "SELECT * FROM `prod`";
+  
+
+  let SQLprods = `SELECT * FROM prod WHERE price BETWEEN ${price[0]} AND ${price[1]} `;
 
   if (searchBy && searchBy != "") {
-    SQLprods += ` WHERE name LIKE '%${searchBy}%' OR tag LIKE '%${searchBy}%' OR name LIKE '${searchBy}%' OR tag LIKE '${searchBy}%' OR name LIKE '%${searchBy}' OR tag LIKE '%${searchBy}'`;
+    SQLprods += ` AND name LIKE '%${searchBy}%' OR tag LIKE '%${searchBy}%' OR name LIKE '${searchBy}%' OR tag LIKE '${searchBy}%' OR name LIKE '%${searchBy}' OR tag LIKE '%${searchBy}'`;
   }
 
   switch (filterBy) {
@@ -157,16 +184,6 @@ app.get("/playlists", (req, res) => {
 
 app.get("/playlist/:playlistName", (req, res) => {
   const playlistName = req.params.playlistName;
-
-  if (playlistName === "free") {
-    const SQL = `SELECT * FROM prod WHERE price = 0';`;
-
-    db.query(SQL, (errPlaylist, playlistProd) => {
-      if (errPlaylist) return res.json(errPlaylist);
-
-      res.json(playlistProd);
-    });
-  }
 
   const SQL = `SELECT prod.* FROM prod JOIN typebeat ON prod.idTB = typebeat.id WHERE typebeat.name = '${playlistName}' ORDER BY prod.releaseDate DESC;`;
 

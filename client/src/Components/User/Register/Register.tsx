@@ -24,6 +24,7 @@ const Register = () => {
   const [mail, setMail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
   const resetFields = () => {
     setMail("");
     setUsername("");

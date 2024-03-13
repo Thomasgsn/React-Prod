@@ -1,28 +1,14 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IconArrowNarrowRight } from "@tabler/icons-react";
-import Recommendation from "../../assets/Recommendation/Recommendation";
-import "./MyPlaylist.css";
 
-const MyPlaylist = () => {
- 
-  const [playlist, setPlaylist] = useState([]);
+import "./MyPlaylists.css";
+
+const MyPlaylists = ({playlist}) => {
 
   const navigateTo = useNavigate();
   const navigateToPlaylists = () => {
     navigateTo("/playlists");
   };
-
-  useEffect(() => {
-    fetch("http://localhost:8081/home")
-      .then((response) => response.json())
-      .then((dataPlaylist) => {
-        setPlaylist(dataPlaylist);
-      })
-      .catch((error) =>
-        console.error("Erreur lors de la récupération des données :", error)
-      );
-  }, []);
 
   return (
     <div className="myPlaylistSection">
@@ -44,9 +30,8 @@ const MyPlaylist = () => {
           </a>
         ))}
       </div>
-      <Recommendation />
     </div>
   );
 };
 
-export default MyPlaylist;
+export default MyPlaylists;

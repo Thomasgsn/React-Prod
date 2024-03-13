@@ -1,5 +1,5 @@
 .myPlaylistSection {
-  flex-basis: 70%;
+  flex-basis: 100%;
   .heading {
     width: 100%;
     justify-content: space-between;

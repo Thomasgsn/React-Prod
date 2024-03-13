@@ -1,17 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Axios from "axios";
 
-import {
-  IconArrowRight,
-  IconLock,
-  IconUser,
-} from "@tabler/icons-react";
+import { IconArrowRight, IconLock, IconUser } from "@tabler/icons-react";
 
 import "../User.css";
 import v1 from "../../assets/media/login_movie/1.mp4";
 import v2 from "../../assets/media/login_movie/2.mp4";
 import oftyn from "../../assets/media/oftyn.png";
+import axios from "axios";
 
 const Login = () => {
   const videos = [v1, v2];
@@ -23,19 +20,35 @@ const Login = () => {
   const [loginUsername, setLoginUsername] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
 
-  const loginUser = (e: { preventDefault: () => void }) => {
+  axios.defaults.withCredentials = true;
+  const loginUser = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     Axios.post("http://localhost:8081/login", {
       LoginUsername: loginUsername,
       LoginPassword: loginPassword,
-    }).then((response) => {
-      if (response.data.error || response.data.message) {
-        navigateTo("/");
-      } else {
-        navigateTo("/home");
-      }
-    });
+    })
+      .then((res) => {
+        if (res.data.Login) {
+          navigateTo("/home");
+        } else {
+          alert(res.data.Message);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
+
+  useEffect(() => {
+    axios.get('http://localhost:8081/user')
+    .then (res => {
+      if(res.data.valid) {
+        navigateTo('/home')
+      } else {
+        navigateTo('/login')
+      }
+    })
+  },[])
 
   return (
     <div className="loginPage flex">

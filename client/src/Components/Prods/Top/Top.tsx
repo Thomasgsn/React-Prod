@@ -10,7 +10,16 @@ import {
 
 import "./Top.css";
 
-const Top = ({ search, setSearch, filter, setFilter }) => {
+const Top = ({
+  search,
+  setSearch,
+  filter,
+  setFilter,
+  minPrice,
+  maxPrice,
+  setMinPrice,
+  setMaxPrice,
+}) => {
   return (
     <div className="topSection">
       <div className="headerSection flex">
@@ -115,6 +124,36 @@ const Top = ({ search, setSearch, filter, setFilter }) => {
           <a href="#user">
             <IconUser className="icon" />
           </a>
+        </div>
+      </div>
+      <div className="price flex">
+        <div className="flex" style={{ flexDirection: "column" }}>
+          
+          <div>
+            <span>Min Price {minPrice}</span>
+            <input
+              type="range"
+              value={minPrice}
+              min="0"
+              max={maxPrice}
+              onChange={(event) => {
+                setMinPrice(event.target.value);
+              }}
+            />
+          </div>
+          <div>
+            <span>Max Price {maxPrice}</span>
+            <input
+              type="range"
+              value={maxPrice}
+              min={minPrice}
+              max="100"
+              onChange={(event) => {
+                setMaxPrice(event.target.value);
+              }}
+            />
+          </div>
+
         </div>
       </div>
     </div>
