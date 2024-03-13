@@ -16,14 +16,18 @@ const MyPlaylist = () => {
 
   useEffect(() => {
     fetch(`http://localhost:8081/prod/${id}`)
-    .then((response) => response.json())
-    .then((prodDetail) => {
-      setProd(prodDetail[0]);
-    })
-    .catch((error) =>
-      console.error("Erreur lors de la récupération des données :", error)
-    );
+      .then((response) => response.json())
+      .then((prodDetail) => {
+        setProd(prodDetail[0]);
+      })
+      .catch((error) =>
+        console.error("Erreur lors de la récupération des données :", error)
+      );
   }, [id]);
+
+  if (isNaN(id)) {
+    return <div>We cannot access to this production...</div>;
+  }
 
   if (!prod) {
     return <div>Loading...</div>;
@@ -42,7 +46,10 @@ const MyPlaylist = () => {
           <p>price : {prod.price} €</p>
           <p>releaseDate : {prod.releaseDate}</p>
           <p>idTB : {prod.idTB}</p>
-          <img src={`/prods/cover_prods/${prod.name}${prod.id}.jpg`} alt={`${prod.name} By. _oftyn`} />
+          <img
+            src={`/prods/cover_prods/${prod.name}${prod.id}.jpg`}
+            alt={`${prod.name} By. _oftyn`}
+          />
         </div>
       </div>
       <Recommendation />

@@ -110,13 +110,14 @@
             margin: 0 0.5vw;
             cursor: pointer;
             transition: transform 0.3s ease;
-
-            &:hover {
-              transform: translateY(-3px);
-            }
           }
 
           &:hover {
+
+            img{
+              transform: translateY(-3px);
+            }
+
             .prodTooltip {
               position: absolute;
               display: flex;

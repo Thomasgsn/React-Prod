@@ -9,38 +9,18 @@ import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import "./AudioPlayer.css";
 
 const AudioPlayer = () => {
-  // useEffect(() => {
-  //   fetch("http://localhost:8081/audioplayer")
-  //     .then((response) => response.json())
-  //     .then((dataPlayer) => {
-  //       setTracks(dataPlayer);
-  //     })
-  //     .catch((error) =>
-  //       console.error("Erreur lors de la récupération des données :", error)
-  //     );
-  // }, []);
-
   const { id } = useParams();
 
-  useEffect(() => {
-    fetch(`http://localhost:8081/prod/${id}`)
-      .then((response) => response.json())
-      .then((prodDetail) => {
-        setTracks(prodDetail);
-      })
-      .catch((error) =>
-        console.error("Erreur lors de la récupération des données :", error)
-      );
-  }, [id]);
+  let idInt: number;
+  if (!isNaN(id)) {
+    idInt = parseInt(id);
+  } else {
+    idInt = 1;
+  }
 
   const [tracks, setTracks] = useState([]);
-  const [trackIndex, setTrackIndex] = useState(0);
+  const [trackIndex, setTrackIndex] = useState(idInt - 1);
   const [currentTrack, setCurrentTrack] = useState(tracks[trackIndex]);
-
-  useEffect(() => {
-    setCurrentTrack(tracks[trackIndex]);
-  }, [tracks, trackIndex, currentTrack]);
-
   const [duration, setDuration] = useState(0);
   const [isClicked, setIsClicked] = useState(false);
 
@@ -61,17 +41,27 @@ const AudioPlayer = () => {
     setIsClicked(!isClicked);
   };
 
+  useEffect(() => {
+    fetch("http://localhost:8081/audioplayer")
+      .then((response) => response.json())
+      .then((dataPlayer) => {
+        setTracks(dataPlayer);
+        setCurrentTrack(tracks[trackIndex]);
+      })
+      .catch((error) =>
+        console.error("Erreur lors de la récupération des données :", error)
+      );
+  }, [trackIndex, tracks]);
+
   return (
     <div className={`audioPlayer flex ${isClicked ? "opened" : "closed"} `}>
-      {isClicked ? (
-        <div onClick={openPlayer} className="icon open flex" >
-          <IconChevronDown className="chevron"/>
-        </div>
-      ) : (
-        <div onClick={openPlayer} className="icon open flex" >
-          <IconChevronUp className="chevron"/>
-        </div>
-      )}
+      <div onClick={openPlayer} className="icon open flex">
+        {isClicked ? (
+          <IconChevronDown className="chevron" />
+        ) : (
+          <IconChevronUp className="chevron" />
+        )}
+      </div>
 
       <DisplayTrack
         {...{
@@ -91,10 +81,15 @@ const AudioPlayer = () => {
           trackIndex,
           setTrackIndex,
           setCurrentTrack,
-          setTrackIndex,
         }}
       />
-      <div style={{ width: "50rem", height: "5rem", background: "red" }}></div>
+      <div
+        style={{
+          width: "50rem",
+          height: "5rem",
+          background: "red",
+        }}
+      ></div>
     </div>
   );
 };

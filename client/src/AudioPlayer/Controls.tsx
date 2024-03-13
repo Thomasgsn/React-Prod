@@ -19,8 +19,8 @@ const Controls = ({
   duration,
   tracks,
   trackIndex,
-  setCurrentTrack,
   setTrackIndex,
+  setCurrentTrack,
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [timeProgress, setTimeProgress] = useState(0);
@@ -76,7 +76,7 @@ const Controls = ({
         audioRef.current.pause();
         cancelAnimationFrame(playAnimationRef.current);
       }
-  }
+    }
   }, [isPlaying, audioRef, repeat]);
 
   useEffect(() => {
@@ -85,7 +85,6 @@ const Controls = ({
       audioRef.current.muted = muteVolume;
     }
   }, [volume, muteVolume, audioRef]);
-
 
   return (
     <div className="controlsDiv">

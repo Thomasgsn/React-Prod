@@ -178,7 +178,7 @@ app.get("/statsprod", (req, res) => {
 
 // player
 app.get("/audioplayer", (req, res) => {
-  const SQLplayer = "SELECT * from `prod` ORDER BY releaseDate DESC";
+  const SQLplayer = "SELECT * from `prod` ORDER BY releaseDate ASC";
 
   db.query(SQLplayer, (errPlayer, dataPlayer) => {
     if (errPlayer) return res.json(errPlayer);
