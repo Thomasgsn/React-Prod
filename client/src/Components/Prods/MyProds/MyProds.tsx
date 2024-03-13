@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Recommendation from "../../assets/Recommendation/Recommendation";
 
 import "./MyProds.css";
@@ -12,16 +12,17 @@ const MyProds = () => {
     navigateTo("/playlist");
   };
 
-  useEffect(() => {
-    fetch("http://localhost:8081/prods")
-      .then((response) => response.json())
-      .then((dataProds) => {
-        setProds(dataProds);
-      })
-      .catch((error) =>
-        console.error("Erreur lors de la récupération des données :", error)
-      );
-  }, []);
+    useEffect(() => {
+      fetch("http://localhost:8081/prods")
+        .then((response) => response.json())
+        .then((dataProds) => {
+          setProds(dataProds);
+        })
+        .catch((error) =>
+          console.error("Erreur lors de la récupération des données :", error)
+        );
+    }, []);
+  
 
   return (
     <div className="myProdSection">
@@ -31,7 +32,10 @@ const MyProds = () => {
       <div className="secContainer flex">
         {prods.map((p: any) => (
           <a key={p.name} href={"/prod/" + p.id} className="singleItem">
-            <img src={"/prods/cover_prods/" + p.name + p.id +".jpg"} alt={`${p.name} By. _oftyn`} />
+            <img
+              src={"/prods/cover_prods/" + p.name + p.id + ".jpg"}
+              alt={`${p.name} By. _oftyn`}
+            />
             <div className="price flex">
               {p.price !== 0 ? <p>{p.price} €</p> : <p>[FREE]</p>}
             </div>

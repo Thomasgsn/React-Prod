@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : ven. 08 mars 2024 à 16:34
+-- Généré le : mer. 13 mars 2024 à 08:44
 -- Version du serveur : 8.2.0
 -- Version de PHP : 8.3.0
 
@@ -20,6 +20,21 @@ SET time_zone = "+00:00";
 --
 -- Base de données : `oftynprod`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `comment`
+--
+
+DROP TABLE IF EXISTS `comment`;
+CREATE TABLE IF NOT EXISTS `comment` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `text` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `idUser` int NOT NULL,
+  `idProd` int NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -198,7 +213,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `username` varchar(11) NOT NULL,
   `password` varchar(255) NOT NULL,
   `email` varchar(255) DEFAULT NULL,
-  `role` varchar(11) NOT NULL COMMENT 'Admin / User',
+  `role` varchar(11) CHARACTER SET utf16 COLLATE utf16_general_ci NOT NULL COMMENT 'admin / user',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf16;
 
@@ -207,9 +222,9 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 
 INSERT INTO `user` (`id`, `username`, `password`, `email`, `role`) VALUES
-(3, 'oftyn', 'password', 'oftynprod@gmail.com', ''),
-(7, 'test', 'test', 'test@email.com', ''),
-(10, 'admin', 'admin', 'admin@mail.com', '');
+(3, 'oftyn', 'password', 'oftynprod@gmail.com', 'admin'),
+(7, 'test', 'test', 'test@email.com', 'user'),
+(10, 'admin', 'admin', 'admin@mail.com', 'admin');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

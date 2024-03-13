@@ -1,0 +1,137 @@
+.myPlaylistSection {
+  flex-basis: 70%;
+  .heading {
+    width: 100%;
+    justify-content: space-between;
+
+    h1 {
+      font-size: var(--h2FontSize);
+      color: var(--blackColor);
+      font-weight: 700;
+    }
+
+    .icon {
+      transition: 0.2s ease;
+    }
+
+    .btn {
+      border: 1px solid transparent;
+
+      &:hover {
+        border: 1px solid var(--primaryColor);
+
+        .icon {
+          transform: translateX(3px);
+          transition: 0.3s ease;
+        }
+      }
+    }
+  }
+
+  .secContainer {
+    width: 100%;
+    margin: 1rem 0;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    .playlists {
+      position: relative;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      padding: 1rem 1rem 1.5rem 1rem;
+      border-radius: 10px;
+      background: var(--itemCardColor);
+      transition: 0.3s ease;
+
+      &:hover {
+        background: var(--itemCardHover);
+        box-shadow: 0 2px 2px var(--inputColor);
+      }
+
+      img {
+        object-fit: cover;
+        border-radius: 0.25rem;
+        width: 150px;
+        height: 150px;
+      }
+
+      .playlistHeader {
+        justify-content: space-between;
+        margin-bottom: 3vh;
+
+        .playlistName {
+          margin: auto 0;
+          font-size: var(--h2FontSize);
+          font-weight: 500;
+          color: var(--blackColor);
+          padding: 0.5rem 0 1rem 0;
+        }
+
+        .icon {
+          transition: 0.2s ease;
+        }
+
+        .btn {
+          border: 1px solid transparent;
+
+          &:hover {
+            border: 1px solid var(--primaryColor);
+
+            .icon {
+              transform: translateX(3px);
+              transition: 0.3s ease;
+            }
+          }
+        }
+      }
+
+      .playlistLastProd {
+        justify-content: center;
+
+        .prod {
+          
+          .prodTooltip {
+            display: none;
+            margin: 0 0.5vw;
+            font-size: var(--smallestFontSize);
+            width: 8vw;
+            justify-content: center;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+          }
+
+          img {
+            height: 8vw;
+            width: 8vw;
+            border-radius: 0.25rem;
+            margin: 0 0.5vw;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+
+            &:hover {
+              transform: translateY(-3px);
+            }
+          }
+
+          &:hover {
+            .prodTooltip {
+              position: absolute;
+              display: flex;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 918px) {
+  .playlistSection {
+    .singleItem {
+      width: 200px !important;
+    }
+  }
+}

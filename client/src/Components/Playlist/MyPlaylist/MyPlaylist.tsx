@@ -1,15 +1,11 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { IconArrowNarrowRight } from "@tabler/icons-react";
 
 import "./MyPlaylist.css";
-import Recommendation from "../../Recommendation/Recommendation";
+import Recommendation from "../../assets/Recommendation/Recommendation";
 
 const MyPlaylist = () => {
-  const [artistReco, setArtistReco] = useState([]);
-  const [nb, setNb] = useState([]);
-  const [nbArtist, setNbArtist] = useState([]);
-  const [playlist, setPlaylist] = useState([]);
 
   const navigateTo = useNavigate();
   const navigateToPlaylist = () => {
@@ -19,19 +15,20 @@ const MyPlaylist = () => {
     navigateTo("/recommendation");
   };
 
-  useEffect(() => {
-    fetch("http://localhost:8081/home")
-      .then((response) => response.json())
-      .then((data) => {
-        setArtistReco(data.artistReco);
-        setNb(data.nb);
-        setNbArtist(data.nbArtist);
-        setPlaylist(data.playlist);
-      })
-      .catch((error) =>
-        console.error("Erreur lors de la récupération des données :", error)
-      );
-  }, []);
+  const playlistName = useParams()
+
+  // const [playlist, setPlaylist] = useState([]);
+
+  // useEffect(() => {
+  //   fetch("http://localhost:8081/home")
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setPlaylist(data.playlist);
+  //     })
+  //     .catch((error) =>
+  //       console.error("Erreur lors de la récupération des données :", error)
+  //     );
+  // }, []);
 
   return (
     <div className="myPlaylistSection">
@@ -43,12 +40,14 @@ const MyPlaylist = () => {
         </button>
       </div>
       <div className="secContainer flex">
-        {playlist.map((p: any) => (
+        Maintenance
+        {playlistName}
+        {/* {playlist.map((p: any) => (
           <a href={"/playlist/" + p.name.toLowerCase()} className="singleItem">
             <img src={"/cover_prods/" + p.cover} alt={p.name} />
             <h3>{p.name}</h3>
           </a>
-        ))}
+        ))} */}
       </div>
       <Recommendation />
     </div>

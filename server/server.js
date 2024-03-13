@@ -45,19 +45,29 @@ app.get("/login", (req, res) => {
   const Values = [sentLoginUsername, sentLoginPassword];
 
   db.query(SQL, Values, (err, results) => {
-    if (err) return res.send({ error: err });
-    if (results.length > 0) return res.send(results);
+    if (err) { return res.send({ error: err });}
+    if (results.length > 0) { return res.send(results);}
   });
 });
+
+app.get("/user", (req, res) => {
+  const SQL ='SELECT * FROM user'
+
+  db.query(SQL, (err, result) => {
+    if (err) return res.json(err)
+    return res.json(result)
+  })
+})
 
 // page
 app.get("/home", (req, res) => {
   const SQLPlaylist =
     "SELECT tb.id AS id, tb.name AS name, p.id AS prod_id, p.name AS prod_name FROM typebeat tb JOIN prod p ON tb.id = p.idTb JOIN (SELECT idTb, MAX(releaseDate) AS maxReleaseDate FROM prod WHERE releaseDate IS NOT NULL GROUP BY idTb) latest_prod ON p.idTb = latest_prod.idTb AND p.releaseDate = latest_prod.maxReleaseDate WHERE p.releaseDate IS NOT NULL;";
-      db.query(SQLPlaylist, (errPlaylist, dataPlaylist) => {
-        if (errPlaylist) return res.json(errPlaylist);
 
-        return res.json(dataPlaylist);
+  db.query(SQLPlaylist, (errPlaylist, dataPlaylist) => {
+    if (errPlaylist) return res.json(errPlaylist);
+
+    return res.json(dataPlaylist);
   });
 });
 
@@ -82,15 +92,44 @@ app.get("/prod/:id", (req, res) => {
   });
 });
 
+app.get("/playlists", (req, res) => {
+  const SQLplaylist = `SELECT * FROM typebeat`;
+  const SQLprod = `SELECT p.* FROM prod p WHERE p.idTB IN (SELECT tb.id FROM typebeat tb) AND p.id IN (SELECT id FROM (SELECT id, idTB, ROW_NUMBER() OVER(PARTITION BY idTB ORDER BY id DESC) AS row_num FROM prod) AS ranked WHERE row_num <= 4) ORDER BY p.idTB, p.id DESC;`;
+
+  db.query(SQLplaylist, (errPlaylist, dataPlaylist) => {
+    db.query(SQLprod, (errProd, dataPlaylistProd) => {
+      if (errPlaylist) return res.json(errPlaylist);
+      if (errProd) return res.json(errProd);
+
+      const result = {
+        playlist: dataPlaylist,
+        playlistProd: dataPlaylistProd,
+      };
+      return res.json(result);
+    });
+  });
+});
+
 app.get("/playlist/:playlistname", (req, res) => {
   const playlistName = req.params.playlistname;
-  const SQL = `SELECT prod.* FROM prod JOIN typebeat ON prod.idTB = typebeat.id WHERE typebeat.name = '${playlistName}';`;
 
-  db.query(SQL, (errPlaylist, playlistProd) => {
-    if (errPlaylist) return res.json(errPlaylist);
+  if (playlistName === "free") {
+    const SQL = `SELECT * FROM prod WHERE price = 0}';`;
 
-    res.json(playlistProd);
-  });
+    db.query(SQL, (errPlaylist, playlistProd) => {
+      if (errPlaylist) return res.json(errPlaylist);
+
+      res.json(playlistProd);
+    });
+  } else {
+    const SQL = `SELECT prod.* FROM prod JOIN typebeat ON prod.idTB = typebeat.id WHERE typebeat.name = '${playlistName}';`;
+
+    db.query(SQL, (errPlaylist, playlistProd) => {
+      if (errPlaylist) return res.json(errPlaylist);
+
+      res.json(playlistProd);
+    });
+  }
 });
 
 // assets

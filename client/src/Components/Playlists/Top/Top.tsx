@@ -1,6 +1,4 @@
-import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import StatsProd from "../../assets/StatsProds/StatsProd";
 
 import {
   IconArrowNarrowRight,
@@ -13,6 +11,7 @@ import {
 import "./Top.css";
 import v1 from "../../assets/media/login_movie/1.mp4";
 import v2 from "../../assets/media/login_movie/2.mp4";
+import StatsProd from "../../assets/StatsProds/StatsProd";
 
 const Top = () => {
   const videos = [v1, v2];

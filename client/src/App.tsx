@@ -7,6 +7,7 @@ import Home from "./Components/Home/Home";
 import Shop from "./Components/Shop/Shop";
 import Prods from "./Components/Prods/Prods";
 import Prod from "./Components/Prod/Prod";
+import Playlists from "./Components/Playlists/Playlists";
 import Playlist from "./Components/Playlist/Playlist";
 import Recommendation from "./Components/Recommendation/Recommendation";
 
@@ -44,7 +45,6 @@ const router = createBrowserRouter([
     element: (
       <div>
         <Home />
-        {/* <AudioPlayer /> */}
       </div>
     ),
   },
@@ -61,7 +61,6 @@ const router = createBrowserRouter([
     element: (
       <div>
         <Prods />
-        <AudioPlayer />
       </div>
     ),
   },
@@ -75,11 +74,18 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: "/playlists",
+    element: (
+      <div>
+        <Playlists />
+      </div>
+    ),
+  },
+  {
     path: "/playlist/:playlistname",
     element: (
       <div>
         <Playlist />
-        <AudioPlayer />
       </div>
     ),
   },

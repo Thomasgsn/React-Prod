@@ -22,17 +22,16 @@ const AudioPlayer = () => {
 
   const { id } = useParams();
 
-
   useEffect(() => {
     fetch(`http://localhost:8081/prod/${id}`)
-    .then((response) => response.json())
-    .then((prodDetail) => {
-      setTracks(prodDetail);
-    })
-    .catch((error) =>
-      console.error("Erreur lors de la récupération des données :", error)
-    );
-}, [id]);
+      .then((response) => response.json())
+      .then((prodDetail) => {
+        setTracks(prodDetail);
+      })
+      .catch((error) =>
+        console.error("Erreur lors de la récupération des données :", error)
+      );
+  }, [id]);
 
   const [tracks, setTracks] = useState([]);
   const [trackIndex, setTrackIndex] = useState(0);
@@ -58,12 +57,6 @@ const AudioPlayer = () => {
     }
   };
 
-  const esfdf = () => {
-    console.log(currentTrack);
-    console.log(audioRef);
-  console.log(id)
-};
-
   const openPlayer = () => {
     setIsClicked(!isClicked);
   };
@@ -71,9 +64,13 @@ const AudioPlayer = () => {
   return (
     <div className={`audioPlayer flex ${isClicked ? "opened" : "closed"} `}>
       {isClicked ? (
-        <IconChevronDown onClick={openPlayer} className="icon open" />
+        <div onClick={openPlayer} className="icon open flex" >
+          <IconChevronDown className="chevron"/>
+        </div>
       ) : (
-        <IconChevronUp onClick={openPlayer} className="icon open" />
+        <div onClick={openPlayer} className="icon open flex" >
+          <IconChevronUp className="chevron"/>
+        </div>
       )}
 
       <DisplayTrack
@@ -97,10 +94,7 @@ const AudioPlayer = () => {
           setTrackIndex,
         }}
       />
-      {/* <div style={{ width: "50rem", height: "10rem", background: "red" }}></div> */}
-      <button style={{ width: "5rem", height: "5rem" }} onClick={esfdf}>
-        currentTrack
-      </button>
+      <div style={{ width: "50rem", height: "5rem", background: "red" }}></div>
     </div>
   );
 };

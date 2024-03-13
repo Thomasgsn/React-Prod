@@ -9,8 +9,8 @@ const MyPlaylist = () => {
   const [playlist, setPlaylist] = useState([]);
 
   const navigateTo = useNavigate();
-  const navigateToPlaylist = () => {
-    navigateTo("/playlist");
+  const navigateToPlaylists = () => {
+    navigateTo("/playlists");
   };
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const MyPlaylist = () => {
     <div className="myPlaylistSection">
       <div className="heading flex">
         <h1>My Playlist</h1>
-        <button onClick={navigateToPlaylist} className="btn flex">
+        <button onClick={navigateToPlaylists} className="btn flex">
           See All
           <IconArrowNarrowRight className="icon" />
         </button>
