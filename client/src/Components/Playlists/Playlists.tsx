@@ -3,15 +3,34 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import Top from "./Top/Top";
-import Activity from "./Activity/Activity";
 import MyPlaylists from "./MyPlaylists/MyPlaylists";
 import Sidebar from "../assets/Sidebar/Sidebar";
+import Recommendation from "../assets/Recommendation/Recommendation";
 
 import "./Playlists.css";
 
 const Playlists = () => {
-  const [username, setUsername] = useState("");
+
+  const [playlist, setPlaylist] = useState([]);
+  const [playlistProd, setPlaylistProd] = useState([]);
+
   const navigateTo = useNavigate();
+
+  useEffect(() => {
+    fetch("http://localhost:8081/playlists")
+      .then((response) => response.json())
+      .then((data) => {
+        setPlaylist(data.playlist);
+        setPlaylistProd(data.playlistProd);
+      })
+      .catch((error) =>
+        console.error("Erreur lors de la récupération des données :", error)
+      );
+  }, []);
+
+
+
+  const [username, setUsername] = useState("");
   axios.defaults.withCredentials = true;
   useEffect(() => {
     axios
@@ -31,11 +50,11 @@ const Playlists = () => {
       <div className="container">
         <Sidebar />
         <div className="mainContent">
-          <Top />
+          <Top {...{ username }}/>
           <div className="bottom flex">
-            <MyPlaylists />
-            <Activity />
+            <MyPlaylists {...{ navigateTo, playlist, playlistProd }} />
           </div>
+      <Recommendation />
         </div>
       </div>
     </div>

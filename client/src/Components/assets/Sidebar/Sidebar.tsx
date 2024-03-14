@@ -47,7 +47,7 @@ const Sidebar = () => {
           </li>
 
           <li className="listItem">
-            <a href="/prods?filterBy=price" className="menuLink flex">
+            <a href="/playlists" className="menuLink flex">
               <IconFileDownload className="icon" />
               <span className="smallText">Free Prods</span>
             </a>

@@ -13,12 +13,6 @@
         font-size: var(--normalFontSize);
         color: var(--textColor);
         font-weight: 500;
-
-        .welcomeUser{
-          font-weight: 600;
-          text-decoration: underline;
-          font-style: italic;
-        }
       }
     }
 

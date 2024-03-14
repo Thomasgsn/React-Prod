@@ -31,7 +31,7 @@ const Playlist = () => {
       <div className="container">
         <Sidebar />
         <div className="mainContent">
-          <Top />
+          <Top {...{ username }} />
           <div className="bottom flex">
             <ThisPlaylist />
           </div>
