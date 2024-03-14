@@ -104,12 +104,10 @@ app.get("/prods", (req, res) => {
   const priceRange = req.query.priceRange;
   let price = priceRange.split('-');
 
-  
-
   let SQLprods = `SELECT * FROM prod WHERE price BETWEEN ${price[0]} AND ${price[1]} `;
 
   if (searchBy && searchBy != "") {
-    SQLprods += ` AND name LIKE '%${searchBy}%' OR tag LIKE '%${searchBy}%' OR name LIKE '${searchBy}%' OR tag LIKE '${searchBy}%' OR name LIKE '%${searchBy}' OR tag LIKE '%${searchBy}'`;
+    SQLprods += ` AND (name LIKE '%${searchBy}%' OR tag LIKE '%${searchBy}%' OR name LIKE '${searchBy}%' OR tag LIKE '${searchBy}%' OR name LIKE '%${searchBy}' OR tag LIKE '%${searchBy}')`;
   }
 
   switch (filterBy) {

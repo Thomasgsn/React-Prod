@@ -11,6 +11,7 @@ import {
 import "./Top.css";
 
 const Top = ({
+  navigateTo,
   search,
   setSearch,
   filter,
@@ -23,6 +24,41 @@ const Top = ({
   return (
     <div className="topSection">
       <div className="headerSection flex">
+        <div className="find flex">
+          <label>Find by:</label>
+          <div className="flex" style={{ flexDirection: "column" }}>
+            <button onClick={() => navigateTo("/playlists")} className="btn">
+              Type Beat
+            </button>
+          </div>
+        </div>
+
+        <div className="searchBar flex">
+          <input
+            onChange={(event) => {
+              setSearch(event.target.value);
+            }}
+            value={search}
+            type="text"
+            placeholder="Search"
+          />
+          {!search || search == "" ? (
+            <IconSearch className="icon" />
+          ) : (
+            <IconCircleLetterX className="icon" onClick={() => setSearch("")} />
+          )}
+        </div>
+
+        <div className="userCenter flex">
+          <a href="#notification">
+            <IconBell className="icon" />
+          </a>
+          <a href="#user">
+            <IconUser className="icon" />
+          </a>
+        </div>
+      </div>
+      <div className="secSection flex">
         <div className="orders flex">
           <label>Order by:</label>
           <div className="flex orderItem">
@@ -101,59 +137,33 @@ const Top = ({
             )}
           </div>
         </div>
-        <div className="searchBar flex">
-          <input
-            onChange={(event) => {
-              setSearch(event.target.value);
-            }}
-            value={search}
-            type="text"
-            placeholder="Search"
-          />
-          {!search || search == "" ? (
-            <IconSearch className="icon" />
-          ) : (
-            <IconCircleLetterX className="icon" onClick={() => setSearch("")} />
-          )}
-        </div>
-
-        <div className="userCenter flex">
-          <a href="#notification">
-            <IconBell className="icon" />
-          </a>
-          <a href="#user">
-            <IconUser className="icon" />
-          </a>
-        </div>
-      </div>
-      <div className="price flex">
-        <div className="flex" style={{ flexDirection: "column" }}>
-          
-          <div>
-            <span>Min Price {minPrice}</span>
-            <input
-              type="range"
-              value={minPrice}
-              min="0"
-              max={maxPrice}
-              onChange={(event) => {
-                setMinPrice(event.target.value);
-              }}
-            />
+        <div className="price flex">
+          <div className="flex" style={{ flexDirection: "column" }}>
+            <div>
+              <span>Min Price {minPrice}</span>
+              <input
+                type="range"
+                value={minPrice}
+                min="0"
+                max={maxPrice}
+                onChange={(event) => {
+                  setMinPrice(event.target.value);
+                }}
+              />
+            </div>
+            <div>
+              <span>Max Price {maxPrice}</span>
+              <input
+                type="range"
+                value={maxPrice}
+                min={minPrice}
+                max="100"
+                onChange={(event) => {
+                  setMaxPrice(event.target.value);
+                }}
+              />
+            </div>
           </div>
-          <div>
-            <span>Max Price {maxPrice}</span>
-            <input
-              type="range"
-              value={maxPrice}
-              min={minPrice}
-              max="100"
-              onChange={(event) => {
-                setMaxPrice(event.target.value);
-              }}
-            />
-          </div>
-
         </div>
       </div>
     </div>

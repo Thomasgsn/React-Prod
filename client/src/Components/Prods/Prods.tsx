@@ -50,6 +50,7 @@ const Prods = () => {
         <div className="mainContent">
           <Top
             {...{
+              navigateTo,
               search,
               setSearch,
               filter,

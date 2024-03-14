@@ -66,13 +66,6 @@ const Sidebar = () => {
           </li>
 
           <li className="listItem">
-            <a href="/home" className="menuLink flex">
-              <IconTrendingUp className="icon" />
-              <span className="smallText">Trend</span>
-            </a>
-          </li>
-
-          <li className="listItem">
             <a href="/contacts" className="menuLink flex">
               <IconNotebook className="icon" />
               <span className="smallText">Contacts</span>

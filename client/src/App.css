@@ -14,7 +14,9 @@
   font-family: "Montserrat", sans-serif;
 }
 
-body{overflow: hidden;}
+body {
+  overflow: hidden;
+}
 
 .flex {
   display: flex;
@@ -54,25 +56,34 @@ video {
   text-align: center;
 }
 
+.icon {
+  font-size: var(--h2FontSize);
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.btn .icon {
+  margin-left: 0.5rem;
+}
+
 .btn {
-  border: none;
   outline: none;
   cursor: pointer;
   border-radius: 8px;
   padding: 0.8rem 1rem;
   color: var(--greyText);
-}
+  font-weight: 600;
+  border: 1px solid transparent;
 
-.btn:hover {
-  color: var(--hoverColor);
-  background-color: var(--primarySecondColor);
-}
+  &:hover {
+    color: var(--primaryColor);
+    background-color: var(--primarySecondColor);
+    border: 1px solid var(--primaryColor);
 
-.icon {
-  font-size: var(--h2FontSize);
-  cursor: pointer;
-}
-
-.btn .icon {
-  margin-left: 0.5rem;
+    .icon {
+      color: var(--primaryColor);
+      transform: translateX(3px);
+      transition: 0.3s ease;
+    }
+  }
 }

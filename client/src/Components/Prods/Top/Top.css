@@ -1,33 +1,20 @@
 .topSection {
+  .headerSection {
+    justify-content: space-between;
+    margin-bottom: 2rem;
 
-  .orders, .free {
-    font-weight: 700;
-    height: 3.125rem;
-    gap: 1rem;
-    margin-top: 1rem;
+    .find {
+      height: 3.125rem;
+      gap: 1rem;
+      margin-top: 1rem;
 
-    .orderItem {
       label {
+        font-weight: 700;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
       }
-
-      .btn {
-        border: 1px solid transparent;
-        font-size: var(--normalFontSize);
-        font-weight: 700;
-
-        &:hover {
-          border: 1px solid var(--primaryColor);
-        }
-      }
     }
-  }
-
-  .headerSection {
-    justify-content: space-between;
-    margin-bottom: 2rem;
 
     .searchBar {
       background: var(--whiteColor);
@@ -40,14 +27,6 @@
         border: none;
         outline: none;
         background: none;
-      }
-
-      .icon {
-        color: var(--textColor);
-        margin-right: 2rem;
-        &:hover {
-          color: var(--primaryColor);
-        }
       }
     }
 
@@ -79,9 +58,24 @@
       }
     }
   }
-  
-  .price{
-    
+
+  .secSection {
+    justify-content: space-between;
+    .orders {
+      label {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        font-weight: 700;
+      }
+      .btn {
+        &:hover {
+          .icon {
+            transform: translateX(0);
+          }
+        }
+      }
+    }
   }
 }
 
