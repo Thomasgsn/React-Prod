@@ -36,7 +36,8 @@ const Top = ({
         <div className="searchBar flex">
           <input
             onChange={(event) => {
-              setSearch(event.target.value);
+              const filteredValue = event.target.value.replace(/["']/g, "");
+              setSearch(filteredValue);
             }}
             value={search}
             type="text"

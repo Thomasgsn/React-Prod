@@ -10,11 +10,7 @@ import {
 
 import "./Top.css";
 
-const Top = ({
-  navigateTo,
-  search,
-  setSearch,
-}) => {
+const Top = ({ navigateTo, search, setSearch }) => {
   return (
     <div className="topSection">
       <div className="headerSection flex">
@@ -30,7 +26,8 @@ const Top = ({
         <div className="searchBar flex">
           <input
             onChange={(event) => {
-              setSearch(event.target.value);
+              const filteredValue = event.target.value.replace(/["']/g, "");
+              setSearch(filteredValue);
             }}
             value={search}
             type="text"

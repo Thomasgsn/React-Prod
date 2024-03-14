@@ -163,11 +163,12 @@ app.get("/prod/:id", (req, res) => {
 });
 
 app.get("/playlists", (req, res) => {
+  const searchBy = req.query.searchBy;
   const SQLprod = `SELECT p.* FROM prod p WHERE p.idTB IN (SELECT tb.id FROM typebeat tb) AND p.id IN (SELECT id FROM (SELECT id, idTB, ROW_NUMBER() OVER(PARTITION BY idTB ORDER BY id DESC) AS row_num FROM prod) AS ranked WHERE row_num <= 4) ORDER BY p.idTB, p.id DESC;`;
   let SQLplaylist = `SELECT * FROM typebeat`;
 
   if (searchBy && searchBy != "") {
-    SQLplaylist += ` AND (name LIKE '%${searchBy}%' OR name LIKE '${searchBy}%' OR name LIKE '%${searchBy}')`;
+    SQLplaylist += ` AND (name LIKE "%${searchBy}%" OR name LIKE "${searchBy}%" OR name LIKE "%${searchBy}")`;
   }
 
   db.query(SQLplaylist, (errPlaylist, dataPlaylist) => {
