@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import Top from "./Top/Top";
-import MyProds from "./MyProds/MyProds";
+import SelectedProds from "../assets/SelectedProds/SelectedProds";
 import Sidebar from "../assets/Sidebar/Sidebar";
 import Recommendation from "../assets/Recommendation/Recommendation";
 
@@ -13,11 +13,13 @@ const Prods = () => {
   const [prods, setProds] = useState([]);
   const [filter, setFilter] = useState("date");
   const [search, setSearch] = useState("");
-  const [minPrice, setMinPrice] = useState(0)
-  const [maxPrice, setMaxPrice] = useState(100)
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(100);
 
   useEffect(() => {
-    fetch(`http://localhost:8081/prods?filterBy=${filter}&searchBy=${search}&priceRange=${minPrice}-${maxPrice}`)
+    fetch(
+      `http://localhost:8081/prods?filterBy=${filter}&searchBy=${search}&priceRange=${minPrice}-${maxPrice}`
+    )
       .then((response) => response.json())
       .then((dataProds) => {
         setProds(dataProds);
@@ -62,11 +64,7 @@ const Prods = () => {
             }}
           />
           <div className="bottom flex">
-            <MyProds
-              {...{
-                prods,
-              }}
-            />
+            <SelectedProds {...{ prods }} />
           </div>
           <Recommendation />
         </div>

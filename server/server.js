@@ -102,12 +102,12 @@ app.get("/prods", (req, res) => {
   const filterBy = req.query.filterBy;
   const searchBy = req.query.searchBy;
   const priceRange = req.query.priceRange;
-  let price = priceRange.split('-');
+  let price = priceRange.split("-");
 
-  let SQLprods = `SELECT * FROM prod WHERE price BETWEEN ${price[0]} AND ${price[1]} `;
+  let SQLprods = `SELECT * FROM prod WHERE price BETWEEN ${price[0]} AND ${price[1]}`;
 
   if (searchBy && searchBy != "") {
-    SQLprods += ` AND (name LIKE '%${searchBy}%' OR tag LIKE '%${searchBy}%' OR name LIKE '${searchBy}%' OR tag LIKE '${searchBy}%' OR name LIKE '%${searchBy}' OR tag LIKE '%${searchBy}')`;
+    SQLprods += ` AND (name LIKE "%${searchBy}%" OR tag LIKE "%${searchBy}%" OR name LIKE "${searchBy}%" OR tag LIKE "${searchBy}%" OR name LIKE "%${searchBy}" OR tag LIKE "%${searchBy}")`;
   }
 
   switch (filterBy) {
@@ -165,11 +165,7 @@ app.get("/prod/:id", (req, res) => {
 app.get("/playlists", (req, res) => {
   const searchBy = req.query.searchBy;
   const SQLprod = `SELECT p.* FROM prod p WHERE p.idTB IN (SELECT tb.id FROM typebeat tb) AND p.id IN (SELECT id FROM (SELECT id, idTB, ROW_NUMBER() OVER(PARTITION BY idTB ORDER BY id DESC) AS row_num FROM prod) AS ranked WHERE row_num <= 4) ORDER BY p.idTB, p.id DESC;`;
-  let SQLplaylist = `SELECT * FROM typebeat`;
-
-  if (searchBy && searchBy != "") {
-    SQLplaylist += ` AND (name LIKE "%${searchBy}%" OR name LIKE "${searchBy}%" OR name LIKE "%${searchBy}")`;
-  }
+  const SQLplaylist = `SELECT * FROM typebeat WHERE (name LIKE "%${searchBy}%" OR name LIKE "${searchBy}%" OR name LIKE "%${searchBy}")`;
 
   db.query(SQLplaylist, (errPlaylist, dataPlaylist) => {
     db.query(SQLprod, (errProd, dataPlaylistProd) => {
@@ -187,8 +183,45 @@ app.get("/playlists", (req, res) => {
 
 app.get("/playlist/:playlistName", (req, res) => {
   const playlistName = req.params.playlistName;
+  const filterBy = req.query.filterBy;
+  const searchBy = req.query.searchBy;
+  const priceRange = req.query.priceRange;
+  let price = priceRange.split("-");
 
-  const SQL = `SELECT prod.* FROM prod JOIN typebeat ON prod.idTB = typebeat.id WHERE typebeat.name = '${playlistName}' ORDER BY prod.releaseDate DESC;`;
+  let SQL = `SELECT p.* FROM prod p JOIN typebeat ON p.idTB = typebeat.id WHERE typebeat.name = '${playlistName}' AND p.price BETWEEN ${price[0]} AND ${price[1]}`;
+
+  if (searchBy && searchBy != "") {
+    SQL += ` AND (p.name LIKE "%${searchBy}%" OR p.tag LIKE "%${searchBy}%" OR p.name LIKE "${searchBy}%" OR p.tag LIKE "${searchBy}%" OR p.name LIKE "%${searchBy}" OR p.tag LIKE "%${searchBy}")`;
+  }
+
+  switch (filterBy) {
+    case "price":
+      SQL += " ORDER BY p.price ASC";
+      break;
+
+    case "priceinv":
+      SQL += " ORDER BY p.price DESC";
+      break;
+
+    case "date":
+      SQL += " ORDER BY p.releaseDate DESC";
+      break;
+
+    case "dateinv":
+      SQL += " ORDER BY p.releaseDate ASC";
+      break;
+
+    case "type":
+      SQL += " ORDER BY p.idTB ASC";
+      break;
+
+    case "typeinv":
+      SQL += " ORDER BY p.idTB DESC";
+      break;
+
+    default:
+      break;
+  }
 
   db.query(SQL, (errPlaylist, playlistProd) => {
     if (errPlaylist) return res.json(errPlaylist);
@@ -197,10 +230,35 @@ app.get("/playlist/:playlistName", (req, res) => {
   });
 });
 
+app.get("/recommendation", (req, res) => {
+  const SQLartistReco =
+    "SELECT DISTINCT recommendation_artist.id, recommendation_artist.name FROM recommendation JOIN recommendation_artist ON recommendation.idArtist = recommendation_artist.id ORDER BY recommendation.id DESC;";
+  const SQLnbReco = "SELECT COUNT(*) as nb FROM `recommendation`";
+  const SQLnbArtist =
+    "SELECT COUNT(*) AS nbArtist FROM `recommendation_artist`";
+
+  db.query(SQLartistReco, (errArtistReco, dataArtistReco) => {
+    db.query(SQLnbReco, (errNbReco, dataNbReco) => {
+      db.query(SQLnbArtist, (errNbArtist, dataNbArtist) => {
+        if (errArtistReco) return res.json(errArtistReco);
+        if (errNbReco) return res.json(errNbReco);
+        if (errNbArtist) return res.json(errNbArtist);
+
+        const result = {
+          artistReco: dataArtistReco,
+          nbReco: dataNbReco,
+          nbArtist: dataNbArtist,
+        };
+        return res.json(result);
+      });
+    });
+  });
+});
+
 // assets
 app.get("/recovignette", (req, res) => {
   const SQLartistReco =
-    "SELECT DISTINCT recommendation_artist.nom FROM recommendation JOIN recommendation_artist ON recommendation.idArtist = recommendation_artist.id ORDER BY recommendation.id DESC LIMIT 5;";
+    "SELECT DISTINCT recommendation_artist.name FROM recommendation JOIN recommendation_artist ON recommendation.idArtist = recommendation_artist.id ORDER BY recommendation.id DESC LIMIT 5;";
   const SQLnbReco = "SELECT COUNT(*) as nb FROM `recommendation`";
   const SQLnbArtist =
     "SELECT COUNT(*) AS nbArtist FROM `recommendation_artist`";
@@ -238,6 +296,16 @@ app.get("/statsprod", (req, res) => {
       };
       return res.json(result);
     });
+  });
+});
+
+app.get("/activities", (req, res) => {
+  const SQL = `SELECT * FROM activity ORDER BY id DESC LIMIT 7`;
+
+  db.query(SQL, (errSQL, data) => {
+    if (errSQL) return res.json(errSQL);
+
+    return res.json(data);
   });
 });
 

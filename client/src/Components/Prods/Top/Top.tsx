@@ -25,7 +25,7 @@ const Top = ({
     <div className="topSection">
       <div className="headerSection flex">
         <div className="find flex">
-          <label>Find by:</label>
+          <label>Find by :</label>
           <div className="flex" style={{ flexDirection: "column" }}>
             <button onClick={() => navigateTo("/playlists")} className="btn">
               Type Beat

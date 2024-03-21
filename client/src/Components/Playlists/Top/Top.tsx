@@ -2,23 +2,20 @@ import {
   IconUser,
   IconBell,
   IconSearch,
-  IconArrowDown,
-  IconSeparator,
-  IconArrowUp,
   IconCircleLetterX,
 } from "@tabler/icons-react";
 
 import "./Top.css";
 
-const Top = ({ navigateTo, search, setSearch }) => {
+const Top = ({ navigateTo,  search, setSearch, }) => {
   return (
     <div className="topSection">
       <div className="headerSection flex">
         <div className="find flex">
-          <label>Find by:</label>
+          <label>Find by :</label>
           <div className="flex" style={{ flexDirection: "column" }}>
-            <button onClick={() => navigateTo("/playlists")} className="btn">
-              Type Beat
+            <button onClick={() => navigateTo("/prods")} className="btn">
+              All prods
             </button>
           </div>
         </div>

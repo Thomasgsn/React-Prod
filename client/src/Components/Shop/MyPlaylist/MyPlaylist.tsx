@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { IconArrowNarrowRight } from "@tabler/icons-react";
 
 import "./MyPlaylist.css";
-import Recommendation from "../../Recommendation/Recommendation";
+import Recommendation from "../../Recommendation/Recommendations";
 
 const MyPlaylist = () => {
   const [playlist, setPlaylist] = useState([]);

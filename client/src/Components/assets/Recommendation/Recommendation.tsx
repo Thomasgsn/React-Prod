@@ -8,10 +8,6 @@ const Recommendation = () => {
 
     const navigateTo = useNavigate();
    
-    const navigateToRecommendation = () => {
-      navigateTo("/recommendation");
-    };
-
     const [artistReco, setArtistReco] = useState([]);
     const [nbReco, setNbReco] = useState([]);
     const [nbArtist, setNbArtist] = useState([]);
@@ -35,7 +31,7 @@ const Recommendation = () => {
         <div className="lastReco">
           <div className="heading flex">
             <h3>French Recommendation</h3>
-            <button onClick={navigateToRecommendation} className="btn flex">
+            <button onClick={() => navigateTo("/recommendations")} className="btn flex">
               See All
               <IconArrowNarrowRight className="icon" />
             </button>
@@ -44,9 +40,9 @@ const Recommendation = () => {
           <div className="card flex">
             <div className="users flex">
               {artistReco.map((a: any) => (
-                  <a key={a.nom} href="">
-                    <img src={`../recommendations/${a.nom}.jpg`} alt={a.nom} />
-                    <p>{a.nom}</p>
+                  <a key={a.name} href={`/recommendation/${a.name}`}>
+                    <img src={`../recommendations/${a.name}.jpg`} alt={a.name} />
+                    <p>{a.name}</p>
                   </a>
               ))}
             </div>

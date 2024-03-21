@@ -9,7 +9,7 @@ import Prods from "./Components/Prods/Prods";
 import Prod from "./Components/Prod/Prod";
 import Playlists from "./Components/Playlists/Playlists";
 import Playlist from "./Components/Playlist/Playlist";
-import Recommendation from "./Components/Recommendation/Recommendation";
+import Recommendations from "./Components/Recommendations/Recommendations";
 
 import AudioPlayer from "./AudioPlayer/AudioPlayer";
 
@@ -92,10 +92,18 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/recommendation",
+    path: "/recommendations",
     element: (
       <div>
-        <Recommendation />
+        <Recommendations />
+      </div>
+    ),
+  },
+  {
+    path: "/recommendation/:name",
+    element: (
+      <div>
+        <Playlist />
       </div>
     ),
   },

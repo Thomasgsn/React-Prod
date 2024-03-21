@@ -31,7 +31,7 @@ const Login = () => {
         if (res.data.Login) {
           navigateTo("/home");
         } else {
-          alert(res.data.Message);
+          alert(`Error in id or password`);
         }
       })
       .catch((err) => {

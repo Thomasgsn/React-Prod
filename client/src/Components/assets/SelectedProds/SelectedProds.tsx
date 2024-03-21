@@ -1,14 +1,23 @@
-import "./MyProds.css";
+import "./SelectedProds.css";
 
-const MyProds = ({ prods }) => {
+const SelectedProds = ({ playlistName, prods }) => {
   return (
-    <div className="myProdSection">
+    <div className="prodSection">
       <div className="heading flex">
-        <h1>My Prods</h1>
+        <h1>
+          My Prods{" "}
+          {playlistName && playlistName != "" ? (
+            <span>
+              in <i>{playlistName}</i> playlist
+            </span>
+          ) : (
+            <></>
+          )}
+        </h1>
         <p>{prods.length} prods</p>
       </div>
       <div className="secContainer flex">
-        {prods.map((p) => (
+        {prods.map((p: any) => (
           <a key={p.name} href={"/prod/" + p.id} className="singleItem">
             <img
               src={"/prods/cover_prods/" + p.name + p.id + ".jpg"}
@@ -25,4 +34,4 @@ const MyProds = ({ prods }) => {
   );
 };
 
-export default MyProds;
+export default SelectedProds;

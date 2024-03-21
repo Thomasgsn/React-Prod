@@ -4,9 +4,9 @@ import {
   IconHome,
   IconMusic,
   IconBrandSafari,
-  IconFileDownload,
   IconUserCircle,
-  IconTrendingUp,
+  IconBrandStackshare,
+  IconPlaylist,
   IconNotebook,
   IconCreditCard,
   IconInfoCircle,
@@ -48,8 +48,8 @@ const Sidebar = () => {
 
           <li className="listItem">
             <a href="/playlists" className="menuLink flex">
-              <IconFileDownload className="icon" />
-              <span className="smallText">Free Prods</span>
+              <IconPlaylist className="icon" />
+              <span className="smallText">Playlists</span>
             </a>
           </li>
         </ul>
@@ -58,10 +58,18 @@ const Sidebar = () => {
       <div className="settingsDiv">
         <h3 className="divTitle">_oftyn Menu</h3>
         <ul className="menuList grid">
+        
           <li className="listItem">
             <a href="/aboutme" className="menuLink flex">
               <IconUserCircle className="icon" />
               <span className="smallText">About Me</span>
+            </a>
+          </li>
+
+          <li className="listItem">
+            <a href="/recommendations" className="menuLink flex">
+              <IconBrandStackshare className="icon" />
+              <span className="smallText">Recommendations</span>
             </a>
           </li>
 

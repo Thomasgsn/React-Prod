@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import Top from "./Top/Top";
-import Activity from "./Activity/Activity";
+import Activity from "../assets/Activity/Activity";
 import MyPlaylists from "./MyPlaylists/MyPlaylists";
 import Sidebar from "../assets/Sidebar/Sidebar";
 import Recommendation from "../assets/Recommendation/Recommendation";

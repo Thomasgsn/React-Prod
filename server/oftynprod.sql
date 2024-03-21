@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : mer. 13 mars 2024 à 12:35
+-- Généré le : lun. 18 mars 2024 à 12:09
 -- Version du serveur : 8.2.0
--- Version de PHP : 8.2.13
+-- Version de PHP : 8.3.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,6 +20,20 @@ SET time_zone = "+00:00";
 --
 -- Base de données : `oftynprod`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `activity`
+--
+
+DROP TABLE IF EXISTS `activity`;
+CREATE TABLE IF NOT EXISTS `activity` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(11) COLLATE utf8mb4_general_ci NOT NULL,
+  `detail` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 

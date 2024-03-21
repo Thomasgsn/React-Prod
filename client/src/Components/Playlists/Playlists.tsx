@@ -13,11 +13,12 @@ const Playlists = () => {
 
   const [playlist, setPlaylist] = useState([]);
   const [playlistProd, setPlaylistProd] = useState([]);
+  const [search, setSearch] = useState('');
 
   const navigateTo = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:8081/playlists")
+    fetch(`http://localhost:8081/playlists?searchBy=${search}`)
       .then((response) => response.json())
       .then((data) => {
         setPlaylist(data.playlist);
@@ -26,7 +27,7 @@ const Playlists = () => {
       .catch((error) =>
         console.error("Erreur lors de la récupération des données :", error)
       );
-  }, []);
+  }, [search]);
 
 
 
@@ -50,7 +51,7 @@ const Playlists = () => {
       <div className="container">
         <Sidebar />
         <div className="mainContent">
-          <Top {...{ username }}/>
+          <Top {...{  navigateTo, search, setSearch, }}/>
           <div className="bottom flex">
             <MyPlaylists {...{ navigateTo, playlist, playlistProd }} />
           </div>
