@@ -1,5 +1,6 @@
-.myPlaylistSection {
-  flex-basis: 70%;
+.myPlaylistsSection {
+  min-width: 100%;
+
   .heading {
     width: 100%;
     justify-content: space-between;
@@ -9,23 +10,6 @@
       color: var(--blackColor);
       font-weight: 700;
     }
-
-    .icon {
-      transition: 0.2s ease;
-    }
-
-    .btn {
-      border: 1px solid transparent;
-
-      &:hover {
-        border: 1px solid var(--primaryColor);
-
-        .icon {
-          transform: translateX(3px);
-          transition: 0.3s ease;
-        }
-      }
-    }
   }
 
   .secContainer {
@@ -33,104 +17,81 @@
     margin: 1rem 0;
     gap: 1rem;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
 
-    .playlists {
+    .singleItem {
       position: relative;
-      width: 100%;
+      width: 325px;
+      height: 235px;
       display: flex;
       flex-direction: column;
-      padding: 1rem 1rem 1.5rem 1rem;
+      padding: 0.8rem;
       border-radius: 10px;
-      background: var(--itemCardColor);
       transition: 0.3s ease;
+
+      .playlistHeader {
+        font-weight: 700;
+        justify-content: space-between;
+      }
+
+      .playlistLastProd {
+        display: ruby;
+        margin-top: 1rem;
+        flex-direction: row;
+
+        img{
+          width: 4rem;
+          height: 4rem;
+          margin-right: .5rem;
+        }
+      }
 
       &:hover {
         background: var(--itemCardHover);
         box-shadow: 0 2px 2px var(--inputColor);
+        transform: translateY(-3px);
       }
 
       img {
-        object-fit: cover;
         border-radius: 0.25rem;
-        width: 150px;
-        height: 150px;
+        object-fit: cover;
+        width: 200px;
+        height: 200px;
       }
 
-      .playlistHeader {
-        justify-content: space-between;
-        margin-bottom: 3vh;
+      .price {
+        position: absolute;
+        background: red;
+        right: 0;
+        margin-top: 5px;
+        padding: 3px 12px 3px 10px;
+        border-top-left-radius: 1rem;
+        border-bottom-left-radius: 1rem;
+        border-top-right-radius: 3px;
+        border-bottom-right-radius: 3px;
 
-        .playlistName {
-          margin: auto 0;
-          font-size: var(--h2FontSize);
+        p {
+          font-size: var(--smallFontSize);
+          color: var(--whiteColor);
           font-weight: 500;
-          color: var(--blackColor);
-          padding: 0.5rem 0 1rem 0;
-        }
-
-        .icon {
-          transition: 0.2s ease;
-        }
-
-        .btn {
-          border: 1px solid transparent;
-
-          &:hover {
-            border: 1px solid var(--primaryColor);
-
-            .icon {
-              transform: translateX(3px);
-              transition: 0.3s ease;
-            }
-          }
         }
       }
 
-      .playlistLastProd {
-        justify-content: center;
-
-        .prod {
-          
-          .prodTooltip {
-            display: none;
-            margin: 0 0.5vw;
-            font-size: var(--smallestFontSize);
-            width: 8vw;
-            justify-content: center;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;
-          }
-
-          img {
-            height: 8vw;
-            width: 8vw;
-            border-radius: 0.25rem;
-            margin: 0 0.5vw;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-          }
-
-          &:hover {
-
-            img{
-              transform: translateY(-3px);
-            }
-
-            .prodTooltip {
-              position: absolute;
-              display: flex;
-            }
-          }
-        }
+      h3 {
+        margin-top: -8px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        font-size: var(--normalFontSize);
+        color: var(--blackColor);
+        padding: 1rem 0;
       }
     }
   }
 }
 
 @media screen and (max-width: 918px) {
-  .playlistSection {
+  .prodSection {
     .singleItem {
       width: 200px !important;
     }

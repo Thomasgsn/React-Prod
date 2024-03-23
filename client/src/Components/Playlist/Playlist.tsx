@@ -9,7 +9,7 @@ import Recommendation from "../assets/Recommendation/Recommendation";
 
 import "./Playlist.css";
 
-const Playlist = () => {
+const Playlist = ({ user }) => {
   const { playlistName } = useParams();
 
   const [prods, setProds] = useState([]);
@@ -29,21 +29,8 @@ const Playlist = () => {
       );
   }, [filter, maxPrice, minPrice, playlistName, search]);
 
-  const [username, setUsername] = useState("");
   const navigateTo = useNavigate();
-  axios.defaults.withCredentials = true;
-  useEffect(() => {
-    axios
-      .get("http://localhost:8081/user")
-      .then((res) => {
-        if (res.data.valid) {
-          setUsername(res.data.username);
-        } else {
-          navigateTo("/");
-        }
-      })
-      .catch((err) => console.log(err));
-  }, []);
+
 
   return (
     <div className="homePage flex">

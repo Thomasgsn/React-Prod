@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
 import Top from "./Top/Top";
 import MyRecommendation from "./MyRecommendation/MyRecommendation";
@@ -8,48 +6,40 @@ import Sidebar from "../assets/Sidebar/Sidebar";
 
 import "./Recommendations.css";
 
-const Recommendation = () => {
-  const [username, setUsername] = useState("");
-  const navigateTo = useNavigate();
-  axios.defaults.withCredentials = true;
-  useEffect(() => {
-    axios
-      .get("http://localhost:8081/user")
-      .then((res) => {
-        if (res.data.valid) {
-          setUsername(res.data.username);
-        } else {
-          navigateTo("/");
-        }
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
+const Recommendation = ({ user }) => {
   const [artistReco, setArtistReco] = useState([]);
-  const [nbReco, setNbReco] = useState([]);
-  const [nbArtist, setNbArtist] = useState([]);
+
+  const [filter, setFilter] = useState("date");
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
-      fetch("http://localhost:8081/recovignette")
-        .then((response) => response.json())
-        .then((data) => {
-          setArtistReco(data.artistReco);
-          setNbReco(data.nbReco);
-          setNbArtist(data.nbArtist);
-        })
-        .catch((error) =>
-          console.error("Erreur lors de la récupération des données :", error)
-        );
-    }, []);
+    fetch(
+      `http://localhost:8081/recommendations?filterBy=${filter}&searchBy=${search}`
+    )
+      .then((response) => response.json())
+      .then((dataArtistReco) => {
+        setArtistReco(dataArtistReco);
+      })
+      .catch((error) =>
+        console.error("Erreur lors de la récupération des données :", error)
+      );
+  }, [filter, search]);
 
   return (
     <div className="homePage flex">
       <div className="container">
         <Sidebar />
         <div className="mainContent">
-          <Top />
+          <Top
+            {...{
+              search,
+              setSearch,
+              filter,
+              setFilter,
+            }}
+          />
           <div className="bottom flex">
-            <MyRecommendation {...{ navigateTo, artistReco, nbReco, nbArtist }} />
+            <MyRecommendation {...{ artistReco }} />
           </div>
         </div>
       </div>

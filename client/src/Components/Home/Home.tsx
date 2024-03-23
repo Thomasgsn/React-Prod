@@ -10,7 +10,7 @@ import Recommendation from "../assets/Recommendation/Recommendation";
 
 import "./Home.css";
 
-const Body = () => {
+const Body = ({userInfo, username}) => {
   const [playlist, setPlaylist] = useState([]);
 
   useEffect(() => {
@@ -24,28 +24,12 @@ const Body = () => {
       );
   }, []);
 
-  const [username, setUsername] = useState("");
-  const navigateTo = useNavigate();
-  axios.defaults.withCredentials = true;
-  useEffect(() => {
-    axios
-      .get("http://localhost:8081/user")
-      .then((res) => {
-        if (res.data.valid) {
-          setUsername(res.data.username);
-        } else {
-          navigateTo("/");
-        }
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
   return (
     <div className="homePage flex">
       <div className="container">
         <Sidebar />
         <div className="mainContent">
-          <Top {...{ username }} />
+          <Top {...{ userInfo }} />
           <div className="bottom flex">
             <MyPlaylists {...{ playlist }} />
             <Activity />

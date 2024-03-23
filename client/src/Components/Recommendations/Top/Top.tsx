@@ -11,15 +11,10 @@ import {
 import "./Top.css";
 
 const Top = ({
-  navigateTo,
   search,
   setSearch,
   filter,
   setFilter,
-  minPrice,
-  maxPrice,
-  setMinPrice,
-  setMaxPrice,
 }) => {
   return (
     <div className="topSection">
@@ -64,16 +59,16 @@ const Top = ({
                     : setFilter("nbReco");
                 }}
               >
-                nbReco{" "}
+                number of recommendations{" "}
                 {filter === "nbReco" ? (
-                  <IconArrowDown className="icon" />
-                ) : (
                   <IconArrowUp className="icon" />
+                ) : (
+                  <IconArrowDown className="icon" />
                 )}
               </button>
             ) : (
               <button className="btn flex" onClick={() => setFilter("nbReco")}>
-                nbReco <IconSeparator className="icon" />
+                number of recommendations <IconSeparator className="icon" />
               </button>
             )}
 

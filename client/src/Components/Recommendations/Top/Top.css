@@ -3,6 +3,22 @@
     justify-content: space-between;
     margin-bottom: 2rem;
 
+    .orders {
+      label {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        font-weight: 700;
+      }
+      .btn {
+        &:hover {
+          .icon {
+            transform: translateX(0);
+          }
+        }
+      }
+    }
+
     .find {
       height: 3.125rem;
       gap: 1rem;
@@ -54,25 +70,6 @@
         .userIcon {
           width: 100%;
           height: 100%;
-        }
-      }
-    }
-  }
-
-  .secSection {
-    justify-content: space-between;
-    .orders {
-      label {
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        font-weight: 700;
-      }
-      .btn {
-        &:hover {
-          .icon {
-            transform: translateX(0);
-          }
         }
       }
     }

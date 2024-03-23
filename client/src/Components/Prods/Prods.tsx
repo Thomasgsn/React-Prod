@@ -9,7 +9,7 @@ import Recommendation from "../assets/Recommendation/Recommendation";
 
 import "./Prods.css";
 
-const Prods = () => {
+const Prods = ({ user }) => {
   const [prods, setProds] = useState([]);
   const [filter, setFilter] = useState("date");
   const [search, setSearch] = useState("");
@@ -28,22 +28,7 @@ const Prods = () => {
         console.error("Erreur lors de la récupération des données :", error)
       );
   }, [filter, maxPrice, minPrice, search]);
-
-  const [username, setUsername] = useState("");
   const navigateTo = useNavigate();
-  axios.defaults.withCredentials = true;
-  useEffect(() => {
-    axios
-      .get("http://localhost:8081/user")
-      .then((res) => {
-        if (res.data.valid) {
-          setUsername(res.data.username);
-        } else {
-          navigateTo("/");
-        }
-      })
-      .catch((err) => console.log(err));
-  }, []);
 
   return (
     <div className="prodsPage flex">

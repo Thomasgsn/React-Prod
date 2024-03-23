@@ -9,7 +9,7 @@ import Recommendation from "../assets/Recommendation/Recommendation";
 
 import "./Playlists.css";
 
-const Playlists = () => {
+const Playlists = ({ user }) => {
 
   const [playlist, setPlaylist] = useState([]);
   const [playlistProd, setPlaylistProd] = useState([]);
@@ -27,25 +27,7 @@ const Playlists = () => {
       .catch((error) =>
         console.error("Erreur lors de la récupération des données :", error)
       );
-  }, [search]);
-
-
-
-  const [username, setUsername] = useState("");
-  axios.defaults.withCredentials = true;
-  useEffect(() => {
-    axios
-      .get("http://localhost:8081/user")
-      .then((res) => {
-        if (res.data.valid) {
-          setUsername(res.data.username);
-        } else {
-          navigateTo("/");
-        }
-      })
-      .catch((err) => console.log(err));
-  }, []);
-  
+  }, [search]);  
   return (
     <div className="homePage flex">
       <div className="container">

@@ -6,19 +6,24 @@ import { IconUser, IconBell } from "@tabler/icons-react";
 import "./Top.css";
 import v1 from "../../assets/media/login_movie/1.mp4";
 import v2 from "../../assets/media/login_movie/2.mp4";
+import { useEffect } from "react";
 
-const Top = ({ username }) => {
+const Top = ({ userInfo }) => {
   const videos = [v1, v2];
   const randomIndex = Math.floor(Math.random() * videos.length);
   const randomVideo = videos[randomIndex];
 
   const navigateTo = useNavigate();
-  const navigateToExploreMore = () => {
-    navigateTo("/home");
-  };
-  const navigateToAllProds = () => {
-    navigateTo("/prods");
-  };
+
+  let Uusername = "";
+  let Uemail = "";
+  let Urole = "";
+
+  // useEffect(() => {
+  //   Uusername = userInfo.username;
+  //   Uemail = userInfo.email;
+  //   Urole = userInfo.role;
+  // }, []);
 
   return (
     <div className="topSection">
@@ -28,16 +33,17 @@ const Top = ({ username }) => {
             Welcome to the <i>_oftyn shop</i>.
           </h1>
           <p>
-            Hello <span className="welcomeUser">{ username }</span>, Welcome back!
+            Hello <span className="welcomeUser">{Uusername}</span>, Welcome
+            back!
           </p>
         </div>
         <div className="adminDiv flex">
           <a href="#notification">
             <IconBell className="icon" />
           </a>
-          <a href="#user">
-            <IconUser className="icon" />
-          </a>
+          <div>
+            <IconUser className="icon" onClick={() => console.log(userInfo)} />
+          </div>
         </div>
       </div>
 
@@ -47,10 +53,13 @@ const Top = ({ username }) => {
           <p>With my prods, get the result you want !</p>
 
           <div className="buttons flex">
-            <button onClick={navigateToExploreMore} className="btn">
+            <button onClick={() => navigateTo("/shop")} className="btn">
               Explore More
             </button>
-            <button onClick={navigateToAllProds} className="btn transparent">
+            <button
+              onClick={() => navigateTo("/prods")}
+              className="btn transparent"
+            >
               All Prods
             </button>
           </div>
