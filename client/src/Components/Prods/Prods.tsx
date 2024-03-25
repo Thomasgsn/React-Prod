@@ -9,7 +9,7 @@ import Recommendation from "../assets/Recommendation/Recommendation";
 
 import "./Prods.css";
 
-const Prods = ({ user }) => {
+const Prods = ({ userInfo }) => {
   const [prods, setProds] = useState([]);
   const [filter, setFilter] = useState("date");
   const [search, setSearch] = useState("");
@@ -46,6 +46,7 @@ const Prods = ({ user }) => {
               maxPrice,
               setMinPrice,
               setMaxPrice,
+              userInfo
             }}
           />
           <div className="bottom flex">

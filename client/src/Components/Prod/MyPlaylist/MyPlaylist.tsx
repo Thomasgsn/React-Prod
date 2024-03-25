@@ -1,28 +1,8 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import Recommendation from "../../assets/Recommendation/Recommendation";
 
 import "./MyPlaylist.css";
 
-const MyPlaylist = () => {
-  const [prod, setProd] = useState([]);
-
-  const { id } = useParams();
-
-  useEffect(() => {
-    fetch(`http://localhost:8081/prod/${id}`)
-      .then((response) => response.json())
-      .then((prodDetail) => {
-        setProd(prodDetail[0]);
-      })
-      .catch((error) =>
-        console.error("Erreur lors de la récupération des données :", error)
-      );
-  }, [id]);
-
-  if (isNaN(id)) {
-    return <div>We cannot access to this production...</div>;
-  }
+const MyPlaylist = ({ prod }) => {
 
   if (!prod) {
     return <div>Loading...</div>;

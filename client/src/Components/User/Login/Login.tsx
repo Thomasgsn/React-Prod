@@ -100,6 +100,7 @@ const Login = () => {
                   <input
                     type="password"
                     id="password"
+                    autoComplete='current-password'
                     placeholder="Enter password"
                     onChange={(event) => {
                       setLoginPassword(event.target.value);

@@ -9,7 +9,7 @@ import Recommendation from "../assets/Recommendation/Recommendation";
 
 import "./Playlist.css";
 
-const Playlist = ({ user }) => {
+const Playlist = ({ userInfo }) => {
   const { playlistName } = useParams();
 
   const [prods, setProds] = useState([]);
@@ -31,7 +31,6 @@ const Playlist = ({ user }) => {
 
   const navigateTo = useNavigate();
 
-
   return (
     <div className="homePage flex">
       <div className="container">
@@ -47,6 +46,7 @@ const Playlist = ({ user }) => {
               maxPrice,
               setMinPrice,
               setMaxPrice,
+              userInfo,
             }} />
           <div className="bottom flex">
             <SelectedProds {...{ playlistName, prods }} />

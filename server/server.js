@@ -87,7 +87,7 @@ app.get("/user", (req, res) => {
 });
 
 app.get("/api/user/:userName", (req, res) => {
-  const sql = `SELECT * FROM user WHERE username = ?`;
+  const sql = `SELECT id, username, email, role FROM user WHERE username = ?`;
   db.query(sql, [req.params.userName], (err, result) => {
     if (err) {
       console.error(
@@ -96,17 +96,12 @@ app.get("/api/user/:userName", (req, res) => {
       );
       return;
     }
-    if(result.length === 0) {
-      console.log('Aucun utilisateur trouvé !')
-      return
+    if (result.length === 0) {
+      console.log("Aucun utilisateur trouvé !");
+      return;
     }
-    const user = result[0];
-    res.json({
-      id: user.id,
-      username: user.username,
-      email: user.email,
-      role: user.role,
-    });
+
+    res.json({ result });
   });
 });
 
@@ -303,52 +298,24 @@ app.get("/recommendations", (req, res) => {
   });
 });
 
-app.get("/recommendation/:name", (req, res) => {
-  const playlistName = req.params.playlistName;
-  const filterBy = req.query.filterBy;
-  const searchBy = req.query.searchBy;
-  const priceRange = req.query.priceRange;
-  let price = priceRange.split("-");
+app.get("/r/:id", (req, res) => {
+  const id = req.params.id;
 
-  let SQL = `SELECT p.* FROM prod p JOIN typebeat ON p.idTB = typebeat.id WHERE typebeat.name = '${playlistName}' AND p.price BETWEEN ${price[0]} AND ${price[1]}`;
+  const SQL = `SELECT song, genre, beatmaker, ytLink FROM recommendation_artist ra INNER JOIN recommendation r ON r.idArtist = ra.id WHERE r.idArtist = ${id} order by r.id DESC`;
+  const SQLname = `SELECT name FROM recommendation_artist ra WHERE ra.id = ${id}`;
 
-  if (searchBy && searchBy != "") {
-    SQL += ` AND (p.name LIKE "%${searchBy}%" OR p.tag LIKE "%${searchBy}%" OR p.name LIKE "${searchBy}%" OR p.tag LIKE "${searchBy}%" OR p.name LIKE "%${searchBy}" OR p.tag LIKE "%${searchBy}")`;
-  }
+  db.query(SQLname, (errRecoName, recoName) => {
+    db.query(SQL, (errReco, recom) => {
+      if (errRecoName) return res.json(errRecoName);
+      if (errReco) return res.json(errReco);
 
-  switch (filterBy) {
-    case "price":
-      SQL += " ORDER BY p.price ASC";
-      break;
+      const result = {
+        recoName: recoName,
+        recom: recom,
+      };
 
-    case "priceinv":
-      SQL += " ORDER BY p.price DESC";
-      break;
-
-    case "date":
-      SQL += " ORDER BY p.releaseDate DESC";
-      break;
-
-    case "dateinv":
-      SQL += " ORDER BY p.releaseDate ASC";
-      break;
-
-    case "type":
-      SQL += " ORDER BY p.idTB ASC";
-      break;
-
-    case "typeinv":
-      SQL += " ORDER BY p.idTB DESC";
-      break;
-
-    default:
-      break;
-  }
-
-  db.query(SQL, (errPlaylist, playlistProd) => {
-    if (errPlaylist) return res.json(errPlaylist);
-
-    res.json(playlistProd);
+      res.json(result);
+    });
   });
 });
 

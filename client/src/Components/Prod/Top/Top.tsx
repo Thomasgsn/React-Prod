@@ -1,40 +1,14 @@
-import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
-  IconArrowNarrowRight,
-  IconInfoCircle,
   IconUser,
-  IconBell,
   IconSearch,
 } from "@tabler/icons-react";
 
 import "./Top.css";
 
-const Top = () => {
+const Top = ({ userInfo }) => {
   const navigateTo = useNavigate();
-  const navigateToExploreMore = () => {
-    navigateTo("/home");
-  };
-  const navigateToAllProds = () => {
-    navigateTo("/home");
-  };
-
-  // const [prodMounth, setProdMounth] = useState(0);
-  const [prodTotal, setProdTotal] = useState([]);
-  const [prodMounth, setProdMounth] = useState([]);
-
-  useEffect(() => {
-    fetch("http://localhost:8081/home")
-      .then((response) => response.json())
-      .then((data) => {
-        setProdMounth(data.prodMonth);
-        setProdTotal(data.prodTotal);
-      })
-      .catch((error) =>
-        console.error("Erreur lors de la récupération des données :", error)
-      );
-  }, []);
 
   return (
     <div className="topSection">
@@ -44,7 +18,11 @@ const Top = () => {
             Welcome to the <i>_oftyn shop</i>.
           </h1>
           <p>
-            Hello <span className="welcomeUser">User</span>, Welcome back!
+            Hey{" "}
+            <span className="welcomeUser">
+              {userInfo ? userInfo.username : <></>}
+            </span>
+            , do you like this prod ? <a>Purchase it !</a>
           </p>
         </div>
         <div className="searchBar flex">
@@ -53,10 +31,7 @@ const Top = () => {
         </div>
 
         <div className="adminDiv flex">
-          <a href="#notification">
-            <IconBell className="icon" />
-          </a>
-          <a href="#user">
+          <a onClick={() => {userInfo ? navigateTo(`/u/${userInfo.id}`) : navigateTo('/login')}}>
             <IconUser className="icon" />
           </a>
         </div>

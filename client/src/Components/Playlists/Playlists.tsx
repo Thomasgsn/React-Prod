@@ -9,7 +9,7 @@ import Recommendation from "../assets/Recommendation/Recommendation";
 
 import "./Playlists.css";
 
-const Playlists = ({ user }) => {
+const Playlists = ({ userInfo }) => {
 
   const [playlist, setPlaylist] = useState([]);
   const [playlistProd, setPlaylistProd] = useState([]);
@@ -33,7 +33,7 @@ const Playlists = ({ user }) => {
       <div className="container">
         <Sidebar />
         <div className="mainContent">
-          <Top {...{  navigateTo, search, setSearch, }}/>
+          <Top {...{  navigateTo, search, setSearch, userInfo }}/>
           <div className="bottom flex">
             <MyPlaylists {...{ navigateTo, playlist, playlistProd }} />
           </div>

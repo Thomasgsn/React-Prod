@@ -10,15 +10,18 @@ import Prod from "./Components/Prod/Prod";
 import Playlists from "./Components/Playlists/Playlists";
 import Playlist from "./Components/Playlist/Playlist";
 import Recommendations from "./Components/Recommendations/Recommendations";
+import Recommendation from "./Components/Recommendation/Recommendation";
 
 import AudioPlayer from "./AudioPlayer/AudioPlayer";
 
 import "./App.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import AboutMe from "./Components/AboutMe/AboutMe";
 
 function App() {
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState(null);
+
   axios.defaults.withCredentials = true;
   useEffect(() => {
     axios
@@ -34,13 +37,19 @@ function App() {
   const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
-    axios.get(`http://localhost:8081/api/user/${username}`)
-      .then(response => {
-        setUserInfo(response.data);
-      })
-      .catch(error => {
-        console.error('Une erreur s\'est produite lors de la récupération des informations utilisateur:', error);
-      });
+    if (username) {
+      axios
+        .get(`http://localhost:8081/api/user/${username}`)
+        .then((response) => {
+          setUserInfo(response.data.result[0]);
+        })
+        .catch((error) => {
+          console.error(
+            "Une erreur s'est produite lors de la récupération des informations utilisateur:",
+            error
+          );
+        });
+    }
   }, [username]);
 
   const router = createBrowserRouter([
@@ -72,7 +81,7 @@ function App() {
       path: "/home",
       element: (
         <div>
-          <Home {...{ userInfo, username }} />
+          <Home {...{ userInfo }} />
         </div>
       ),
     },
@@ -80,7 +89,7 @@ function App() {
       path: "/shop",
       element: (
         <div>
-          <Shop />
+          <Shop {...{ userInfo }} />
         </div>
       ),
     },
@@ -88,7 +97,7 @@ function App() {
       path: "/prods",
       element: (
         <div>
-          <Prods />
+          <Prods {...{ userInfo }} />
         </div>
       ),
     },
@@ -96,7 +105,7 @@ function App() {
       path: "/prod/:id",
       element: (
         <div>
-          <Prod />
+          <Prod {...{ userInfo }} />
           <AudioPlayer />
         </div>
       ),
@@ -105,7 +114,7 @@ function App() {
       path: "/playlists",
       element: (
         <div>
-          <Playlists />
+          <Playlists {...{ userInfo }} />
         </div>
       ),
     },
@@ -113,7 +122,7 @@ function App() {
       path: "/playlist/:playlistName",
       element: (
         <div>
-          <Playlist />
+          <Playlist {...{ userInfo }} />
         </div>
       ),
     },
@@ -121,15 +130,23 @@ function App() {
       path: "/recommendations",
       element: (
         <div>
-          <Recommendations />
+          <Recommendations {...{ userInfo }} />
         </div>
       ),
     },
     {
-      path: "/recommendation/:name",
+      path: "/r/:id",
       element: (
         <div>
-          <Playlist />
+          <Recommendation {...{ userInfo }} />
+        </div>
+      ),
+    },
+    {
+      path: "/aboutme",
+      element: (
+        <div>
+          <AboutMe {...{ userInfo }} />
         </div>
       ),
     },

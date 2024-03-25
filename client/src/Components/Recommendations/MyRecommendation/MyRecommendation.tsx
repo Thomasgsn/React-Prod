@@ -16,7 +16,7 @@ const MyRecommendation = ({ artistReco }) => {
       </div>
       <div className="secContainer flex">
         {artistReco.map((a: any) => (
-          <a key={a.id} href={"/recommendation/" + a.id} className="singleItem">
+          <a key={a.id} href={"/r/" + a.id} className="singleItem">
             <img src={"/recommendations/" + a.name + ".jpg"} alt={a.name} />
             <h3>{a.name}</h3>
           </a>

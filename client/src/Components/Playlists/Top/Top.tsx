@@ -1,13 +1,12 @@
 import {
   IconUser,
-  IconBell,
   IconSearch,
   IconCircleLetterX,
 } from "@tabler/icons-react";
 
 import "./Top.css";
 
-const Top = ({ navigateTo,  search, setSearch, }) => {
+const Top = ({ navigateTo,  search, setSearch, userInfo}) => {
   return (
     <div className="topSection">
       <div className="headerSection flex">
@@ -38,10 +37,7 @@ const Top = ({ navigateTo,  search, setSearch, }) => {
         </div>
 
         <div className="userCenter flex">
-          <a href="#notification">
-            <IconBell className="icon" />
-          </a>
-          <a href="#user">
+          <a onClick={() => {userInfo ? navigateTo(`/u/${userInfo.id}`) : navigateTo('/login')}}>
             <IconUser className="icon" />
           </a>
         </div>

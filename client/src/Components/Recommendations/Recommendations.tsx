@@ -5,9 +5,11 @@ import MyRecommendation from "./MyRecommendation/MyRecommendation";
 import Sidebar from "../assets/Sidebar/Sidebar";
 
 import "./Recommendations.css";
+import { useNavigate } from "react-router-dom";
 
-const Recommendation = ({ user }) => {
+const Recommendation = ({ userInfo }) => {
   const [artistReco, setArtistReco] = useState([]);
+  const navigateTo = useNavigate();
 
   const [filter, setFilter] = useState("date");
   const [search, setSearch] = useState("");
@@ -32,10 +34,12 @@ const Recommendation = ({ user }) => {
         <div className="mainContent">
           <Top
             {...{
+              navigateTo,
               search,
               setSearch,
               filter,
               setFilter,
+              userInfo,
             }}
           />
           <div className="bottom flex">

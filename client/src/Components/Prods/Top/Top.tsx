@@ -1,6 +1,5 @@
 import {
   IconUser,
-  IconBell,
   IconSearch,
   IconArrowDown,
   IconSeparator,
@@ -20,6 +19,7 @@ const Top = ({
   maxPrice,
   setMinPrice,
   setMaxPrice,
+  userInfo,
 }) => {
   return (
     <div className="topSection">
@@ -51,10 +51,7 @@ const Top = ({
         </div>
 
         <div className="userCenter flex">
-          <a href="#notification">
-            <IconBell className="icon" />
-          </a>
-          <a href="#user">
+          <a onClick={() => {userInfo ? navigateTo(`/u/${userInfo.id}`) : navigateTo('/login')}}>
             <IconUser className="icon" />
           </a>
         </div>

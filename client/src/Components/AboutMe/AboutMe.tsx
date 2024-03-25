@@ -6,9 +6,9 @@ import Top from "./Top/Top";
 
 import Sidebar from "../assets/Sidebar/Sidebar";
 
-import "./Shop.css";
+import "./AboutMe.css";
 
-const Shop = ({ userInfo }) => {
+const AboutMe = ({ userInfo }) => {
   return (
     <div className="homePage flex">
       <div className="container">
@@ -26,4 +26,4 @@ const Shop = ({ userInfo }) => {
   );
 };
 
-export default Shop;
+export default AboutMe;

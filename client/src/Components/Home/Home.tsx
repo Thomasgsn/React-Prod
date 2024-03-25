@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
 import Top from "./Top/Top";
 import Activity from "../assets/Activity/Activity";
@@ -10,7 +8,7 @@ import Recommendation from "../assets/Recommendation/Recommendation";
 
 import "./Home.css";
 
-const Body = ({userInfo, username}) => {
+const Body = ({userInfo }) => {
   const [playlist, setPlaylist] = useState([]);
 
   useEffect(() => {

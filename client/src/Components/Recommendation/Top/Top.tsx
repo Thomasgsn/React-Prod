@@ -5,26 +5,24 @@ import { IconUser } from "@tabler/icons-react";
 import "./Top.css";
 import v1 from "../../assets/media/login_movie/1.mp4";
 import v2 from "../../assets/media/login_movie/2.mp4";
-import { useNavigate } from "react-router-dom";
 
-const Top = ({ userInfo }) => {
+const Top = ({ userInfo, navigateTo }) => {
   const videos = [v1, v2];
   const randomIndex = Math.floor(Math.random() * videos.length);
   const randomVideo = videos[randomIndex];
-  const navigateTo = useNavigate();
   return (
     <div className="topSection">
       <div className="headerSection flex">
         <div className="title">
           <h1>
-            Welcome to the <i>_oftyn shop</i>.
+            As a french producer, I want share my french inspiration
           </h1>
           <p>
-            Hello{" "}
+            hey{" "}
             <span className="welcomeUser">
               {userInfo ? userInfo.username : <></>}
             </span>
-            , Welcome back!
+            , did you know any new artists through me ?
           </p>
         </div>
         <div className="adminDiv flex">
@@ -32,30 +30,6 @@ const Top = ({ userInfo }) => {
             <IconUser className="icon" />
           </a>
         </div>
-      </div>
-
-      <div className="cardSection flex">
-        <div className="rightCard flex">
-          <h1>Use the best production</h1>
-          <p>With my prods, get the result you want !</p>
-
-          <div className="buttons flex">
-            <button onClick={() => navigateTo("/shop")} className="btn">
-              Explore More
-            </button>
-            <button
-              onClick={() => navigateTo("/prods")}
-              className="btn transparent"
-            >
-              All Prods
-            </button>
-          </div>
-
-          <div className="videoDiv">
-            <video src={randomVideo} autoPlay muted loop></video>
-          </div>
-        </div>
-        <StatsProd />
       </div>
     </div>
   );
