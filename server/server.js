@@ -301,7 +301,7 @@ app.get("/recommendations", (req, res) => {
 app.get("/r/:id", (req, res) => {
   const id = req.params.id;
 
-  const SQL = `SELECT song, genre, beatmaker, ytLink FROM recommendation_artist ra INNER JOIN recommendation r ON r.idArtist = ra.id WHERE r.idArtist = ${id} order by r.id DESC`;
+  const SQL = `SELECT song, genre, beatmaker, ytLink, spotifyLink FROM recommendation_artist ra INNER JOIN recommendation r ON r.idArtist = ra.id WHERE r.idArtist = ${id} order by r.id DESC`;
   const SQLname = `SELECT name FROM recommendation_artist ra WHERE ra.id = ${id}`;
 
   db.query(SQLname, (errRecoName, recoName) => {
