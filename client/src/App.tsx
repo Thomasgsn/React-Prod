@@ -11,16 +11,18 @@ import Playlists from "./Components/Playlists/Playlists";
 import Playlist from "./Components/Playlist/Playlist";
 import Recommendations from "./Components/Recommendations/Recommendations";
 import Recommendation from "./Components/Recommendation/Recommendation";
+import AboutMe from "./Components/AboutMe/AboutMe";
+import U from "./Components/User/U/U";
 
 import AudioPlayer from "./AudioPlayer/AudioPlayer";
 
 import "./App.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import AboutMe from "./Components/AboutMe/AboutMe";
+
 
 function App() {
-  const [username, setUsername] = useState(null);
+  const [id, setId] = useState(null);
 
   axios.defaults.withCredentials = true;
   useEffect(() => {
@@ -28,7 +30,7 @@ function App() {
       .get("http://localhost:8081/user")
       .then((res) => {
         if (res.data.valid) {
-          setUsername(res.data.username);
+          setId(res.data.id)
         }
       })
       .catch((err) => console.log(err));
@@ -37,9 +39,9 @@ function App() {
   const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
-    if (username) {
+    if (id) {
       axios
-        .get(`http://localhost:8081/api/user/${username}`)
+        .get(`http://localhost:8081/api/user/${id}`)
         .then((response) => {
           setUserInfo(response.data.result[0]);
         })
@@ -50,7 +52,7 @@ function App() {
           );
         });
     }
-  }, [username]);
+  }, [id]);
 
   const router = createBrowserRouter([
     {
@@ -147,6 +149,14 @@ function App() {
       element: (
         <div>
           <AboutMe {...{ userInfo }} />
+        </div>
+      ),
+    },
+    {
+      path: "/u/:id",
+      element: (
+        <div>
+          <U {...{ userInfo }} />
         </div>
       ),
     },

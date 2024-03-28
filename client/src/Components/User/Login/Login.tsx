@@ -48,7 +48,7 @@ const Login = () => {
         navigateTo('/login')
       }
     })
-  },[])
+  },[navigateTo])
 
   return (
     <div className="loginPage flex">
@@ -86,6 +86,7 @@ const Login = () => {
                   <input
                     type="text"
                     id="username"
+                    autoComplete='username'
                     placeholder="Enter Username"
                     onChange={(event) => {
                       setLoginUsername(event.target.value);

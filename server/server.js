@@ -25,7 +25,7 @@ app.use(
     saveUninitialized: false,
     cookie: {
       secure: false,
-      maxAge: 1000 * 60 * 60 * 24,
+      maxAge: 10000 * 60 * 60 * 24,
     },
   })
 );
@@ -80,15 +80,21 @@ app.post("/login", (req, res) => {
 
 app.get("/user", (req, res) => {
   if (req.session.username) {
-    return res.json({ valid: true, username: req.session.username });
+    const sql = `SELECT id FROM user WHERE username = '${req.session.username}'`;
+    db.query(sql, (err, result) => {
+      return res.json({
+        valid: true,
+        id: result[0].id !== null ? result[0].id : "",
+      });
+    });
   } else {
     return res.json({ valid: false });
   }
 });
 
-app.get("/api/user/:userName", (req, res) => {
-  const sql = `SELECT id, username, email, role FROM user WHERE username = ?`;
-  db.query(sql, [req.params.userName], (err, result) => {
+app.get("/api/user/:id", (req, res) => {
+  const sql = `SELECT id, username, detail, color, role FROM user WHERE id = ?`;
+  db.query(sql, [req.params.id], (err, result) => {
     if (err) {
       console.error(
         "Erreur lors de la récupération des informations utilisateur:",
@@ -316,6 +322,39 @@ app.get("/r/:id", (req, res) => {
 
       res.json(result);
     });
+  });
+});
+
+app.get("/u/:id", (req, res) => {
+  const id = req.params.id;
+
+  const SQL = `SELECT id, username, email, detail, color, role FROM user WHERE id = ${id}`;
+
+  db.query(SQL, (errVisit, userVisit) => {
+    if (errVisit) return res.json(errVisit);
+
+    res.json(userVisit);
+  });
+});
+
+// UPDATE / INSERT / DELETE
+app.post("/editu", (req, res) => {
+  const newUsername = req.body.Username;
+  const newDetail = req.body.Detail;
+  const newColor = req.body.Color;
+  const id = req.body.Id;
+
+  const SQL =
+    "UPDATE `user` SET `username` = ?, `detail` = ?, `color` = ? WHERE `user`.`id` = ?";
+  const Values = [newUsername, newDetail, newColor, id];
+
+  req.session.username = newUsername;
+
+  db.query(SQL, Values, (err, results) => {
+    if (err) {
+      return res.send(err);
+    }
+    return res.send({ Message: "User updated!" });
   });
 });
 
