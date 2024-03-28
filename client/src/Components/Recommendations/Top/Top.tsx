@@ -60,7 +60,7 @@ const Top = ({
                     : setFilter("nbReco");
                 }}
               >
-                number of recommendations{" "}
+                Number of recommendations{" "}
                 {filter === "nbReco" ? (
                   <IconArrowUp className="icon" />
                 ) : (
@@ -69,7 +69,7 @@ const Top = ({
               </button>
             ) : (
               <button className="btn flex" onClick={() => setFilter("nbReco")}>
-                number of recommendations <IconSeparator className="icon" />
+                Number of recommendations <IconSeparator className="icon" />
               </button>
             )}
 

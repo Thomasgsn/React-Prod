@@ -43,7 +43,7 @@ const MyRecommendation = ({ reco, recoName }) => {
                     </g>
                   </svg>
                 </a>
-              {/* {r.spotifyLink && r.spotifyLink != "" ? ( */}
+              {r.spotifyLink && r.spotifyLink != "" ? (
                 <a href={"https://open.spotify.com/intl-fr/track/" + r.spotifyLink} target="_blank">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -58,9 +58,9 @@ const MyRecommendation = ({ reco, recoName }) => {
                     />
                   </svg>
                 </a>
-              {/* ) : (
+               ) : (
                 <></>
-              )} */}
+              )}
               </span>
             </h3>
           </div>

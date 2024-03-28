@@ -136,11 +136,12 @@ const Top = ({
           </div>
         </div>
         <div className="price flex">
-          <div className="flex" style={{ flexDirection: "column" }}>
-            <div>
-              <span>Min Price {minPrice}</span>
+          <div className="contain flex">
+            <div className="priceBar">
+              <p className="libelle">Min Price {minPrice}</p>
               <input
                 type="range"
+                className="priceRange"
                 value={minPrice}
                 min="0"
                 max={maxPrice}
@@ -149,10 +150,11 @@ const Top = ({
                 }}
               />
             </div>
-            <div>
-              <span>Max Price {maxPrice}</span>
+            <div className="priceBar">
+              <p className="libelle">Max Price {maxPrice}</p>
               <input
                 type="range"
+                className="priceRange"
                 value={maxPrice}
                 min={minPrice}
                 max="100"

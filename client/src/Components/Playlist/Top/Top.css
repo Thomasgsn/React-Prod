@@ -56,6 +56,25 @@
           height: 100%;
         }
       }
+
+      .price {
+        .contain {
+          flex-direction: column;
+          gap: 5px;
+
+          .priceBar {
+            display: flex;
+
+            .libelle {
+              width: 7rem;
+            }
+
+            .priceRange {
+              padding: 7px 5px;
+            }
+          }
+        }
+      }
     }
   }
 

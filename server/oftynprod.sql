@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1:3306
--- Généré le : lun. 18 mars 2024 à 12:09
--- Version du serveur : 8.2.0
--- Version de PHP : 8.3.0
+-- Hôte : 127.0.0.1
+-- Généré le : jeu. 28 mars 2024 à 14:32
+-- Version du serveur : 10.4.32-MariaDB
+-- Version de PHP : 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -27,13 +27,19 @@ SET time_zone = "+00:00";
 -- Structure de la table `activity`
 --
 
-DROP TABLE IF EXISTS `activity`;
-CREATE TABLE IF NOT EXISTS `activity` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `title` varchar(11) COLLATE utf8mb4_general_ci NOT NULL,
-  `detail` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  PRIMARY KEY (`id`)
+CREATE TABLE `activity` (
+  `id` int(11) NOT NULL,
+  `date` datetime NOT NULL,
+  `detail` varchar(255) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `activity`
+--
+
+INSERT INTO `activity` (`id`, `date`, `detail`) VALUES
+(1, '2024-03-18 13:55:52', 'Created this website !'),
+(2, '2024-03-18 14:50:40', 'Create a new beat !');
 
 -- --------------------------------------------------------
 
@@ -41,13 +47,11 @@ CREATE TABLE IF NOT EXISTS `activity` (
 -- Structure de la table `comment`
 --
 
-DROP TABLE IF EXISTS `comment`;
-CREATE TABLE IF NOT EXISTS `comment` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `text` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `idUser` int NOT NULL,
-  `idProd` int NOT NULL,
-  PRIMARY KEY (`id`)
+CREATE TABLE `comment` (
+  `id` int(11) NOT NULL,
+  `text` varchar(255) NOT NULL,
+  `idUser` int(11) NOT NULL,
+  `idProd` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -56,15 +60,13 @@ CREATE TABLE IF NOT EXISTS `comment` (
 -- Structure de la table `lien`
 --
 
-DROP TABLE IF EXISTS `lien`;
-CREATE TABLE IF NOT EXISTS `lien` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `idProd` int NOT NULL,
+CREATE TABLE `lien` (
+  `id` int(11) NOT NULL,
+  `idProd` int(11) NOT NULL,
   `lienYTB` varchar(255) NOT NULL,
   `lienINSTRURAP` varchar(255) NOT NULL,
-  `lienBEATSTARS` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf16;
+  `lienBEATSTARS` varchar(255) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf16 COLLATE=utf16_general_ci;
 
 --
 -- Déchargement des données de la table `lien`
@@ -82,19 +84,17 @@ INSERT INTO `lien` (`id`, `idProd`, `lienYTB`, `lienINSTRURAP`, `lienBEATSTARS`)
 -- Structure de la table `prod`
 --
 
-DROP TABLE IF EXISTS `prod`;
-CREATE TABLE IF NOT EXISTS `prod` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf16 COLLATE utf16_general_ci NOT NULL,
+CREATE TABLE `prod` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
   `tag` varchar(255) NOT NULL COMMENT 'séparé par des ''; ''',
   `cover` varchar(255) NOT NULL,
-  `BPM` int NOT NULL,
+  `BPM` int(11) NOT NULL,
   `key` varchar(11) NOT NULL,
   `price` decimal(5,2) NOT NULL,
   `releaseDate` date DEFAULT NULL,
-  `idTB` int NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=32 DEFAULT CHARSET=utf16;
+  `idTB` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf16 COLLATE=utf16_general_ci;
 
 --
 -- Déchargement des données de la table `prod`
@@ -139,30 +139,32 @@ INSERT INTO `prod` (`id`, `name`, `tag`, `cover`, `BPM`, `key`, `price`, `releas
 -- Structure de la table `recommendation`
 --
 
-DROP TABLE IF EXISTS `recommendation`;
-CREATE TABLE IF NOT EXISTS `recommendation` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `idArtist` int NOT NULL,
+CREATE TABLE `recommendation` (
+  `id` int(11) NOT NULL,
+  `idArtist` int(11) NOT NULL,
   `song` varchar(255) NOT NULL,
   `genre` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf16 COMMENT='Mes recommandations de sons';
+  `beatmaker` varchar(255) NOT NULL,
+  `ytLink` varchar(255) NOT NULL,
+  `spotifyLink` varchar(255) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf16 COLLATE=utf16_general_ci COMMENT='Mes recommandations de sons';
 
 --
 -- Déchargement des données de la table `recommendation`
 --
 
-INSERT INTO `recommendation` (`id`, `idArtist`, `song`, `genre`) VALUES
-(4, 1, 'DANS L\'TRAP', 'RAP'),
-(1, 2, 'Casse Bélier', 'RAP'),
-(2, 3, 'VISION', 'RAP'),
-(3, 4, 'Du peu que j\'ai eu', 'RAP'),
-(5, 5, 'BELLE CHANSON', 'RAP'),
-(7, 5, 'HLM PARASOL', 'RAP'),
-(6, 6, 'À ma guise', 'RAP'),
-(8, 7, 'MA CHIENNE DE TRAPLIFE', 'RAP'),
-(9, 7, 'ZAZA PART.2', 'RAP'),
-(10, 8, 'Creeper', 'RAP');
+INSERT INTO `recommendation` (`id`, `idArtist`, `song`, `genre`, `beatmaker`, `ytLink`, `spotifyLink`) VALUES
+(4, 1, 'DANS L\'TRAP', 'RAP', 'WAYUP & Moggy', 'AapCsi3LKD8', '374qdqFUlA7IwLSuC23WQE?si=94c516d218094227'),
+(1, 2, 'Casse Bélier', 'RAP', 'IMAN', 'e48SkUmzsZI', '6fqh9PlaxH2yUZBJfgAWy6?si=44369932a8144616'),
+(2, 3, 'VISION', 'RAP', 'ASTRO & ALXNDR AGAIN', '6i1Mf8Q6K7E', '4xRfysKVUzA1xNsej0Hzfn?si=f8cca03455be4481'),
+(3, 4, 'Du peu que j\'ai eu', 'RAP', 'Elyo', 'Q_zB-QulKwQ', '7ycVi2zm6d8BTME76EUOOn?si=a8a9114c570249ff'),
+(5, 5, 'BELLE CHANSON', 'RAP', 'Lucci’', 'Hplmb1uoS74', '123MhiBKJYyALtzYNAr0G3?si=d9cd11076f6442e7'),
+(7, 5, 'HLM PARASOL', 'RAP', 'Aeron & Sobek & PushK & Giovanni21k', 'gZBkRa6p0fE', '6lVWJMQJKfvgpph5Vz1lfA?si=dda0988852e54ec9'),
+(6, 6, 'À ma guise', 'RAP', 'Boreyx & DANCE', 'HhDINtjBMes', '1HaOYE4mMGG49HOf98uLTD?si=a544a56699444030'),
+(8, 7, 'TRAPLIFE', 'RAP', 'Kosei & Louis Marguier', 'xWAb6PGBuh4', '77UO6aKVkrwzD2rEDnl6im?si=483c297780fc4127'),
+(9, 7, 'ZAZA PART.2', 'RAP', 'Kosei & Lyele', 'lX52Y6so9EI', '5wrrwpdXSeZg2XfxzfsBrO?si=98ef0a77113247be'),
+(10, 8, 'Creeper', 'RAP', 'Seak & Deathrow', 'SyLqAEZrMVQ', '0J5X7seP1iG0n8b5emNJua?si=6296065d61cc466e'),
+(11, 7, '€€€', 'RAP', 'Lyele', '3m7Osyofapo', '19AD7ujNCRURc8NAnMf1so?si=36848498a8ed4c6c');
 
 -- --------------------------------------------------------
 
@@ -170,18 +172,16 @@ INSERT INTO `recommendation` (`id`, `idArtist`, `song`, `genre`) VALUES
 -- Structure de la table `recommendation_artist`
 --
 
-DROP TABLE IF EXISTS `recommendation_artist`;
-CREATE TABLE IF NOT EXISTS `recommendation_artist` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `nom` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `recommendation_artist` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `recommendation_artist`
 --
 
-INSERT INTO `recommendation_artist` (`id`, `nom`) VALUES
+INSERT INTO `recommendation_artist` (`id`, `name`) VALUES
 (1, 'AAMO'),
 (2, 'Werenoi'),
 (3, 'ENOCK'),
@@ -189,7 +189,7 @@ INSERT INTO `recommendation_artist` (`id`, `nom`) VALUES
 (5, 'HOUDI'),
 (6, 'Zamdane'),
 (7, 'La Fève'),
-(8, 'Jolagreen');
+(8, 'Jolagreen23');
 
 -- --------------------------------------------------------
 
@@ -197,13 +197,11 @@ INSERT INTO `recommendation_artist` (`id`, `nom`) VALUES
 -- Structure de la table `typebeat`
 --
 
-DROP TABLE IF EXISTS `typebeat`;
-CREATE TABLE IF NOT EXISTS `typebeat` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(11) CHARACTER SET utf16 COLLATE utf16_general_ci NOT NULL,
-  `photo` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf16;
+CREATE TABLE `typebeat` (
+  `id` int(11) NOT NULL,
+  `name` varchar(11) NOT NULL,
+  `photo` varchar(255) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf16 COLLATE=utf16_general_ci;
 
 --
 -- Déchargement des données de la table `typebeat`
@@ -223,15 +221,13 @@ INSERT INTO `typebeat` (`id`, `name`, `photo`) VALUES
 -- Structure de la table `user`
 --
 
-DROP TABLE IF EXISTS `user`;
-CREATE TABLE IF NOT EXISTS `user` (
-  `id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL,
   `username` varchar(11) NOT NULL,
   `password` varchar(255) NOT NULL,
   `email` varchar(255) DEFAULT NULL,
-  `role` varchar(11) CHARACTER SET utf16 COLLATE utf16_general_ci NOT NULL COMMENT 'admin / user',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf16;
+  `role` varchar(11) NOT NULL COMMENT 'admin / user'
+) ENGINE=MyISAM DEFAULT CHARSET=utf16 COLLATE=utf16_general_ci;
 
 --
 -- Déchargement des données de la table `user`
@@ -241,6 +237,110 @@ INSERT INTO `user` (`id`, `username`, `password`, `email`, `role`) VALUES
 (3, 'oftyn', 'password', 'oftynprod@gmail.com', 'admin'),
 (7, 'test', 'test', 'test@email.com', 'user'),
 (10, 'admin', 'admin', 'admin@mail.com', 'admin');
+
+--
+-- Index pour les tables déchargées
+--
+
+--
+-- Index pour la table `activity`
+--
+ALTER TABLE `activity`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `comment`
+--
+ALTER TABLE `comment`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `lien`
+--
+ALTER TABLE `lien`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `prod`
+--
+ALTER TABLE `prod`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `recommendation`
+--
+ALTER TABLE `recommendation`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `recommendation_artist`
+--
+ALTER TABLE `recommendation_artist`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `typebeat`
+--
+ALTER TABLE `typebeat`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT pour les tables déchargées
+--
+
+--
+-- AUTO_INCREMENT pour la table `activity`
+--
+ALTER TABLE `activity`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT pour la table `comment`
+--
+ALTER TABLE `comment`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `lien`
+--
+ALTER TABLE `lien`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT pour la table `prod`
+--
+ALTER TABLE `prod`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+
+--
+-- AUTO_INCREMENT pour la table `recommendation`
+--
+ALTER TABLE `recommendation`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT pour la table `recommendation_artist`
+--
+ALTER TABLE `recommendation_artist`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT pour la table `typebeat`
+--
+ALTER TABLE `typebeat`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT pour la table `user`
+--
+ALTER TABLE `user`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
