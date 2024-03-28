@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : jeu. 28 mars 2024 à 14:32
+-- Généré le : jeu. 28 mars 2024 à 19:14
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -225,6 +225,8 @@ CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `username` varchar(11) NOT NULL,
   `password` varchar(255) NOT NULL,
+  `detail` varchar(255) DEFAULT NULL,
+  `color` varchar(13) NOT NULL COMMENT '#000000 default',
   `email` varchar(255) DEFAULT NULL,
   `role` varchar(11) NOT NULL COMMENT 'admin / user'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf16 COLLATE=utf16_general_ci;
@@ -233,10 +235,10 @@ CREATE TABLE `user` (
 -- Déchargement des données de la table `user`
 --
 
-INSERT INTO `user` (`id`, `username`, `password`, `email`, `role`) VALUES
-(3, 'oftyn', 'password', 'oftynprod@gmail.com', 'admin'),
-(7, 'test', 'test', 'test@email.com', 'user'),
-(10, 'admin', 'admin', 'admin@mail.com', 'admin');
+INSERT INTO `user` (`id`, `username`, `password`, `detail`, `color`, `email`, `role`) VALUES
+(1, 'oftyn', 'password', 'Producer & Web developper', '#FFFFFF', 'oftynprod@gmail.com', 'admin'),
+(7, 'test', 'test', 'test des accounts user', '#00ff04', 'test@email.com', 'user'),
+(10, 'admin', 'admin', 'to test admin', '#000000', 'admin@mail.com', 'admin');
 
 --
 -- Index pour les tables déchargées
