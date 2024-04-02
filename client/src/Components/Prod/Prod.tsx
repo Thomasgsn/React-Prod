@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import Top from "./Top/Top";
-import Listening from "./MyPlaylist/MyPlaylist";
+import MyProd from "./MyProd/MyProd";
 import Sidebar from "../assets/Sidebar/Sidebar";
-import ProdDetail from "./ProdDetail/ProdDetail";
+
+
 
 import "./Prod.css";
 
@@ -35,7 +36,9 @@ const Prod = ({ userInfo }) => {
               <div className="bottom flex">
                 We cannot access to this production...
               </div>{" "}
-              <button className="btn" onClick={() => navigateTo("/prods")}>Find a prod</button>
+              <button className="btn" onClick={() => navigateTo("/prods")}>
+                Find a prod
+              </button>
             </div>
           </div>
         </div>
@@ -50,10 +53,10 @@ const Prod = ({ userInfo }) => {
         <div className="mainContent">
           <Top {...{ userInfo }} />
           <div className="bottom flex">
-            <Listening {...{ prod }} />
+            <MyProd {...{ prod }} />
+           
           </div>
         </div>
-        <ProdDetail {...{ prod }} />
       </div>
     </div>
   );
