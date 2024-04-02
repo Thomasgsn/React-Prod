@@ -178,7 +178,7 @@ app.get("/prods", (req, res) => {
 
 app.get("/prod/:id", (req, res) => {
   const id = req.params.id;
-  const SQL = `SELECT * from prod WHERE id = ${id}`;
+  const SQL = `SELECT *, T.name AS typebeat from prod p INNER JOIN typebeat T on T.id = p.idTB WHERE p.id = ${id}`;
 
   db.query(SQL, (errProd, prodDetail) => {
     if (errProd) return res.json(errProd);
@@ -414,7 +414,7 @@ app.get("/activities", (req, res) => {
 
 // player
 app.get("/audioplayer", (req, res) => {
-  const SQLplayer = "SELECT * from `prod` ORDER BY releaseDate ASC";
+  const SQLplayer = "SELECT *, T.name AS typebeat from `prod` P INNER JOIN typebeat T on T.id = p.idTB ORDER BY releaseDate ASC";
 
   db.query(SQLplayer, (errPlayer, dataPlayer) => {
     if (errPlayer) return res.json(errPlayer);

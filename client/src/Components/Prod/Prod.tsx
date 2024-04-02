@@ -53,7 +53,7 @@ const Prod = ({ userInfo }) => {
             <Listening {...{ prod }} />
           </div>
         </div>
-        <ProdDetail />
+        <ProdDetail {...{ prod }} />
       </div>
     </div>
   );

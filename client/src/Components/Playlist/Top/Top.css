@@ -56,25 +56,6 @@
           height: 100%;
         }
       }
-
-      .price {
-        .contain {
-          flex-direction: column;
-          gap: 5px;
-
-          .priceBar {
-            display: flex;
-
-            .libelle {
-              width: 7rem;
-            }
-
-            .priceRange {
-              padding: 7px 5px;
-            }
-          }
-        }
-      }
     }
   }
 
@@ -91,6 +72,26 @@
         &:hover {
           .icon {
             transform: translateX(0);
+          }
+        }
+      }
+    }
+
+    .price {
+      .contain {
+        flex-direction: column;
+        gap: 5px;
+
+        .priceBar {
+          display: flex;
+
+          .libelle {
+            margin-left: .5rem;
+            width: 5rem;
+          }
+
+          .priceRange {
+            padding: 7px 5px;
           }
         }
       }
