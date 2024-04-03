@@ -84,7 +84,7 @@ app.get("/user", (req, res) => {
     db.query(sql, (err, result) => {
       return res.json({
         valid: true,
-        id: result[0].id !== null ? result[0].id : "",
+        id: result[0].id !== null ? result[0].id : "", // wrok stp
       });
     });
   } else {
