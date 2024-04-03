@@ -109,36 +109,12 @@ const Top = ({
                 Price <IconSeparator className="icon" />
               </button>
             )}
-
-            {filter === "type" || filter === "typeinv" ? (
-              <button
-                className="btn flex"
-                style={{
-                  backgroundColor: "var(--primarySecondColor)",
-                  color: "var(--primaryColor)",
-                }}
-                onClick={() => {
-                  filter === "type" ? setFilter("typeinv") : setFilter("type");
-                }}
-              >
-                Type Beat{" "}
-                {filter === "type" ? (
-                  <IconArrowDown className="icon" />
-                ) : (
-                  <IconArrowUp className="icon" />
-                )}
-              </button>
-            ) : (
-              <button className="btn flex" onClick={() => setFilter("type")}>
-                Type Beat <IconSeparator className="icon" />
-              </button>
-            )}
           </div>
         </div>
         <div className="price flex">
           <div className="contain flex">
             <div className="priceBar">
-              <p className="libelle">Min Price {minPrice}</p>
+              <p className="libelle">Min Price</p>
               <input
                 type="range"
                 className="priceRange"
@@ -149,9 +125,10 @@ const Top = ({
                   setMinPrice(event.target.value);
                 }}
               />
+              <p className="libelle">{minPrice} €</p>
             </div>
             <div className="priceBar">
-              <p className="libelle">Max Price {maxPrice}</p>
+              <p className="libelle">Max Price</p>
               <input
                 type="range"
                 className="priceRange"
@@ -162,6 +139,7 @@ const Top = ({
                   setMaxPrice(event.target.value);
                 }}
               />
+              <p className="libelle">{maxPrice} €</p>
             </div>
           </div>
         </div>

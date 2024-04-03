@@ -33,7 +33,7 @@ const DisplayTrack = ({
               )}
             </div>
             <div className="text">
-              {currentTrack && <p className="title">{currentTrack.name}</p>}
+              {currentTrack && <a href={"/prod/" + currentTrack.id} className="title">{currentTrack.name}</a>}
               <p>_oftyn</p>
             </div>
           </div>

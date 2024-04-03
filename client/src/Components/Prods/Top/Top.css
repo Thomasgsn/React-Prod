@@ -86,7 +86,8 @@
           display: flex;
 
           .libelle {
-            width: 7rem;
+            margin-left: .5rem;
+            width: 5rem;
           }
 
           .priceRange {

@@ -138,7 +138,7 @@ const Top = ({
         <div className="price flex">
           <div className="contain flex">
             <div className="priceBar">
-              <p className="libelle">Min Price {minPrice}</p>
+              <p className="libelle">Min Price</p>
               <input
                 type="range"
                 className="priceRange"
@@ -149,9 +149,10 @@ const Top = ({
                   setMinPrice(event.target.value);
                 }}
               />
+              <p className="libelle">{minPrice} €</p>
             </div>
             <div className="priceBar">
-              <p className="libelle">Max Price {maxPrice}</p>
+              <p className="libelle">Max Price</p>
               <input
                 type="range"
                 className="priceRange"
@@ -162,6 +163,7 @@ const Top = ({
                   setMaxPrice(event.target.value);
                 }}
               />
+              <p className="libelle">{maxPrice} €</p>
             </div>
           </div>
         </div>
