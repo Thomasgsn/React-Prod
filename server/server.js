@@ -4,6 +4,7 @@ const mysql = require("mysql");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
+var sha1 = require("js-sha1");
 const port = "8081";
 
 const app = express();
@@ -24,7 +25,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: false,
+      secure: true,
       maxAge: 10000 * 60 * 60 * 24,
     },
   })
@@ -49,7 +50,7 @@ const db = mysql.createConnection({
 app.post("/register", (req, res) => {
   const sendEmail = req.body.Mail;
   const sendUsername = req.body.Username;
-  const sendPassword = req.body.Password;
+  const sendPassword = sha1(req.body.Password);
 
   const SQL = "INSERT INTO `user` (email, username, password) VALUES (?,?,?)";
   const Values = [sendEmail, sendUsername, sendPassword];
@@ -62,7 +63,7 @@ app.post("/register", (req, res) => {
 
 app.post("/login", (req, res) => {
   const sentLoginUsername = req.body.LoginUsername;
-  const sentLoginPassword = req.body.LoginPassword;
+  const sentLoginPassword = sha1(req.body.LoginPassword);
 
   const SQL = "SELECT * FROM `user` WHERE username = ? and password = ?";
   const Values = [sentLoginUsername, sentLoginPassword];
@@ -70,8 +71,11 @@ app.post("/login", (req, res) => {
   db.query(SQL, Values, (err, result) => {
     if (err) return res.json({ Message: err });
     if (result.length > 0) {
-      req.session.username = result[0].username;
-      return res.json({ Login: true, username: req.session.username });
+      res.cookie("connectId", result[0].username, {
+        maxAge: 10000 * 60 * 60 * 24,
+        httpOnly: false,
+      });
+      return res.json({ Login: true, username: req.cookies.connectId });
     } else {
       return res.json({ Login: false });
     }
@@ -79,12 +83,12 @@ app.post("/login", (req, res) => {
 });
 
 app.get("/user", (req, res) => {
-  if (req.session.username) {
-    const sql = `SELECT id FROM user WHERE username = '${req.session.username}'`;
+  if (req.cookies.connectId) {
+    const sql = `SELECT id FROM user WHERE username = '${req.cookies.connectId}'`;
     db.query(sql, (err, result) => {
       return res.json({
         valid: true,
-        id: result[0].id !== null ? result[0].id : "", // wrok stp
+        id: result[0].id !== null ? result[0].id : "",
       });
     });
   } else {
@@ -337,7 +341,7 @@ app.get("/u/:id", (req, res) => {
   });
 });
 
-// UPDATE / INSERT / DELETE
+// CRUD
 app.post("/editu", (req, res) => {
   const newUsername = req.body.Username;
   const newDetail = req.body.Detail;
@@ -348,7 +352,10 @@ app.post("/editu", (req, res) => {
     "UPDATE `user` SET `username` = ?, `detail` = ?, `color` = ? WHERE `user`.`id` = ?";
   const Values = [newUsername, newDetail, newColor, id];
 
-  req.session.username = newUsername;
+  res.cookie("connectId", newUsername, {
+    maxAge: 900000,
+    httpOnly: true,
+  });
 
   db.query(SQL, Values, (err, results) => {
     if (err) {
@@ -414,7 +421,8 @@ app.get("/activities", (req, res) => {
 
 // player
 app.get("/audioplayer", (req, res) => {
-  const SQLplayer = "SELECT p.name, p.key, p.BPM, p.price, p.releaseDate, p.id, T.name AS typebeat  from `prod` P INNER JOIN typebeat T on T.id = p.idTB ORDER BY releaseDate ASC";
+  const SQLplayer =
+    "SELECT p.name, p.key, p.BPM, p.price, p.releaseDate, p.id, T.name AS typebeat  from `prod` P INNER JOIN typebeat T on T.id = p.idTB ORDER BY releaseDate ASC";
 
   db.query(SQLplayer, (errPlayer, dataPlayer) => {
     if (errPlayer) return res.json(errPlayer);

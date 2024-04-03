@@ -7,7 +7,10 @@ import {
   IconInfoSquareRounded,
   IconUser,
   IconUserEdit,
+  IconLogout,
 } from "@tabler/icons-react";
+
+import Cookies from "js-cookie";
 
 import Axios from "axios";
 
@@ -64,6 +67,11 @@ const U = ({ userInfo }) => {
       });
   };
 
+  const logout = () => {
+    Cookies.remove("connectId", { path: "/", domain: "localhost" });
+    navigateTo("/login");
+  };
+
   return (
     <div className="homePage flex">
       <div className="container">
@@ -109,7 +117,7 @@ const U = ({ userInfo }) => {
                               <div className="inputDiv">
                                 <label htmlFor="username">Username</label>
                                 <div className="input flex">
-                                  <IconUser className="icon" />
+                                  <IconUser className="iconUser" />
                                   <input
                                     type="text"
                                     id="username"
@@ -124,7 +132,7 @@ const U = ({ userInfo }) => {
 
                                 <label htmlFor="Detail">Detail</label>
                                 <div className="input flex">
-                                  <IconInfoSquareRounded className="icon" />
+                                  <IconInfoSquareRounded className="iconUser" />
                                   <textarea
                                     id="Detail"
                                     defaultValue={userInfo.detail}
@@ -139,7 +147,7 @@ const U = ({ userInfo }) => {
                                 <div className="inputDiv">
                                   <label htmlFor="password">Color</label>
                                   <div className="input flex">
-                                    <IconColorFilter className="icon" />
+                                    <IconColorFilter className="iconUser" />
                                     <input
                                       type="color"
                                       id="color"
@@ -185,6 +193,10 @@ const U = ({ userInfo }) => {
                 ) : (
                   <>user not found</>
                 )}
+                <button className="btn flex" onClick={logout}>
+                  <span>Logout</span>
+                  <IconLogout className="icon" />
+                </button>
               </div>
             </div>
           </div>

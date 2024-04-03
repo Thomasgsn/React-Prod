@@ -9,6 +9,37 @@
     gap: 2rem;
     align-items: flex-start;
 
+    .btn {
+      margin-top: 1rem;
+      padding: 0.8rem;
+      background: var(--primaryColor);
+      border-radius: 10px;
+      color: var(--whiteColor);
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      width: 100%;
+      gap: 0.5rem;
+      transition: 0.3s ease;
+
+      .icon {
+        color: var(--whiteColor);
+        font-size: 25px;
+        transition: 0.2s ease;
+      }
+
+      &:hover {
+        background: var(--hoverColor);
+        color: var(--blackColor);
+
+        .icon {
+          color: var(--blackColor);
+          transform: translateX(5px);
+          transition: 0.3s ease;
+        }
+      }
+    }
+
     .userInfo {
       display: flex;
 
@@ -34,7 +65,7 @@
           width: 3rem;
           height: 3rem;
           border: 2px solid;
-          border-radius: .5rem;
+          border-radius: 0.5rem;
         }
 
         .actualEdit {
@@ -59,8 +90,8 @@
           gap: 1rem;
 
           .inputDiv {
-            .icon {
-              color: var(--greyText);
+            .iconUser {
+
 
               &:hover {
                 cursor: default;
@@ -98,37 +129,6 @@
               resize: vertical;
               border: none;
               margin: 1rem 0;
-            }
-          }
-
-          .btn {
-            margin-top: 1rem;
-            padding: 0.8rem;
-            background: var(--primaryColor);
-            border-radius: 10px;
-            color: var(--whiteColor);
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            width: 100%;
-            gap: 0.5rem;
-            transition: 0.3s ease;
-
-            .icon {
-              color: var(--whiteColor);
-              font-size: 25px;
-              transition: 0.2s ease;
-            }
-
-            &:hover {
-              background: var(--hoverColor);
-              color: var(--blackColor);
-
-              .icon {
-                color: var(--blackColor);
-                transform: translateX(5px);
-                transition: 0.3s ease;
-              }
             }
           }
 

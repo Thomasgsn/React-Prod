@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : jeu. 28 mars 2024 à 19:14
+-- Généré le : mer. 03 avr. 2024 à 15:11
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -236,9 +236,9 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `username`, `password`, `detail`, `color`, `email`, `role`) VALUES
-(1, 'oftyn', 'password', 'Producer & Web developper', '#FFFFFF', 'oftynprod@gmail.com', 'admin'),
-(7, 'test', 'test', 'test des accounts user', '#00ff04', 'test@email.com', 'user'),
-(10, 'admin', 'admin', 'to test admin', '#000000', 'admin@mail.com', 'admin');
+(1, 'oftyn', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'Producer & Web developper', '#FFFFFF', 'oftynprod@gmail.com', 'admin'),
+(7, 'test', 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3', 'test des accounts user', '#00ff04', 'test@email.com', 'user'),
+(10, 'admin', 'd033e22ae348aeb5660fc2140aec35850c4da997', 'to test admin', '#000000', 'admin@mail.com', 'admin');
 
 --
 -- Index pour les tables déchargées
