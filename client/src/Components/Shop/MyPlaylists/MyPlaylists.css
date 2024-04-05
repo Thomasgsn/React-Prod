@@ -1,0 +1,102 @@
+.myPlaylistsSection {
+  min-width: 100%;
+
+  .heading {
+    width: 100%;
+    display: ruby;
+
+    .carousel {
+      .playlistTitle {
+        width: 100%;
+        text-align: start;
+        margin: 0 0 0.5rem 3rem;
+      }
+      .border {
+        border: var(--blackColor) 1px solid;
+        padding: 1rem;
+        border-radius: 1rem;
+        width: 35vw;
+      }
+
+      .carousel-items {
+        display: flex;
+        overflow: scroll hidden;
+        padding: 1rem 0;
+      }
+
+      .carousel-item {
+        flex: 1 0 8rem;
+        margin-left: 1rem;
+        scroll-snap-align: start;
+
+        .card {
+          height: 8rem;
+          width: 8rem;
+
+          h4 {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            font-size: var(--normalFontSize);
+            color: var(--blackColor);
+          }
+
+          .prodCover {
+            height: 8rem;
+            width: 8rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 918px) {
+  .prodSection {
+    .singleItem {
+      width: 200px !important;
+    }
+  }
+}
+
+/* autre */
+
+.bentoGrid {
+  width: 100%;
+
+  #flex1 {
+    flex-direction: row;
+    justify-content: space-between;
+    background: black;
+
+    .card {
+      background: green;
+      width: 30%;
+      height: 5rem;
+    }
+  }
+
+  #flex2 {
+    flex-direction: column;
+    justify-content: space-between;
+    background: red;
+
+    .card {
+      background: green;
+    }
+  }
+
+  #grid {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-template-rows: auto auto;
+    background: blue;
+
+    .card {
+      background: green;
+      margin-bottom: 1rem;
+      width: 23%;
+      height: 5rem;
+    }
+  }
+}

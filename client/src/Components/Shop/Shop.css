@@ -1,22 +1,3 @@
-.mainContent{
-  width: 82%;
-  height: 100%;
-  padding: 2rem;
-  overflow: auto;
-
-  .bottom{
-    margin-top: 2rem;
-    gap: 2rem;
-    align-items: flex-start;
-  }
-}
-
-@media screen and (max-width: 918px) {
-  .bottom{
-    flex-direction: column;
-  }
-}
-
 .homePage {
   align-items: center;
   justify-content: center;
@@ -30,10 +11,27 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(var(--bgColor), var(--whiteColor), var(--bgColor));
+    background: linear-gradient(
+      var(--bgColor),
+      var(--whiteColor),
+      var(--bgColor)
+    );
     overflow: hidden;
     border-radius: 1rem;
     box-shadow: 2px 2px 8px var(--greyText);
+
+    .shopContent {
+      width: 82%;
+      height: 100%;
+      padding: 2rem;
+      overflow: auto;
+
+      .bottom {
+        margin-top: 2rem;
+        gap: 2rem;
+        align-items: flex-start;
+      }
+    }
   }
 }
 
@@ -42,6 +40,12 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
+  }
+}
+
+@media screen and (max-width: 918px) {
+  .bottom {
+    flex-direction: column;
   }
 }
 

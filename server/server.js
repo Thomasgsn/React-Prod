@@ -127,6 +127,24 @@ app.get("/home", (req, res) => {
   });
 });
 
+app.get("/shop", (req, res) => {
+  const SQLPlaylist = "SELECT id, name FROM typebeat";
+  const SQLprod = `SELECT p.* FROM prod p WHERE p.idTB IN (SELECT tb.id FROM typebeat tb) AND p.id IN (SELECT id FROM (SELECT id, idTB, ROW_NUMBER() OVER(PARTITION BY idTB ORDER BY id DESC) AS row_num FROM prod) AS ranked WHERE row_num <= 8) ORDER BY p.idTB, p.releaseDate DESC;`;
+  
+  db.query(SQLPlaylist, (errPlaylist, dataPlaylist) => {
+    db.query(SQLprod, (errPlaylistProd, dataPlaylistProd) => {
+      if (errPlaylist) return res.json(errPlaylist);
+      if (errPlaylistProd) return res.json(errPlaylistProd);
+
+      const result = {
+        playlist: dataPlaylist,
+        playlistProd: dataPlaylistProd,
+      };
+      return res.json(result);
+    });
+  });
+});
+
 app.get("/prods", (req, res) => {
   const filterBy = req.query.filterBy;
   const searchBy = req.query.searchBy;
