@@ -1,0 +1,24 @@
+.edit {
+  li {
+    cursor: pointer;
+    font-weight: 600;
+    margin: 1rem;
+    text-decoration: underline;
+
+    &::before {
+      content: "Edit ";
+    }
+  }
+}
+
+.editThing {
+  font-weight: 600;
+  .icon {
+    &::hover {
+      transform: translateX(0.1rem);
+    }
+    &::after {
+      content: "go back";
+    }
+  }
+}

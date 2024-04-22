@@ -31,7 +31,7 @@ const Prod = ({ userInfo }) => {
       <div>
         <div className="homePage flex">
           <div className="container">
-            <Sidebar />
+        <Sidebar {...{userInfo}} />
             <div className="mainContent">
               <div className="bottom flex">
                 We cannot access to this production...

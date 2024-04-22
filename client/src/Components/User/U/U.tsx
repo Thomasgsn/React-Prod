@@ -75,7 +75,7 @@ const U = ({ userInfo }) => {
   return (
     <div className="homePage flex">
       <div className="container">
-        <Sidebar />
+        <Sidebar {...{ userInfo }} />
         <div className="userContent">
           {userVisit != null ? (
             <>

@@ -30,7 +30,7 @@ const Recommendation = ({ userInfo }) => {
   return (
     <div className="homePage flex">
       <div className="container">
-        <Sidebar />
+        <Sidebar {...{userInfo}} />
         <div className="mainContent">
           <Top
             {...{
