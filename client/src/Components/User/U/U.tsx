@@ -76,7 +76,7 @@ const U = ({ userInfo }) => {
     <div className="homePage flex">
       <div className="container">
         <Sidebar />
-        <div className="mainContent">
+        <div className="userContent">
           {userVisit != null ? (
             <>
               <Top {...{ userInfo, userVisit, id }} />
@@ -85,119 +85,123 @@ const U = ({ userInfo }) => {
             <></>
           )}
           <div className="bottom flex">
-            <div className="userInfo">
-              <div className="edit">
-                {userInfo && userVisit?.id == userInfo.id ? (
-                  <>
-                    <IconEdit
-                      className="icon"
-                      onClick={() => setDisplayEdit(!displayEdit)}
-                    />
-                  </>
-                ) : (
-                  <></>
-                )}
-              </div>
-              <div style={{ width: "100%" }}>
-                {userVisit != null ? (
-                  <div className="seeInfo">
-                    {displayEdit ? (
-                      <div className="actualEdit">
-                        <div>
+            {userInfo && userVisit?.id == userInfo.id ? (
+              <button
+                className="btn edit"
+                onClick={() => setDisplayEdit(!displayEdit)}
+              >
+                <IconEdit className="icon" />
+              </button>
+            ) : (
+              <></>
+            )}
+            <div className="userSeeInfo flex">
+              {userVisit != null ? (
+                <div className="seeInfo">
+                  {displayEdit ? (
+                    <div className="actualEdit">
+                      <div>
+                        <div className="flex" style={{ gap: "1rem" }}>
                           <IconUserEdit
                             className="icn"
                             style={{ color: newColor }}
                           />
-                          <p className="username">{newUsername}</p>
-                          <p className="detail">{newDetail}</p>
+                          <p className="username">
+                            {newUsername ? newUsername : userInfo.username}
+                          </p>
                         </div>
-                        {userInfo && displayEdit === true ? (
-                          <div className="editUser">
-                            <form action="" className="form grid">
-                              <div className="inputDiv">
-                                <label htmlFor="username">Username</label>
-                                <div className="input flex">
-                                  <IconUser className="iconUser" />
-                                  <input
-                                    type="text"
-                                    id="username"
-                                    defaultValue={userInfo.username}
-                                    autoComplete={userInfo.username}
-                                    placeholder={userInfo.username}
-                                    onChange={(event) => {
-                                      setNewUsername(event.target.value);
-                                    }}
-                                  />
-                                </div>
-
-                                <label htmlFor="Detail">Detail</label>
-                                <div className="input flex">
-                                  <IconInfoSquareRounded className="iconUser" />
-                                  <textarea
-                                    id="Detail"
-                                    defaultValue={userInfo.detail}
-                                    autoComplete={userInfo.detail}
-                                    placeholder={userInfo.detail}
-                                    onChange={(event) => {
-                                      setNewDetail(event.target.value);
-                                    }}
-                                  />
-                                </div>
-
-                                <div className="inputDiv">
-                                  <label htmlFor="password">Color</label>
-                                  <div className="input flex">
-                                    <IconColorFilter className="iconUser" />
-                                    <input
-                                      type="color"
-                                      id="color"
-                                      defaultValue={userInfo.color}
-                                      onChange={(event) => {
-                                        setNewColor(event.target.value);
-                                      }}
-                                    />
-                                  </div>
-
-                                  <button
-                                    type="submit"
-                                    className="btn flex"
-                                    onClick={editUser}
-                                  >
-                                    <span>Update Account</span>
-                                    <IconArrowRight className="icon" />
-                                  </button>
-                                </div>
-                              </div>
-                            </form>
-                          </div>
-                        ) : (
-                          <></>
-                        )}
+                        <p className="detail">{newDetail}</p>
                       </div>
-                    ) : (
-                      <>
-                        <IconUser
-                          className="icn"
-                          style={{
-                            color: userVisit.color,
-                            marginBottom: "1rem",
-                          }}
-                        />
-                        <h3>Username</h3>
-                        <p className="info">{userVisit?.username}</p>
-                        <h3>Detail</h3>
-                        <p className="info">{userVisit?.detail}</p>
-                      </>
-                    )}
-                  </div>
-                ) : (
-                  <>user not found</>
-                )}
+                      {userInfo && displayEdit === true ? (
+                        <div className="editUser">
+                          <form action="" className="form grid">
+                            <div className="inputDiv">
+                              <label htmlFor="username">Username</label>
+                              <div className="input flex">
+                                <IconUser className="iconUser" />
+                                <input
+                                  type="text"
+                                  id="username"
+                                  defaultValue={userInfo.username}
+                                  autoComplete={userInfo.username}
+                                  placeholder={userInfo.username}
+                                  onChange={(event) => {
+                                    setNewUsername(event.target.value);
+                                  }}
+                                />
+                              </div>
+
+                              <label htmlFor="Detail">Detail</label>
+                              <div className="input flex">
+                                <IconInfoSquareRounded className="iconUser" />
+                                <textarea
+                                  id="Detail"
+                                  defaultValue={userInfo.detail}
+                                  autoComplete={userInfo.detail}
+                                  placeholder={userInfo.detail}
+                                  onChange={(event) => {
+                                    setNewDetail(event.target.value);
+                                  }}
+                                />
+                              </div>
+
+                              <div className="inputDiv">
+                                <label htmlFor="password">Color</label>
+                                <div className="input flex">
+                                  <IconColorFilter className="iconUser" />
+                                  <input
+                                    type="color"
+                                    id="color"
+                                    defaultValue={userInfo.color}
+                                    onChange={(event) => {
+                                      setNewColor(event.target.value);
+                                    }}
+                                  />
+                                </div>
+
+                                <button
+                                  type="submit"
+                                  className="btn flex"
+                                  onClick={editUser}
+                                >
+                                  <span>Update Account</span>
+                                  <IconArrowRight className="icon" />
+                                </button>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      ) : (
+                        <></>
+                      )}
+                    </div>
+                  ) : (
+                    <>
+                      <IconUser
+                        className="icn"
+                        style={{
+                          color: userVisit.color,
+                          marginBottom: "1rem",
+                        }}
+                      />
+                      <h3>Username</h3>
+                      <p className="info">{userVisit?.username}</p>
+                      <h3>Detail</h3>
+                      <p className="info">{userVisit?.detail}</p>
+                    </>
+                  )}
+                </div>
+              ) : (
+                <>user not found</>
+              )}
+              {displayEdit ? (
+                <></>
+              ) : (
                 <button className="btn flex" onClick={logout}>
                   <span>Logout</span>
                   <IconLogout className="icon" />
                 </button>
-              </div>
+              )}
             </div>
           </div>
         </div>
