@@ -12,9 +12,9 @@ const AboutMe = ({ userInfo }) => {
   return (
     <div className="homePage flex">
       <div className="container">
-        <Sidebar />
+        <Sidebar {...{ userInfo }} />
         <div className="mainContent">
-          <Top {...{userInfo}} />
+          <Top {...{ userInfo }} />
           <div className="bottom flex">
             {/* <Listening />
             <Activity /> */}

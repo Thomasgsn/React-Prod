@@ -14,6 +14,8 @@ import Recommendation from "./Components/Recommendation/Recommendation";
 import AboutMe from "./Components/AboutMe/AboutMe";
 import U from "./Components/User/U/U";
 
+import Edit from "./Edit/Edit";
+
 import AudioPlayer from "./AudioPlayer/AudioPlayer";
 
 import "./App.css";
@@ -157,6 +159,14 @@ function App() {
       element: (
         <div>
           <U {...{ userInfo }} />
+        </div>
+      ),
+    },
+    {
+      path: "/edit",
+      element: (
+        <div>
+          <Edit {...{ userInfo }} />
         </div>
       ),
     },

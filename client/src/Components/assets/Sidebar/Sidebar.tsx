@@ -10,9 +10,10 @@ import {
   IconNotebook,
   IconCreditCard,
   IconInfoCircle,
+  IconEdit,
 } from "@tabler/icons-react";
 
-const Sidebar = () => {
+const Sidebar = ({ userInfo }) => {
   return (
     <div className="sidebar grid">
       <div className="logoDiv flex">
@@ -58,7 +59,6 @@ const Sidebar = () => {
       <div className="settingsDiv">
         <h3 className="divTitle">_oftyn Menu</h3>
         <ul className="menuList grid">
-        
           <li className="listItem">
             <a href="/aboutme" className="menuLink flex">
               <IconUserCircle className="icon" />
@@ -81,10 +81,17 @@ const Sidebar = () => {
           </li>
 
           <li className="listItem">
-            <a href="/home" className="menuLink flex">
-              <IconCreditCard className="icon" />
-              <span className="smallText">Payment</span>
-            </a>
+            {userInfo && userInfo.role === "admin" ? (
+              <a href="/edit" className="menuLink flex">
+                <IconEdit className="icon" />
+                <span className="smallText">Admin Edit</span>
+              </a>
+            ) : (
+              <a href="/home" className="menuLink flex">
+                <IconCreditCard className="icon" />
+                <span className="smallText">Payment</span>
+              </a>
+            )}
           </li>
         </ul>
       </div>

@@ -31,7 +31,7 @@ const Playlists = ({ userInfo }) => {
   return (
     <div className="homePage flex">
       <div className="container">
-        <Sidebar />
+        <Sidebar {...{userInfo}} />
         <div className="mainContent">
           <Top {...{  navigateTo, search, setSearch, userInfo }}/>
           <div className="bottom flex">

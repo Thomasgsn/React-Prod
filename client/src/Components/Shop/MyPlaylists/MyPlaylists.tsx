@@ -1,62 +1,119 @@
+import { useState } from "react";
+import { IconDice5 } from "@tabler/icons-react";
 import "./MyPlaylists.css";
 
-const MyPlaylists = ({ navigateTo, playlist, playlistProd }) => {
+const MyPlaylists = ({ navigateTo, playlist }) => {
+  const [index1, setIndex1] = useState(
+    Math.floor(Math.random() * playlist.length)
+  );
+  const [index2, setIndex2] = useState(
+    Math.floor(Math.random() * playlist.length)
+  );
+
+  if (index1 == index2) {
+    if (index1 == playlist.length) {
+      setIndex2(index2 - 1);
+    } else {
+      setIndex2(index2 + 1);
+    }
+  }
+
+  const reloadIndex = () => {
+    setIndex1(Math.floor(Math.random() * playlist.length));
+    setIndex2(Math.floor(Math.random() * playlist.length));
+
+    if (index1 == index2) {
+      if (index1 == playlist.length) {
+        setIndex2(index2 - 1);
+      } else {
+        setIndex2(index2 + 1);
+      }
+    }
+  };
+
   return (
-    // <div className="myPlaylistsSection">
-    //   <div className="heading">
-    //     {playlist.map((pl: any) => (
-    //       <section className="carousel flex">
-    //         <div className="flex" style={{ flexDirection: "column" }}>
-    //           <h1 className="playlistTitle">{pl.name}</h1>
-    //           <div className="border">
-    //             <ul key={pl.id} className="carousel-items">
-    //               {playlistProd.map((p: any) =>
-    //                 p.idTB === pl.id ? (
-    //                   <li key={p.id} className="carousel-item">
-    //                     <div className="card">
-    //                       <h4 className="card-title">{p.name}</h4>
-    //                       <img
-    //                         src={"/prods/cover_prods/" + p.name + p.id + ".jpg"}
-    //                         alt={`${p.name} By. _oftyn`}
-    //                         className="prodCover"
-    //                       />
-    //                     </div>
-    //                   </li>
-    //                 ) : (
-    //                   <></>
-    //                 )
-    //               )}
-    //             </ul>
-    //           </div>
-    //         </div>
-    //       </section>
-    //     ))}
-    //   </div>
-    // </div>
-    <>
-      <div className="bentoGrid">
-        <div className="flex" id="flex1">
-          <div className="card"></div>
-          <div className="card"></div>
-          <div className="card"></div>
+    <div className="myPlaylistsSection">
+      <IconDice5 className="icon" onClick={reloadIndex} />
+      <div className="bentoGrid flex">
+        <div className="col flex">
+          <div className="content duu full between">
+            <div className="flex full">
+              <div className="item full">
+                {playlist[index1] ? (
+                  <div
+                    className="playlist"
+                    // onClick={navigateTo(
+                    //   "/playlist/" + playlist[index].name.toLowerCase()
+                    // )}
+                  >
+                    <img
+                      src={
+                        "/prods/cover_prods/" +
+                        playlist[index1].prod_name +
+                        playlist[index1].prod_id +
+                        ".jpg"
+                      }
+                      alt={playlist[index1].name}
+                    />
+                  </div>
+                ) : (
+                  <></>
+                )}
+              </div>
+              <div className="item full">
+              {playlist[index2] ? (
+                  <div
+                    className="playlist"
+                    // onClick={navigateTo(
+                    //   "/playlist/" + playlist[index].name.toLowerCase()
+                    // )}
+                  >
+                    <img
+                      src={
+                        "/prods/cover_prods/" +
+                        playlist[index2].prod_name +
+                        playlist[index2].prod_id +
+                        ".jpg"
+                      }
+                      alt={playlist[index2].name}
+                    />
+                  </div>
+                ) : (
+                  <></>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="uqq full">
+            <div className="item full">test</div>
+          </div>
         </div>
-        <div id="grid">
-          <div className="card"></div>
-          <div className="card"></div>
-          <div className="card"></div>
-          <div className="card"></div>
-          <div className="card"></div>
-          <div className="card"></div>
-          <div className="card"></div>
-          <div className="card"></div>
+
+        <div className="col flex">
+          <div className="line flex">
+            <div className="item full">test</div>
+          </div>
         </div>
-        <div className="flex" id="flex2">
-          <div className="card"></div>
-          <div className="card"></div>
-          <div className="card"></div>
+
+        <div className="col flex">
+          <div className="content uqq full">
+            <div className="item full">test</div>
+          </div>
+
+          <div className="duu full between">
+            <div className="flex full">
+              <div className="item full">
+                <div className="plus full flex">+ 7</div>
+              </div>
+              <div className="item full">
+                <div className="plus full">+ 7</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

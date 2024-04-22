@@ -128,19 +128,19 @@ app.get("/home", (req, res) => {
 });
 
 app.get("/shop", (req, res) => {
-  const SQLPlaylist = "SELECT id, name FROM typebeat";
-  const SQLprod = `SELECT p.* FROM prod p WHERE p.idTB IN (SELECT tb.id FROM typebeat tb) AND p.id IN (SELECT id FROM (SELECT id, idTB, ROW_NUMBER() OVER(PARTITION BY idTB ORDER BY id DESC) AS row_num FROM prod) AS ranked WHERE row_num <= 8) ORDER BY p.idTB, p.releaseDate DESC;`;
-  
+  const SQLPlaylist =
+    "SELECT tb.id AS id, tb.name AS name, p.id AS prod_id, p.name AS prod_name FROM typebeat tb JOIN prod p ON tb.id = p.idTb JOIN (SELECT idTb, MAX(releaseDate) AS maxReleaseDate FROM prod WHERE releaseDate IS NOT NULL GROUP BY idTb) latest_prod ON p.idTb = latest_prod.idTb AND p.releaseDate = latest_prod.maxReleaseDate WHERE p.releaseDate IS NOT NULL;";
+
+  const SQLprod = `SELECT p.* FROM prod p WHERE p.idTB IN (SELECT tb.id FROM typebeat tb) AND p.id IN (SELECT id FROM (SELECT id, idTB, ROW_NUMBER() OVER(PARTITION BY idTB ORDER BY id DESC) AS row_num FROM prod) AS ranked WHERE row_num <= 8) ORDER BY p.idTB, p.id DESC;`;
   db.query(SQLPlaylist, (errPlaylist, dataPlaylist) => {
     db.query(SQLprod, (errPlaylistProd, dataPlaylistProd) => {
       if (errPlaylist) return res.json(errPlaylist);
       if (errPlaylistProd) return res.json(errPlaylistProd);
-
-      const result = {
+      const data = {
         playlist: dataPlaylist,
-        playlistProd: dataPlaylistProd,
+          playlistProd: dataPlaylistProd,
       };
-      return res.json(result);
+      return res.json(data);
     });
   });
 });

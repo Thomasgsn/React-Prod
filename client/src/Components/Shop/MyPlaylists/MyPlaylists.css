@@ -62,41 +62,96 @@
 /* autre */
 
 .bentoGrid {
+  justify-content: center;
   width: 100%;
+  height: 35vw;
 
-  #flex1 {
-    flex-direction: row;
+  .item {
+    border-radius: 1.5vw;
+    background: hsl(210, 20%, 84%);
+    text-align: center;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .full {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .between {
     justify-content: space-between;
-    background: black;
 
-    .card {
-      background: green;
-      width: 30%;
-      height: 5rem;
+    .full {
+      justify-content: space-between;
     }
   }
 
-  #flex2 {
+  .line {
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+
+    .item {
+      width: 80%;
+      height: 100%;
+    }
+  }
+
+  .col {
+    height: 100%;
+    width: 100%;
     flex-direction: column;
-    justify-content: space-between;
-    background: red;
 
-    .card {
-      background: green;
+    .content {
+      padding-bottom: 1rem;
     }
-  }
 
-  #grid {
-    display: grid;
-    grid-template-columns: auto auto auto auto;
-    grid-template-rows: auto auto;
-    background: blue;
+    .duu {
+      height: 100%;
 
-    .card {
-      background: green;
-      margin-bottom: 1rem;
-      width: 23%;
-      height: 5rem;
+      .item {
+        width: 48%;
+        justify-content: center;
+
+        .playlist {
+          width: 60%;
+          height: 60%;
+
+          img {
+            border-radius: 1vw;
+            transition: transform 0.3s ease;
+          }
+        }
+
+        &:hover {
+          .playlist {
+            img {
+              transform: scale(1.7);
+            }
+          }
+        }
+
+        .plus {
+          background-color: hsl(214, 20%, 69%);
+          color: white;
+          font-size: 2vw;
+          font-weight: 700;
+          text-transform: uppercase;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+    }
+
+    .uqq {
+      min-height: 65%;
+      .item {
+      }
     }
   }
 }
