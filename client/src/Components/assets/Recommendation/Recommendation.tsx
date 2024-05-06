@@ -41,7 +41,7 @@ const Recommendation = () => {
             <div className="users flex">
               {artistReco.map((a: any) => (
                   <a key={a.id} href={`/r/${a.id}`}>
-                    <img src={`../recommendations/${a.name}.jpg`} alt={a.name} />
+                    <img src={`../recommendations/${a.img}`} alt={a.name} />
                     <p>{a.name}</p>
                   </a>
               ))}

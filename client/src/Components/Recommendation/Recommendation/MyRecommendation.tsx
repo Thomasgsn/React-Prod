@@ -1,6 +1,10 @@
+import { IconArrowNarrowLeft } from "@tabler/icons-react";
 import "./MyRecommendation.css";
+import { useNavigate } from "react-router-dom";
 
 const MyRecommendation = ({ reco, recoName }) => {
+  const navigateTo = useNavigate();
+
   if (!reco) {
     return <div>Loading...</div>;
   }
@@ -10,6 +14,10 @@ const MyRecommendation = ({ reco, recoName }) => {
       <div className="heading flex">
         <h1>Recommendation for {recoName}</h1>
       </div>
+      <button onClick={() => navigateTo('/recommendations')} className="flex btn backbtn">
+        <IconArrowNarrowLeft className="icon" />
+        <p>go back</p>
+      </button>
       <div className="secContainer flex">
         {reco.map((r: any) => (
           <div className="singleItem" key={r.id}>

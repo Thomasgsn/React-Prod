@@ -1,7 +1,0 @@
-shop
-prod:name
-recommendation:name
-
-about me
-payment
-contact

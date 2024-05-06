@@ -64,7 +64,7 @@ const MyProd = ({ prod }) => {
           </div>
         </div>
         <img  
-          src={`/prods/cover_prods/${prod.name}${prod.id}.jpg`}
+          src={`/prods/cover_prods/${prod.cover}`}
           alt={`${prod.name} By. _oftyn`}
           className="prodCover"
         />

@@ -4,10 +4,14 @@ const mysql = require("mysql");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
+const multer = require("multer");
+const path = require("path");
 var sha1 = require("js-sha1");
+
 const port = "8081";
 
 const app = express();
+
 app.use(express.json());
 app.use(
   cors({
@@ -36,7 +40,9 @@ const currentMonth = new Date().getMonth() + 1;
 const currentYear = new Date().getFullYear();
 
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+  console.log(
+    `Server running on port ${port} - ${currentDay}/${currentMonth}/${currentYear}`
+  );
 });
 
 const db = mysql.createConnection({
@@ -46,7 +52,7 @@ const db = mysql.createConnection({
   database: "oftynprod",
 });
 
-// connection
+// TODO: Connection
 app.post("/register", (req, res) => {
   const sendEmail = req.body.Mail;
   const sendUsername = req.body.Username;
@@ -138,7 +144,7 @@ app.get("/shop", (req, res) => {
       if (errPlaylistProd) return res.json(errPlaylistProd);
       const data = {
         playlist: dataPlaylist,
-          playlistProd: dataPlaylistProd,
+        playlistProd: dataPlaylistProd,
       };
       return res.json(data);
     });
@@ -282,7 +288,7 @@ app.get("/recommendations", (req, res) => {
   const searchBy = req.query.searchBy;
 
   let SQLartistReco =
-    "SELECT ra.id, ra.name, COUNT(r.idArtist) AS nb_r FROM recommendation r JOIN recommendation_artist ra ON r.idArtist = ra.id ";
+    "SELECT ra.*, COUNT(r.idArtist) AS nb_r FROM recommendation r JOIN recommendation_artist ra ON r.idArtist = ra.id ";
 
   if (searchBy && searchBy != "") {
     SQLartistReco += ` WHERE (ra.name LIKE "%${searchBy}%" OR ra.name LIKE "${searchBy}%" OR ra.name LIKE "%${searchBy}")`;
@@ -315,7 +321,12 @@ app.get("/recommendations", (req, res) => {
       SQLartistReco += " ORDER BY ra.name DESC";
       break;
 
+    case "ida":
+      SQLartistReco += " ORDER BY ra.id ASC";
+      break;
+
     default:
+      SQLartistReco += " ORDER BY r.id ASC";
       break;
   }
 
@@ -359,34 +370,10 @@ app.get("/u/:id", (req, res) => {
   });
 });
 
-// CRUD
-app.post("/editu", (req, res) => {
-  const newUsername = req.body.Username;
-  const newDetail = req.body.Detail;
-  const newColor = req.body.Color;
-  const id = req.body.Id;
-
-  const SQL =
-    "UPDATE `user` SET `username` = ?, `detail` = ?, `color` = ? WHERE `user`.`id` = ?";
-  const Values = [newUsername, newDetail, newColor, id];
-
-  res.cookie("connectId", newUsername, {
-    maxAge: 900000,
-    httpOnly: true,
-  });
-
-  db.query(SQL, Values, (err, results) => {
-    if (err) {
-      return res.send(err);
-    }
-    return res.send({ Message: "User updated!" });
-  });
-});
-
 // assets
 app.get("/recovignette", (req, res) => {
   const SQLartistReco =
-    "SELECT DISTINCT recommendation_artist.id, recommendation_artist.name FROM recommendation JOIN recommendation_artist ON recommendation.idArtist = recommendation_artist.id ORDER BY recommendation.id DESC LIMIT 5;";
+    "SELECT DISTINCT recommendation_artist.* FROM recommendation JOIN recommendation_artist ON recommendation.idArtist = recommendation_artist.id ORDER BY recommendation.id DESC LIMIT 5;";
   const SQLnbReco = "SELECT COUNT(*) as nb FROM `recommendation`";
   const SQLnbArtist =
     "SELECT COUNT(*) AS nbArtist FROM `recommendation_artist`";
@@ -437,7 +424,7 @@ app.get("/activities", (req, res) => {
   });
 });
 
-// player
+// FIXME: Audio Player
 app.get("/audioplayer", (req, res) => {
   const SQLplayer =
     "SELECT p.name, p.key, p.BPM, p.price, p.releaseDate, p.id, T.name AS typebeat  from `prod` P INNER JOIN typebeat T on T.id = p.idTB ORDER BY releaseDate ASC";
@@ -446,5 +433,390 @@ app.get("/audioplayer", (req, res) => {
     if (errPlayer) return res.json(errPlayer);
 
     return res.json(dataPlayer);
+  });
+});
+
+// TODO: for prod upload
+const prodsDirectory = path.join(__dirname, "../client/public/prods");
+const storageProds = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, prodsDirectory);
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
+const uploadNewProd = multer({ storage: storageProds });
+
+// TODO: for reco upload
+const recoDirectory = path.join(__dirname, "../client/public/recommendations");
+const storageReco = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, recoDirectory);
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
+const uploadNewReco = multer({ storage: storageReco });
+
+// TODO: Edit User
+app.post("/editu", (req, res) => {
+  const newUsername = req.body.Username;
+  const newDetail = req.body.Detail;
+  const newColor = req.body.Color;
+  const id = req.body.Id;
+
+  const SQL =
+    "UPDATE `user` SET `username` = ?, `detail` = ?, `color` = ? WHERE `user`.`id` = ?";
+  const Values = [newUsername, newDetail, newColor, id];
+
+  res.cookie("connectId", newUsername, {
+    maxAge: 900000,
+    httpOnly: true,
+  });
+
+  db.query(SQL, Values, (err, results) => {
+    if (err) return res.send(err);
+    return res.send({ Message: "User updated!" });
+  });
+});
+
+// TODO: Prods
+app.get("/allprods", (req, res) => {
+  const id = req.query.id;
+
+  let SQL =
+    "SELECT p.*, t.name as TypeBeatName FROM prod p INNER JOIN typebeat t ON t.id = p.idTB ";
+
+  if (id && id != 0) SQL += `WHERE p.id = ${id} `;
+
+  SQL += "ORDER BY p.id ASC;";
+
+  db.query(SQL, (err, data) => {
+    if (err) return res.json(err);
+
+    return res.json(data);
+  });
+});
+
+const uploadhh = multer({});
+
+app.post(
+  "/crudprodtest",
+  // uploadhh.fields([
+  uploadNewProd.fields([
+    {
+      name: "cover",
+      maxCount: 1,
+    },
+    {
+      name: "audio",
+      maxCount: 1,
+      dest: "/audio",
+    },
+  ]),
+  (req, res) => {
+    const prod = JSON.parse(req.body.newProd);
+    const files = req.files;
+
+    let message = "Prod successfully ";
+    let SQL;
+    let Values;
+    if (prod.id === 0) {
+      SQL =
+        "INSERT INTO `prod` (`id`, `name`, `tag`, `cover`, `prodFile`, `instrurapLink`, `BPM`, `key`, `price`, `releaseDate`, `idTB`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      Values = [
+        prod.name,
+        prod.tag,
+        req.files.cover,
+        req.files.audio,
+        prod.instrurapLink,
+        prod.BPM,
+        prod.key,
+        prod.price,
+        prod.releaseDate,
+        prod.idTB,
+      ];
+      message += "added !";
+    } else {
+      SQL =
+        "UPDATE `prod` SET `name` = ?, `tag` = ?, `instrurapLink` = ?, `BPM` = ?, `key` = ?, `price` = ?, `releaseDate` = ?, `idTB` = ?";
+      Values = [
+        prod.name,
+        prod.tag,
+        prod.instrurapLink,
+        prod.BPM,
+        prod.key,
+        prod.price,
+        prod.releaseDate,
+        prod.idTB,
+      ];
+
+      if (files.cover) {
+        SQL += ", `cover` = ?";
+        Values.push(files.cover[0].originalname);
+      }
+
+      if (files.audio) {
+        SQL += ", `prodFile` = ?";
+        Values.push(files.audio[0].filename);
+      }
+
+      SQL += " WHERE `prod`.`id` = ?";
+      Values.push(prod.id);
+      message += "updated !";
+    }
+
+    db.query(SQL, Values, (err, results) => {
+      if (err) return res.send(err);
+      console.log(message);
+      return res.json(message);
+    });
+  }
+);
+app.delete("/prod/:id", (req, res) => {
+  const id = req.params.id;
+
+  const SQL = "DELETE FROM `prod` WHERE id = ?";
+  const message = "Prod successfully removed !";
+
+  db.query(SQL, [id], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.send(err);
+    }
+
+    if (results.affectedRows === 0) {
+      console.log("No prod found with the provided ID.");
+      return res
+        .status(404)
+        .json({ error: "No prod found with the provided ID." });
+    }
+
+    console.log(message);
+    return res.json({ message });
+  });
+});
+
+// TODO: Type Beat / Playlist
+app.get("/alltypebeat", (req, res) => {
+  const id = req.query.id;
+
+  let SQL = "SELECT * FROM typebeat tb ";
+
+  if (id && id != 0) SQL += `WHERE tb.id = ${id} `;
+
+  SQL += "ORDER BY tb.id ASC;";
+
+  db.query(SQL, (err, data) => {
+    if (err) return res.json(err);
+
+    return res.json(data);
+  });
+});
+app.post("/crudtypebeat", (req, res) => {
+  const typebeat = req.body.newTB;
+
+  let message = "Type Beat successfully ";
+  let SQL;
+  let Values;
+
+  if (typebeat.id === 0) {
+    SQL = "INSERT INTO `typebeat` (`id`, `name`) VALUES (NULL, ?)";
+    Values = [typebeat.name];
+    message += "added !";
+  } else {
+    SQL = "UPDATE `typebeat` SET `name` = ? WHERE `typebeat`.`id` = ?";
+    Values = [typebeat.name, typebeat.id];
+    message += "updated !";
+  }
+
+  db.query(SQL, Values, (err, results) => {
+    if (err) return res.send(err);
+    console.log(message);
+    return res.json(message);
+  });
+});
+app.delete("/playlist/:id", (req, res) => {
+  const id = req.params.id;
+
+  const SQL = "DELETE FROM `typebeat` WHERE id = ?";
+  let message;
+
+  const SQLverif = "SELECT * FROM `prod` WHERE idTB = ?";
+
+  db.query(SQLverif, [id], (err, results) => {
+    if (results.length > 0) {
+      message = "Some production have this Type Beat !";
+      console.log(message);
+      return res.json({ message });
+    } else {
+      db.query(SQL, [id], (err, results) => {
+        if (err) {
+          console.error(err);
+          return res.send(err);
+        }
+
+        if (results.affectedRows === 0) {
+          console.log("No Type Beat found with the provided ID.");
+          return res
+            .status(404)
+            .json({ error: "No Type Beat found with the provided ID." });
+        }
+        message = "Type Beat successfully removed !";
+        console.log("Recommendation successfully removed !");
+        return res.json({ message });
+      });
+    }
+  });
+});
+
+// TODO: Song Recommendation
+app.get("/allreco", (req, res) => {
+  const id = req.query.id;
+
+  let SQL =
+    "SELECT r.id, r.idArtist, r.song as songName, ra.name as artistName, r.beatmaker, r.ytLink as youtubeID, r.spotifyLink as spotifyID, ra.id as idArtist FROM recommendation r INNER JOIN recommendation_artist ra on r.idArtist = ra.id ";
+
+  if (id && id != 0) SQL += `WHERE r.id = ${id} `;
+
+  SQL += "ORDER BY r.id ASC;";
+
+  db.query(SQL, (err, data) => {
+    if (err) return res.json(err);
+
+    return res.json(data);
+  });
+});
+app.post("/crudSongReco", (req, res) => {
+  const song = req.body.song;
+
+  let message = "Song Recommendation successfully ";
+  let SQL;
+  let Values;
+
+  if (song.id === 0) {
+    SQL =
+      "INSERT INTO `recommendation` (`id`, `idArtist`, `song`, genre, beatmaker, ytLink, spotifyLink) VALUES (NULL, ?, ?, 'RAP', ?, ?, ? )";
+    Values = [
+      song.idArtist,
+      song.songName,
+      song.beatmaker,
+      song.youtubeID,
+      song.spotifyID,
+    ];
+    message += "added !";
+  } else {
+    SQL =
+      "UPDATE `recommendation` SET `idArtist` = ?, `song` = ?, `beatmaker` = ?, `ytLink` = ?, `spotifyLink` = ? WHERE `recommendation`.`id` = ?";
+    Values = [
+      song.idArtist,
+      song.songName,
+      song.beatmaker,
+      song.youtubeID,
+      song.spotifyID,
+      song.id,
+    ];
+    message += "updated !";
+  }
+
+  db.query(SQL, Values, (err, results) => {
+    if (err) return res.send(err);
+    console.log(message);
+    return res.json(message);
+  });
+});
+app.delete("/reco/:id", (req, res) => {
+  const id = req.params.id;
+
+  const SQL = "DELETE FROM `recommendation` WHERE id = ?";
+  const message = "Recommendation successfully removed !";
+
+  db.query(SQL, [id], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.send(err);
+    }
+
+    if (results.affectedRows === 0) {
+      console.log("No recommendation found with the provided ID.");
+      return res
+        .status(404)
+        .json({ error: "No recommendation found with the provided ID." });
+    }
+
+    console.log(message);
+    return res.json({ message });
+  });
+});
+
+// TODO: Artist Recommendation
+app.get("/allartistreco", (req, res) => {
+  const id = req.query.id;
+
+  let SQL = "SELECT id, name as artistName, img FROM `recommendation_artist` ";
+
+  if (id && id != 0) SQL += `WHERE id = ${id} `;
+
+  SQL += "ORDER BY id ASC;";
+
+  db.query(SQL, (err, data) => {
+    if (err) return res.json(err);
+
+    return res.json(data);
+  });
+});
+app.post("/crudArtistReco", uploadNewReco.single("file"), (req, res) => {
+  const artist = JSON.parse(req.body.artist);
+
+  let message = "Artist Recommendation successfully ";
+  let SQL;
+  let Values;
+
+  if (req.file) {
+    if (artist.id === 0) {
+      SQL =
+        "INSERT INTO `recommendation_artist` (`id`, `name`, `img`) VALUES (NULL, ?, ?)";
+      Values = [artist.artistName, req.file.originalname];
+      message += "added !";
+    } else {
+      SQL = `UPDATE recommendation_artist SET name = ?, img = ? WHERE recommendation_artist.id = ?`;
+      Values = [artist.artistName, req.file.originalname, artist.id];
+      message += "updated !";
+    }
+  } else {
+    SQL = `UPDATE recommendation_artist SET name = ? WHERE recommendation_artist.id = ?`;
+    Values = [artist.artistName, artist.id];
+    message += "updated !";
+  }
+
+  db.query(SQL, Values, (err, results) => {
+    if (err) return res.send(err);
+    console.log(message);
+    return res.json(message);
+  });
+});
+app.delete("/artistreco/:id", (req, res) => {
+  const id = req.params.id;
+
+  const SQL = "DELETE FROM `recommendation_artist` WHERE id = ?";
+  const message = "Artist Recommendation successfully removed !";
+
+  db.query(SQL, [id], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.send(err);
+    }
+
+    if (results.affectedRows === 0) {
+      console.log("No artist found with the provided ID.");
+      return res
+        .status(404)
+        .json({ error: "No artist found with the provided ID." });
+    }
+
+    console.log(message);
+    return res.json({ message });
   });
 });

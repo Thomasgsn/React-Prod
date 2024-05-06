@@ -1,21 +1,40 @@
-import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import Sidebar from "../Components/assets/Sidebar/Sidebar";
 import { IconArrowLeft } from "@tabler/icons-react";
+
+import EditPlaylist from "./Section/Playlist/Playlist";
+import EditProd from "./Section/Prod/Prod";
+import EditReco from "./Section/Reco/Reco";
+import EditRecoArtist from "./Section/RecoArtist/RecoArtist";
 
 import "./Edit.css";
 
 const Edit = ({ userInfo }) => {
-  const [changes, setChanges] = useState("none");
+  const { section } = useParams();
+  const navigateTo = useNavigate();
+
+  userInfo ? userInfo.role == "admin" ? <></> : navigateTo("/home") : <></>;
+
+  const ReturnIcon = () => {
+    return (
+      <div className="headEdit flex">
+        <IconArrowLeft onClick={() => navigateTo("/edit")} className="icon" />
+        <p className="goback">Go back</p>
+      </div>
+    );
+  };
 
   const DisplayChanges = () => {
-    switch (changes) {
-      case "none":
+    switch (section) {
+      case undefined:
         return (
           <ul className="edit">
-            <li onClick={() => setChanges("prod")}>prod</li>
-            <li onClick={() => setChanges("playlist")}>playlist</li>
-            <li onClick={() => setChanges("recommendation")}>recommendation</li>
-            <li onClick={() => setChanges("recoArtist")}>
+            <li onClick={() => navigateTo(`/edit/prod`)}>prod</li>
+            <li onClick={() => navigateTo(`/edit/playlist`)}>playlist</li>
+            <li onClick={() => navigateTo(`/edit/reco`)}>
+              song recommendation
+            </li>
+            <li onClick={() => navigateTo(`/edit/recoartist`)}>
               artist recommendation
             </li>
           </ul>
@@ -24,41 +43,29 @@ const Edit = ({ userInfo }) => {
       case "prod":
         return (
           <div className="editThing">
-            <IconArrowLeft
-              onClick={() => setChanges("none")}
-              className="icon"
-            />
-            <p>prod</p>
+            <ReturnIcon />
+            <EditProd />
           </div>
         );
       case "playlist":
         return (
           <div className="editThing">
-            <IconArrowLeft
-              onClick={() => setChanges("none")}
-              className="icon"
-            />
-            <p>playlist</p>
+            <ReturnIcon />
+            <EditPlaylist />
           </div>
         );
-      case "recommendation":
+      case "reco":
         return (
           <div className="editThing">
-            <IconArrowLeft
-              onClick={() => setChanges("none")}
-              className="icon"
-            />
-            <p>recommendation</p>
+            <ReturnIcon />
+            <EditReco />
           </div>
         );
-      case "recoArtist":
+      case "recoartist":
         return (
           <div className="editThing">
-            <IconArrowLeft
-              onClick={() => setChanges("none")}
-              className="icon"
-            />
-            <p>artist recommendation</p>
+            <ReturnIcon />
+            <EditRecoArtist />
           </div>
         );
 
@@ -69,10 +76,6 @@ const Edit = ({ userInfo }) => {
           </ul>
         );
     }
-    if (changes === null) {
-      return <></>;
-    }
-    return <></>;
   };
 
   return (
@@ -80,7 +83,7 @@ const Edit = ({ userInfo }) => {
       <div className="container">
         <Sidebar {...{ userInfo }} />
         <div className="mainContent">
-          Admin Edit
+          <p className="title">Admin Edit</p>
           <div className="bottom flex">
             <DisplayChanges />
           </div>

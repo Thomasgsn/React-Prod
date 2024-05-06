@@ -12,6 +12,19 @@
     }
   }
 
+  .backbtn {
+    font-weight: 700;
+    .icon{
+      transform: translateX(-5px);
+
+    }
+    &:hover {
+      .icon {
+        transform: translateX(-10px);
+      }
+    }
+  }
+
   .secContainer {
     width: 100%;
     margin: 1rem 0;

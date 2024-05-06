@@ -6,7 +6,6 @@
   display: none;
 }
 
-
 * {
   margin: 0;
   padding: 0;
@@ -40,8 +39,8 @@ li {
 
 img,
 video {
-  height: auto;
   width: 100%;
+  height: auto;
 }
 
 .message {
@@ -88,7 +87,16 @@ video {
   }
 }
 
-.welcomeUser{
+.wh-null{
+  width: fit-content;
+  height: fit-content;
+}
+
+button:disabled {
+  background: var(--greyText) !important;
+}
+
+.welcomeUser {
   font-weight: 700;
   font-style: italic;
 }

@@ -22,7 +22,6 @@ import "./App.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-
 function App() {
   const [id, setId] = useState(null);
 
@@ -162,8 +161,16 @@ function App() {
         </div>
       ),
     },
-    {
+  {
       path: "/edit",
+      element: (
+        <div>
+          <Edit {...{ userInfo }} />
+        </div>
+      ),
+    },
+    {
+      path: "/edit/:section",
       element: (
         <div>
           <Edit {...{ userInfo }} />

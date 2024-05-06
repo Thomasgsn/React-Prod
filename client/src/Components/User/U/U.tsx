@@ -188,6 +188,8 @@ const U = ({ userInfo }) => {
                       <p className="info">{userVisit?.username}</p>
                       <h3>Detail</h3>
                       <p className="info">{userVisit?.detail}</p>
+                      <h3>Role</h3>
+                      <p className="info">{userVisit?.role}</p>
                     </>
                   )}
                 </div>
