@@ -4,19 +4,29 @@ import {
   IconArrowDown,
   IconSeparator,
   IconArrowUp,
-  IconCircleLetterX,
+  IconX,
 } from "@tabler/icons-react";
+import { useNavigate } from "react-router-dom";
+import { UserInfo } from "../../../utils/type";
+import { Dispatch, SetStateAction } from "react";
 
 import "./Top.css";
 
 const Top = ({
-  navigateTo,
   search,
   setSearch,
   filter,
   setFilter,
   userInfo,
+}: {
+  search: string;
+  setSearch: Dispatch<SetStateAction<string>>;
+  filter: string;
+  setFilter: Dispatch<SetStateAction<string>>;
+  userInfo: UserInfo;
 }) => {
+  const navigateTo = useNavigate();
+
   return (
     <div className="topSection">
       <div className="headerSection flex">
@@ -112,7 +122,7 @@ const Top = ({
           {!search || search == "" ? (
             <IconSearch className="icon" />
           ) : (
-            <IconCircleLetterX className="icon" onClick={() => setSearch("")} />
+            <IconX className="icon" onClick={() => setSearch("")} />
           )}
         </div>
 

@@ -17,3 +17,4 @@ Vite : [Vite Dos](https://vitejs.dev/guide/)\
 Tabler : [Tabler Dos](https://tabler.io/icons)\
 JS-SHA1 : [JS-SHA1 Dos](https://www.npmjs.com/package/js-sha1)\
 JS-Cookie : [JS-Cookie Dos](https://www.npmjs.com/package/js-cookie)
+Loader : [uiball](https://uiball.com/ldrs/)

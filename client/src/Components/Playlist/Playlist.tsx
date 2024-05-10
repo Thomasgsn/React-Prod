@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
+import { UserInfo, Prods } from "../../utils/type";
+import { useParams } from "react-router-dom";
 
 import Top from "./Top/Top";
 import Sidebar from "../assets/Sidebar/Sidebar";
@@ -9,14 +9,15 @@ import Recommendation from "../assets/Recommendation/Recommendation";
 
 import "./Playlist.css";
 
-const Playlist = ({ userInfo }) => {
-  const { playlistName } = useParams();
 
-  const [prods, setProds] = useState([]);
-  const [filter, setFilter] = useState("date");
-  const [search, setSearch] = useState("");
-  const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(100);
+const Playlist = ({ userInfo }: { userInfo: UserInfo }) => {
+  const { playlistName } = useParams<string>();
+
+  const [prods, setProds] = useState<Prods[]>([]);
+  const [filter, setFilter] = useState<string>("date");
+  const [search, setSearch] = useState<string>("");
+  const [minPrice, setMinPrice] = useState<number>(0);
+  const [maxPrice, setMaxPrice] = useState<number>(100);
 
   useEffect(() => {
     fetch(`http://localhost:8081/playlist/${playlistName}?filterBy=${filter}&searchBy=${search}&priceRange=${minPrice}-${maxPrice}`)
@@ -29,7 +30,6 @@ const Playlist = ({ userInfo }) => {
       );
   }, [filter, maxPrice, minPrice, playlistName, search]);
 
-  const navigateTo = useNavigate();
 
   return (
     <div className="homePage flex">
@@ -37,7 +37,6 @@ const Playlist = ({ userInfo }) => {
         <Sidebar {...{userInfo}} />
         <div className="mainContent">
           <Top {...{
-              navigateTo,
               search,
               setSearch,
               filter,

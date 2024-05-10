@@ -1,15 +1,18 @@
+import { useNavigate } from "react-router-dom";
 import { IconArrowNarrowRight } from "@tabler/icons-react";
 
 import "./MyPlaylists.css";
+import { Playlist, Prods } from '../../../utils/type'
 
-const MyPlaylists = ({ navigateTo, playlist, playlistProd }) => {
+const MyPlaylists = ({ playlist, playlistProd }: {playlist : Playlist[], playlistProd: Prods[]}) => {
+  const navigateTo = useNavigate();
   return (
     <div className="myPlaylistsSection">
       <div className="heading flex">
         <h1>My Playlists</h1>
       </div>
       <div className="secContainer flex">
-        {playlist.map((p: any) => (
+        {playlist.map((p) => (
           <div className="singleItem" key={p.id}>
             <div className="playlistHeader flex">
               <span className="playlistName">{p.name}</span>
@@ -23,12 +26,12 @@ const MyPlaylists = ({ navigateTo, playlist, playlistProd }) => {
             </div>
 
             <div className="playlistLastProd">
-              {playlistProd.map((prod: any) => (
+              {playlistProd.map((prod) => (
                 <span className="prod" key={prod.id}>
                   {prod.idTB === p.id ? (
                     <div>
                       <img
-                        src={`prods/cover_prods/${prod.name}${prod.id}.jpg`}
+                        src={`prods/${prod.cover}`}
                       />
                     </div>
                   ) : (

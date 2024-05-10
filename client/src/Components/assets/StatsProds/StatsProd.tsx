@@ -5,6 +5,13 @@ import { IconArrowNarrowRight } from "@tabler/icons-react";
 
 import "./StatsProd.css";
 
+interface ProdTotal {
+  nbProd: number;
+}
+interface ProdMounth {
+  nbProdMounth: number;
+}
+
 const StatsProd = () => {
   const navigateTo = useNavigate();
 
@@ -12,9 +19,8 @@ const StatsProd = () => {
     navigateTo("/shop");
   };
 
-  // const [prodMounth, setProdMounth] = useState(0);
-  const [prodTotal, setProdTotal] = useState([]);
-  const [prodMounth, setProdMounth] = useState([]);
+  const [prodTotal, setProdTotal] = useState<ProdTotal[]>([]);
+  const [prodMounth, setProdMounth] = useState<ProdMounth[]>([]);
 
   useEffect(() => {
     fetch("http://localhost:8081/statsprod")
@@ -37,7 +43,7 @@ const StatsProd = () => {
             <span>
               This Mounth <br />{" "}
               <small>
-                {prodMounth.map((p: any) => (
+                {prodMounth.map((p) => (
                   <span key={p.nbProdMounth}>{p.nbProdMounth}</span>
                 ))}{" "}
                 Prods done
@@ -46,7 +52,7 @@ const StatsProd = () => {
             <span>
               All Time <br />{" "}
               <small>
-                {prodTotal.map((p: any) => (
+                {prodTotal.map((p) => (
                   <span key={p.nbProd}>{p.nbProd}</span>
                 ))}{" "}
                 Prods done

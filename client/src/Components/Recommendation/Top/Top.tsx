@@ -1,16 +1,17 @@
 import { IconUser } from "@tabler/icons-react";
+import { useNavigate } from "react-router-dom";
+import { UserInfo } from "../../../utils/type";
 
 import "./Top.css";
 
-const Top = ({ userInfo, navigateTo }) => {
+const Top = ({ userInfo }: { userInfo: UserInfo }) => {
+  const navigateTo = useNavigate();
 
   return (
     <div className="topSection">
       <div className="headerSection flex">
         <div className="title">
-          <h1>
-            As a french producer, I want share my french inspiration
-          </h1>
+          <h1>As a french producer, I want share my french inspiration</h1>
           <p>
             hey{" "}
             <span className="welcomeUser">
@@ -20,7 +21,11 @@ const Top = ({ userInfo, navigateTo }) => {
           </p>
         </div>
         <div className="adminDiv flex">
-          <a onClick={() => {userInfo ? navigateTo(`/u/${userInfo.id}`) : navigateTo('/login')}}>
+          <a
+            onClick={() => {
+              userInfo ? navigateTo(`/u/${userInfo.id}`) : navigateTo("/login");
+            }}
+          >
             <IconUser className="icon" />
           </a>
         </div>

@@ -1,21 +1,19 @@
+import { UserInfo } from "../../utils/type";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { Playlist, Prods } from '../../utils/type'
 
 import Top from "./Top/Top";
-import MyPlaylists from "./MyPlaylists/MyPlaylists";
 import Sidebar from "../assets/Sidebar/Sidebar";
+import MyPlaylists from "./MyPlaylists/MyPlaylists";
 import Recommendation from "../assets/Recommendation/Recommendation";
 
 import "./Playlists.css";
 
-const Playlists = ({ userInfo }) => {
+const Playlists = ({ userInfo }: {userInfo: UserInfo}) => {
 
-  const [playlist, setPlaylist] = useState([]);
-  const [playlistProd, setPlaylistProd] = useState([]);
-  const [search, setSearch] = useState('');
-
-  const navigateTo = useNavigate();
+  const [playlist, setPlaylist] = useState<Playlist[]>([]);
+  const [playlistProd, setPlaylistProd] = useState<Prods[]>([]);
+  const [search, setSearch] = useState<string>('');
 
   useEffect(() => {
     fetch(`http://localhost:8081/playlists?searchBy=${search}`)
@@ -33,9 +31,9 @@ const Playlists = ({ userInfo }) => {
       <div className="container">
         <Sidebar {...{userInfo}} />
         <div className="mainContent">
-          <Top {...{  navigateTo, search, setSearch, userInfo }}/>
+          <Top {...{ search, setSearch, userInfo }}/>
           <div className="bottom flex">
-            <MyPlaylists {...{ navigateTo, playlist, playlistProd }} />
+            <MyPlaylists {...{ playlist, playlistProd }} />
           </div>
       <Recommendation />
         </div>

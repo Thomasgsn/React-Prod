@@ -2,16 +2,21 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Top from "./Top/Top";
-import MyPlaylists from "./MyPlaylists/MyPlaylists";
+import Bento from "./Bento/Bento";
 import Sidebar from "../assets/Sidebar/Sidebar";
 import Recommendation from "../assets/Recommendation/Recommendation";
 
 import "./Shop.css";
 
-const Shop = ({userInfo }) => {
-  const navigateTo = useNavigate()
-  const [playlist, setPlaylist] = useState([]);
-  const [prods, setProds] = useState([]);
+import { UserInfo, Prods, Playlist } from "../../utils/type";
+
+
+const Shop = ({ userInfo }: { userInfo: UserInfo }) => {
+  const navigateTo = useNavigate();
+  const [playlist, setPlaylist] = useState<Playlist[]>([]);
+  const [prods, setProds] = useState<Prods[]>([]);
+  const [nbProds, setnbProds] = useState<number>(0);
+  const [nbPlaylist, setnbPlaylist] = useState<number>(0);
 
   useEffect(() => {
     fetch("http://localhost:8081/shop")
@@ -19,6 +24,8 @@ const Shop = ({userInfo }) => {
       .then((data) => {
         setPlaylist(data.playlist);
         setProds(data.playlistProd);
+        setnbProds(data.nbProd[0].nb);
+        setnbPlaylist(data.nbPlaylist[0].nb);
       })
       .catch((error) =>
         console.error("Erreur lors de la récupération des données :", error)
@@ -28,11 +35,11 @@ const Shop = ({userInfo }) => {
   return (
     <div className="homePage flex">
       <div className="container">
-        <Sidebar {...{userInfo}}/>
+        <Sidebar {...{ userInfo }} />
         <div className="shopContent">
           <Top {...{ userInfo, navigateTo }} />
           <div className="bottom flex">
-            <MyPlaylists {...{ navigateTo, playlist }} />
+            <Bento {...{ navigateTo, playlist, prods, nbProds, nbPlaylist }} />
           </div>
           <Recommendation />
         </div>

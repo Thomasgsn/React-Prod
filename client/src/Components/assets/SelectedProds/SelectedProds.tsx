@@ -1,6 +1,8 @@
 import "./SelectedProds.css";
 
-const SelectedProds = ({ playlistName, prods }) => {
+import { Prods } from "../../../utils/type";
+
+const SelectedProds = ({ playlistName, prods }: { playlistName: string | undefined, prods: Prods[] }) => {
   return (
     <div className="prodSection">
       <div className="heading flex">
@@ -17,10 +19,10 @@ const SelectedProds = ({ playlistName, prods }) => {
         <p>{prods.length} prods</p>
       </div>
       <div className="secContainer flex">
-        {prods.map((p: any) => (
+        {prods.map((p) => (
           <a key={p.name} href={"/prod/" + p.id} className="singleItem">
             <img
-              src={"/prods/cover_prods/" + p.name + p.id + ".jpg"}
+              src={"/prods/" + p.cover}
               alt={`${p.name} By. _oftyn`}
             />
             <div className="price flex">

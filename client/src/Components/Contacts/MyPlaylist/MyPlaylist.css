@@ -53,14 +53,14 @@
       }
 
       img {
-        border-radius: 0.25rem;
+        border-radius: .25rem;
         width: 150px;
         height: 150px;
       }
 
       h3 {
         margin-top: -8px;
-        overflow: hidden;
+        overflow: visible ;
         white-space: nowrap;
         text-overflow: ellipsis;
         font-size: var(--normalFontSize);
@@ -71,14 +71,10 @@
   }
 }
 
-@media screen and (max-width: 568px) {
+@media screen and (max-width: 918px) {
+  .playlistSection {
     .singleItem {
-      width: 24vw !important;
-      height: 140px !important;
-
-      img {
-        width: 18vw !important;
-        height: 18vw !important;
-      }
+      width: 200px !important;
+    }
   }
 }

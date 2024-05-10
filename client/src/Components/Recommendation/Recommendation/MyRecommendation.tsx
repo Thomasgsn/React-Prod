@@ -1,8 +1,10 @@
-import { IconArrowNarrowLeft } from "@tabler/icons-react";
-import "./MyRecommendation.css";
 import { useNavigate } from "react-router-dom";
+import { IconArrowNarrowLeft } from "@tabler/icons-react";
+import { SongReco} from "../../../utils/type";
 
-const MyRecommendation = ({ reco, recoName }) => {
+import "./MyRecommendation.css";
+
+const MyRecommendation = ({ reco, recoName }: { reco: SongReco[], recoName: string }) => {
   const navigateTo = useNavigate();
 
   if (!reco) {
@@ -19,7 +21,7 @@ const MyRecommendation = ({ reco, recoName }) => {
         <p>go back</p>
       </button>
       <div className="secContainer flex">
-        {reco.map((r: any) => (
+        {reco.map((r) => (
           <div className="singleItem" key={r.id}>
             <img
               src={`https://img.youtube.com/vi/${r.ytLink}/maxresdefault.jpg`}

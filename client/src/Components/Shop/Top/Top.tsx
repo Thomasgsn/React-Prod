@@ -1,11 +1,10 @@
-import StatsProd from "../../assets/StatsProds/StatsProd";
-
+import { useNavigate } from "react-router-dom";
 import { IconUser } from "@tabler/icons-react";
+import { UserInfo } from "../../../utils/type";
 
 import "./Top.css";
-import { useNavigate } from "react-router-dom";
 
-const Top = ({ userInfo }) => {
+const Top = ({ userInfo }: {userInfo: UserInfo}) => {
   const navigateTo = useNavigate();
   return (
     <div className="topSection">

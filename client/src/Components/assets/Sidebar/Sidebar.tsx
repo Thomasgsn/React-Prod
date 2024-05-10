@@ -13,7 +13,11 @@ import {
   IconEdit,
 } from "@tabler/icons-react";
 
-const Sidebar = ({ userInfo }) => {
+interface userInfo {
+  role: string;
+}
+
+const Sidebar = ({ userInfo }: { userInfo: userInfo }) => {
   return (
     <div className="sidebar grid">
       <div className="logoDiv flex">
@@ -87,7 +91,7 @@ const Sidebar = ({ userInfo }) => {
                 <span className="smallText">Admin Edit</span>
               </a>
             ) : (
-              <a href="/home" className="menuLink flex">
+              <a href="/payment" className="menuLink flex">
                 <IconCreditCard className="icon" />
                 <span className="smallText">Payment</span>
               </a>
@@ -102,9 +106,10 @@ const Sidebar = ({ userInfo }) => {
           <div className="circle1"></div>
           <div className="circle2"></div>
 
-          <h3>Report a bug!</h3>
-          <p>You find a bug, tell me about it.</p>
-          <button className="btn">Report</button>
+          <h3>Want to collab ?</h3>
+          <p>You can send me an eMail here.</p>
+          <a href="mailto:oftynprod@gmail.com"><button className="btn">Send</button></a>
+          
         </div>
       </div>
     </div>

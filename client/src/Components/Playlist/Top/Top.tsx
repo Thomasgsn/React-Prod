@@ -4,13 +4,15 @@ import {
   IconArrowDown,
   IconSeparator,
   IconArrowUp,
-  IconCircleLetterX,
+  IconX,
 } from "@tabler/icons-react";
+import { UserInfo } from "../../../utils/type";
+import { useNavigate } from "react-router-dom";
+import { Dispatch, SetStateAction } from "react";
 
 import "./Top.css";
 
 const Top = ({
-  navigateTo,
   search,
   setSearch,
   filter,
@@ -20,7 +22,18 @@ const Top = ({
   setMinPrice,
   setMaxPrice,
   userInfo,
+}: {
+  search: string;
+  setSearch: Dispatch<SetStateAction<string>>;
+  filter: string;
+  setFilter: Dispatch<SetStateAction<string>>;
+  minPrice: number;
+  setMinPrice: Dispatch<SetStateAction<number>>;
+  maxPrice: number;
+  setMaxPrice: Dispatch<SetStateAction<number>>;
+  userInfo: UserInfo;
 }) => {
+  const navigateTo = useNavigate();
   return (
     <div className="topSection">
       <div className="headerSection flex">
@@ -46,12 +59,16 @@ const Top = ({
           {!search || search == "" ? (
             <IconSearch className="icon" />
           ) : (
-            <IconCircleLetterX className="icon" onClick={() => setSearch("")} />
+            <IconX className="icon" onClick={() => setSearch("")} />
           )}
         </div>
 
         <div className="userCenter flex">
-          <a onClick={() => {userInfo ? navigateTo(`/u/${userInfo.id}`) : navigateTo('/login')}}>
+          <a
+            onClick={() => {
+              userInfo ? navigateTo(`/u/${userInfo.id}`) : navigateTo("/login");
+            }}
+          >
             <IconUser className="icon" />
           </a>
         </div>
@@ -122,7 +139,7 @@ const Top = ({
                 min="0"
                 max={maxPrice}
                 onChange={(event) => {
-                  setMinPrice(event.target.value);
+                  setMinPrice(Number(event.target.value));
                 }}
               />
               <p className="libelle">{minPrice} €</p>
@@ -136,7 +153,7 @@ const Top = ({
                 min={minPrice}
                 max="100"
                 onChange={(event) => {
-                  setMaxPrice(event.target.value);
+                  setMaxPrice(Number(event.target.value));
                 }}
               />
               <p className="libelle">{maxPrice} €</p>

@@ -21,6 +21,8 @@ import AudioPlayer from "./AudioPlayer/AudioPlayer";
 import "./App.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Contacts from "./Components/Contacts/Contacts";
+import Payment from "./Components/Payment/Payment";
 
 function App() {
   const [id, setId] = useState(null);
@@ -174,6 +176,22 @@ function App() {
       element: (
         <div>
           <Edit {...{ userInfo }} />
+        </div>
+      ),
+    },
+    {
+      path: "/contacts",
+      element: (
+        <div>
+          <Contacts {...{ userInfo }} />
+        </div>
+      ),
+    },
+    {
+      path: "/payment",
+      element: (
+        <div>
+          <Payment {...{ userInfo }} />
         </div>
       ),
     },

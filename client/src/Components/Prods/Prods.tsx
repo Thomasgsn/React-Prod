@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
 import Top from "./Top/Top";
 import SelectedProds from "../assets/SelectedProds/SelectedProds";
@@ -9,12 +8,14 @@ import Recommendation from "../assets/Recommendation/Recommendation";
 
 import "./Prods.css";
 
-const Prods = ({ userInfo }) => {
-  const [prods, setProds] = useState([]);
-  const [filter, setFilter] = useState("date");
-  const [search, setSearch] = useState("");
-  const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(100);
+import { UserInfo, Prods } from "../../utils/type";
+
+const MyProds = ({ userInfo }: { userInfo: UserInfo }) => {
+  const [prods, setProds] = useState<Prods[]>([]);
+  const [filter, setFilter] = useState<string>("date");
+  const [search, setSearch] = useState<string>("");
+  const [minPrice, setMinPrice] = useState<number>(0);
+  const [maxPrice, setMaxPrice] = useState<number>(100);
 
   useEffect(() => {
     fetch(
@@ -28,16 +29,14 @@ const Prods = ({ userInfo }) => {
         console.error("Erreur lors de la récupération des données :", error)
       );
   }, [filter, maxPrice, minPrice, search]);
-  const navigateTo = useNavigate();
 
   return (
     <div className="prodsPage flex">
       <div className="container">
-        <Sidebar {...{userInfo}} />
+        <Sidebar {...{ userInfo }} />
         <div className="mainContent">
           <Top
             {...{
-              navigateTo,
               search,
               setSearch,
               filter,
@@ -46,11 +45,11 @@ const Prods = ({ userInfo }) => {
               maxPrice,
               setMinPrice,
               setMaxPrice,
-              userInfo
+              userInfo,
             }}
           />
           <div className="bottom flex">
-            <SelectedProds {...{ prods }} />
+            <SelectedProds playlistName="" {...{ prods }} />
           </div>
           <Recommendation />
         </div>
@@ -59,4 +58,4 @@ const Prods = ({ userInfo }) => {
   );
 };
 
-export default Prods;
+export default MyProds;

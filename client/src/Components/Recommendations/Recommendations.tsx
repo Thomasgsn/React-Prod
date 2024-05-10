@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
+import { UserInfo } from "../../utils/type";
 
 import Top from "./Top/Top";
 import MyRecommendation from "./MyRecommendation/MyRecommendation";
 import Sidebar from "../assets/Sidebar/Sidebar";
 
 import "./Recommendations.css";
-import { useNavigate } from "react-router-dom";
 
-const Recommendation = ({ userInfo }) => {
+const Recommendation = ({ userInfo } : {userInfo: UserInfo}) => {
   const [artistReco, setArtistReco] = useState([]);
-  const navigateTo = useNavigate();
 
   const [filter, setFilter] = useState("date");
   const [search, setSearch] = useState("");
@@ -34,7 +33,6 @@ const Recommendation = ({ userInfo }) => {
         <div className="mainContent">
           <Top
             {...{
-              navigateTo,
               search,
               setSearch,
               filter,

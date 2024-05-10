@@ -1,12 +1,20 @@
-import {
-  IconUser,
-  IconSearch,
-  IconCircleLetterX,
-} from "@tabler/icons-react";
+import { IconUser, IconSearch, IconX } from "@tabler/icons-react";
+import { useNavigate } from "react-router-dom";
 
 import "./Top.css";
+import { Dispatch, SetStateAction } from "react";
+import { UserInfo } from "../../../utils/type";
 
-const Top = ({ navigateTo,  search, setSearch, userInfo}) => {
+const Top = ({
+  search,
+  setSearch,
+  userInfo,
+}: {
+  search: string;
+  setSearch: Dispatch<SetStateAction<string>>;
+  userInfo: UserInfo;
+}) => {
+  const navigateTo = useNavigate();
   return (
     <div className="topSection">
       <div className="headerSection flex">
@@ -32,12 +40,16 @@ const Top = ({ navigateTo,  search, setSearch, userInfo}) => {
           {!search || search == "" ? (
             <IconSearch className="icon" />
           ) : (
-            <IconCircleLetterX className="icon" onClick={() => setSearch("")} />
+            <IconX className="icon" onClick={() => setSearch("")} />
           )}
         </div>
 
         <div className="userCenter flex">
-          <a onClick={() => {userInfo ? navigateTo(`/u/${userInfo.id}`) : navigateTo('/login')}}>
+          <a
+            onClick={() => {
+              userInfo ? navigateTo(`/u/${userInfo.id}`) : navigateTo("/login");
+            }}
+          >
             <IconUser className="icon" />
           </a>
         </div>

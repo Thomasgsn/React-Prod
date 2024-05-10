@@ -3,7 +3,9 @@ import { IconArrowNarrowRight } from "@tabler/icons-react";
 
 import "./MyPlaylists.css";
 
-const MyPlaylists = ({playlist}) => {
+import { Playlist } from "../../../utils/type";
+
+const MyPlaylists = ({playlist}: {playlist: Playlist[]}) => {
 
   const navigateTo = useNavigate();
   const navigateToPlaylists = () => {
@@ -20,10 +22,10 @@ const MyPlaylists = ({playlist}) => {
         </button>
       </div>
       <div className="secContainer flex">
-        {playlist.map((p: any) => (
+        {playlist.map((p: Playlist) => (
           <a key={p.id} href={"/playlist/" + p.name.toLowerCase()} className="singleItem">
             <img
-              src={"/prods/cover_prods/" + p.prod_name + p.prod_id + ".jpg"}
+              src={"/prods/" + p.cover}
               alt={p.name}
             />
             <h3>{p.name}</h3>

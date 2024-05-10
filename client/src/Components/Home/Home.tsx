@@ -8,7 +8,9 @@ import Recommendation from "../assets/Recommendation/Recommendation";
 
 import "./Home.css";
 
-const Body = ({userInfo }) => {
+import { UserInfo } from "../../utils/type";
+
+const Body = ({ userInfo }: { userInfo: UserInfo }) => {
   const [playlist, setPlaylist] = useState([]);
 
   useEffect(() => {
@@ -25,7 +27,7 @@ const Body = ({userInfo }) => {
   return (
     <div className="homePage flex">
       <div className="container">
-        <Sidebar {...{userInfo}} />
+        <Sidebar {...{ userInfo }} />
         <div className="mainContent">
           <Top {...{ userInfo }} />
           <div className="bottom flex">
