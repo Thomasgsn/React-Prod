@@ -436,9 +436,10 @@ app.get("/activities", (req, res) => {
 });
 
 // FIXME: Audio Player
-app.get("/audioplayer", (req, res) => {
+app.get("/audioplayer/:id", (req, res) => {
+  const id = req.params.id;
   const SQLplayer =
-    "SELECT p.name, p.key, p.BPM, p.price, p.releaseDate, p.id, T.name AS typebeat  from `prod` P INNER JOIN typebeat T on T.id = p.idTB ORDER BY releaseDate ASC";
+    `SELECT p.name, p.id, p.cover, p.prodFile, p.tag, T.name AS typebeat FROM prod P INNER JOIN typebeat T ON T.id = p.idTB ORDER BY CASE WHEN p.id = ${id} THEN 0 ELSE 1 END, id DESC;`;
 
   db.query(SQLplayer, (errPlayer, dataPlayer) => {
     if (errPlayer) return res.json(errPlayer);

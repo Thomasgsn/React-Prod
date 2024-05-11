@@ -1,3 +1,6 @@
+import { Dispatch, ReactEventHandler, SetStateAction } from "react";
+import { Prods } from "../utils/type";
+
 import "./DisplayTrack.css";
 
 const DisplayTrack = ({
@@ -6,6 +9,10 @@ const DisplayTrack = ({
   setDuration,
   progressBarRef,
   handleNext,
+}: {
+  currentTrack: Prods;
+  setDuration: Dispatch<SetStateAction<number>>;
+  handleNext: ReactEventHandler<HTMLAudioElement>;
 }) => {
   const onLoadedMetadata = () => {
     const seconds = audioRef.current.duration;
@@ -18,7 +25,7 @@ const DisplayTrack = ({
       {currentTrack && (
         <div className="display ">
           <audio
-            src={`/prods/audio_prods/${currentTrack.name}${currentTrack.id}.mp3`}
+            src={`/prods/${currentTrack.prodFile}`}
             ref={audioRef}
             onEnded={handleNext}
             onLoadedMetadata={onLoadedMetadata}
@@ -27,14 +34,22 @@ const DisplayTrack = ({
             <div className="trackCover">
               {currentTrack && (
                 <img
-                  src={`/prods/cover_prods/${currentTrack.name}${currentTrack.id}.jpg`}
+                  src={`/prods/${currentTrack.cover}`}
                   alt={`${currentTrack.name} prod By. _oftyn`}
                 />
               )}
             </div>
             <div className="text">
-              {currentTrack && <a href={"/prod/" + currentTrack.id} className="title">{currentTrack.name}</a>}
-              <p>_oftyn</p>
+              {currentTrack && (
+                <a href={"/prod/" + currentTrack.id} className="title">
+                  {currentTrack.name}
+                </a>
+              )}
+              <div className="tags flex">
+                {currentTrack.tag.split("; ").map((tag: string) => (
+                  <p key={tag.replace(";", "")}>{tag.replace(";", "")}</p>
+                ))}
+              </div>
             </div>
           </div>
         </div>

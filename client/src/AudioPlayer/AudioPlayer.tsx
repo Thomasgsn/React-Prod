@@ -1,28 +1,21 @@
-import { useEffect, useRef, useState } from "react";
+import { Prods } from "../utils/type";
 import { useParams } from "react-router-dom";
-
-import DisplayTrack from "./DisplayTrack";
-import Controls from "./Controls";
-
+import { useEffect, useRef, useState } from "react";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
+
+import Controls from "./Controls";
+import DisplayTrack from "./DisplayTrack";
 
 import "./AudioPlayer.css";
 
 const AudioPlayer = () => {
-  const { id } = useParams();
+  const id = Number(useParams().id);
 
-  let idInt: number;
-  if (!isNaN(id)) {
-    idInt = parseInt(id);
-  } else {
-    idInt = 1;
-  }
-
-  const [tracks, setTracks] = useState([]);
-  const [trackIndex, setTrackIndex] = useState(idInt - 1);
-  const [currentTrack, setCurrentTrack] = useState(tracks[trackIndex]);
-  const [duration, setDuration] = useState(0);
-  const [isClicked, setIsClicked] = useState(false);
+  const [tracks, setTracks] = useState<Prods[]>([]);
+  const [duration, setDuration] = useState<number>(0);
+  const [isClicked, setIsClicked] = useState<boolean>(false);
+  const [trackIndex, setTrackIndex] = useState<number>(0);
+  const [currentTrack, setCurrentTrack] = useState<Prods>(tracks[trackIndex]);
 
   const audioRef = useRef();
   const progressBarRef = useRef();
@@ -42,16 +35,15 @@ const AudioPlayer = () => {
   };
 
   useEffect(() => {
-    fetch("http://localhost:8081/audioplayer")
+    fetch(`http://localhost:8081/audioplayer/${id}`)
       .then((response) => response.json())
       .then((dataPlayer) => {
         setTracks(dataPlayer);
-        setCurrentTrack(tracks[trackIndex]);
       })
       .catch((error) =>
         console.error("Erreur lors de la récupération des données :", error)
       );
-  }, [trackIndex, tracks]);
+  }, [id, tracks]);
 
   return (
     <div className={`audioPlayer flex ${isClicked ? "opened" : "closed"} `}>
@@ -83,13 +75,6 @@ const AudioPlayer = () => {
           setCurrentTrack,
         }}
       />
-      <div
-        style={{
-          width: "50rem",
-          height: "5rem",
-          background: "red",
-        }}
-      ></div>
     </div>
   );
 };

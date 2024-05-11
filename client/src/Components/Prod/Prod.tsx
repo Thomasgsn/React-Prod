@@ -18,6 +18,7 @@ const Prod = ({ userInfo }: { userInfo: UserInfo }) => {
     name: "",
     tag: "",
     coverProdFile: "",
+    prodFile: "",
     instrurapLink: "",
     BPM: 0,
     key: "",

@@ -9,6 +9,7 @@ export interface Prods {
   name: string;
   tag: string;
   coverProdFile: string;
+  prodFile: string;
   instrurapLink: string;
   BPM: number;
   key: string;

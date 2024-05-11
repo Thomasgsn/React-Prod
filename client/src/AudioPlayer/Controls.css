@@ -1,4 +1,4 @@
-.open{
+.open {
   justify-content: center;
   position: absolute;
   width: 60px;
@@ -9,14 +9,14 @@
   left: 50%;
   background-color: var(--primarySecondColor);
   color: var(--primaryColor);
-  transition: .3s ease;
+  transition: 0.3s ease;
   z-index: -1;
 
-  .chevron{
-    transform: translateY(-.4rem);
+  .chevron {
+    transform: translateY(-0.4rem);
   }
 
-  &:hover{
+  &:hover {
     color: var(--hoverColor);
   }
 }
@@ -33,18 +33,31 @@
   }
 
   .volume {
+    width: 10rem;
+    position: absolute;
+    right: -5.5rem;
+    top: 0.75rem;
+
     input[type="range"] {
-      position: absolute;
-      width: 5rem;
-      top: 100px;
-      left: 4px;
-      transform: rotate(-90deg);
+      opacity: 0;
+      width: 6rem;
+      transform: translateY(-7px);
+      transition: .5s cubic-bezier(1, 0.25, 1);
     }
+
     .btn {
-      position: absolute;
       top: 5px;
       left: 17px;
       scale: 0.6;
+    }
+
+    &:hover {
+      right: 1rem;
+
+      input[type="range"] {
+        opacity: 1;
+        transition: .2s;
+      }
     }
   }
 }

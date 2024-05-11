@@ -1,7 +1,3 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-
 import Top from "./Top/Top";
 
 import Sidebar from "../assets/Sidebar/Sidebar";
@@ -16,9 +12,6 @@ const AboutMe = ({ userInfo }) => {
         <div className="mainContent">
           <Top {...{ userInfo }} />
           <div className="bottom flex">
-            {/* <Listening />
-            <Activity /> */}
-            <p>Maintenance</p>
           </div>
         </div>
       </div>

@@ -1,5 +1,11 @@
-import { useEffect, useState, useCallback, useRef } from "react";
-
+import {
+  useEffect,
+  useState,
+  useCallback,
+  useRef,
+  SetStateAction,
+  Dispatch,
+} from "react";
 import {
   IconPlayerSkipBack,
   IconPlayerSkipForward,
@@ -9,9 +15,10 @@ import {
   IconVolume,
   IconVolume2,
 } from "@tabler/icons-react";
+import { Prods } from "../utils/type";
+import ProgressBar from "./ProgressBar";
 
 import "./Controls.css";
-import ProgressBar from "./ProgressBar";
 
 const Controls = ({
   audioRef,
@@ -21,6 +28,12 @@ const Controls = ({
   trackIndex,
   setTrackIndex,
   setCurrentTrack,
+}: {
+  duration: number;
+  tracks: Prods[];
+  trackIndex: number;
+  setTrackIndex: Dispatch<SetStateAction<number>>;
+  setCurrentTrack: Dispatch<SetStateAction<Prods>>;
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [timeProgress, setTimeProgress] = useState(0);
@@ -28,7 +41,7 @@ const Controls = ({
   const [volume, setVolume] = useState(80);
   const [muteVolume, setMuteVolume] = useState(false);
 
-  const playAnimationRef = useRef();
+  const playAnimationRef = useRef<number>(null);
 
   const togglePlayPause = () => {
     setIsPlaying((prev) => !prev);
@@ -36,11 +49,11 @@ const Controls = ({
 
   const handlePrevious = () => {
     if (trackIndex === 0) {
-      let lastTrackIndex = tracks.length - 1;
+      const lastTrackIndex = tracks.length - 1;
       setTrackIndex(lastTrackIndex);
       setCurrentTrack(tracks[lastTrackIndex]);
     } else {
-      setTrackIndex((prev) => prev - 1);
+      setTrackIndex((prev: number) => prev - 1);
       setCurrentTrack(tracks[trackIndex - 1]);
     }
   };
@@ -50,7 +63,7 @@ const Controls = ({
       setTrackIndex(0);
       setCurrentTrack(tracks[0]);
     } else {
-      setTrackIndex((prev) => prev + 1);
+      setTrackIndex((prev: number) => prev + 1);
       setCurrentTrack(tracks[trackIndex + 1]);
     }
   };
@@ -106,7 +119,7 @@ const Controls = ({
       </div>
       <div className="volume">
         <button className="btn" onClick={() => setMuteVolume((prev) => !prev)}>
-          {muteVolume || volume < 5 ? (
+          {muteVolume || volume < 1 ? (
             <IconVolume3 />
           ) : volume < 40 ? (
             <IconVolume2 />
@@ -119,7 +132,7 @@ const Controls = ({
           min={0}
           max={100}
           value={volume}
-          onChange={(e) => setVolume(e.target.value)}
+          onChange={(e) => setVolume(parseInt(e.target.value))}
         />
       </div>
     </div>
