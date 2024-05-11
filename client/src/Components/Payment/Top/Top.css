@@ -16,30 +16,8 @@
       }
     }
 
-    .searchBar {
-      background: var(--whiteColor);
-      border-radius: 5px;
-      gap: 1rem;
-      box-shadow: 0 2px 4px var(--inputColor);
-
-      input {
-        padding: 1rem 2rem;
-        border: none;
-        outline: none;
-        background: none;
-      }
-
-      .icon {
-        color: var(--textColor);
-        margin-right: 2rem;
-        &:hover {
-          color: var(--primaryColor);
-        }
-      }
-    }
-
     .adminDiv {
-      gap: .5rem;
+      gap: 0.5rem;
       .icon {
         font-size: var(--biggestFontSize);
         background: var(--whiteColor);
@@ -66,79 +44,10 @@
     }
   }
 
-  .cardSection {
-    margin-top: 3rem;
-    gap: 1rem;
-
-    .rightCard {
-      position: relative;
-      flex-basis: 70%;
-      height: 200px;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      margin: auto;
-      padding: 2rem;
-      border-radius: 1rem;
-      overflow: hidden;
-
-      .videoDiv {
-        position: absolute;
-        height: 100%;
-        width: 100%;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-
-        video {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-      }
-
-      h1,
-      p,
-      .btn {
-        z-index: 9;
-        transition: .2s ease;
-      }
-
-      h1 {
-        font-size: var(--h1FontSize);
-        color: var(--whiteColor);
-        font-weight: 800;
-        color: var(--whiteColor);
-      }
-
-      p {
-        padding: 1rem;
-        color: var(--hoverColor);
-        font-weight: 500;
-      }
-
-      .buttons {
-        gap: 1rem;
-
-        a {
-          box-shadow: none;
-          padding: 0.8rem 1.5rem;
-          color: var(--primaryColor);
-          border: 2px solid transparent;
-        }
-
-        .transparent {
-          background: none;
-          border: 2px solid var(--primaryColor);
-          color: var(--primaryColor);
-
-          &:hover {
-            background: var(--primaryColor);
-            color: var(--hoverColor);
-          }
-        }
-      }
+  a {
+    color: var(--primaryColor);
+    &:hover {
+      text-decoration: underline;
     }
   }
 }
@@ -147,11 +56,10 @@
   .cardSection {
     flex-direction: column;
 
-    .rightCard{
+    .rightCard {
       width: 100%;
       flex-basis: 100%;
     }
-
   }
 }
 

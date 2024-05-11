@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 import Top from "./Top/Top";
-import SelectedProds from "../assets/SelectedProds/SelectedProds";
 import Sidebar from "../assets/Sidebar/Sidebar";
+import SelectedProds from "../assets/SelectedProds/SelectedProds";
 import Recommendation from "../assets/Recommendation/Recommendation";
 
 import "./Prods.css";

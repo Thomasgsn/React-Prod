@@ -3,23 +3,31 @@
 Add oftynprod.sql to a database with the same name.\
 no password.
 
----
-
-Run for client side
+## Run server side :
 
 ```bash
+cd .\server\
+npm start
+```
+
+Open [http://localhost:8081](http://localhost:8081) _add /home at the end to see some information_
+
+## Run client side :
+
+```bash
+cd .\client\
 npm run dev
 ```
 
 Open [http://localhost:5173](http://localhost:5173)
 
-Run for server side
+## Test:
 
-```bash
-npm start
-```
+admin test:\
+<u>pass :</u> admin | <u>name :</u> admin
 
-Open [http://localhost:8081](http://localhost:8081)
+user test:\
+<u>pass :</u> test | <u>name :</u> test
 
 ## Docs
 

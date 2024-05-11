@@ -1,23 +1,10 @@
+import { IconUser } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
-import StatsProd from "../../assets/StatsProds/StatsProd";
-
-import {
-  IconArrowNarrowRight,
-  IconInfoCircle,
-  IconUser,
-  IconBell,
-  IconSearch,
-} from "@tabler/icons-react";
+import { UserInfo } from "../../../utils/type";
 
 import "./Top.css";
-import v1 from "../../assets/media/login_movie/1.mp4";
-import v2 from "../../assets/media/login_movie/2.mp4";
 
-const Top = ( {userInfo}) => {
-  const videos = [v1, v2];
-  const randomIndex = Math.floor(Math.random() * videos.length);
-  const randomVideo = videos[randomIndex];
-
+const Top = ({ userInfo }: { userInfo: UserInfo }) => {
   const navigateTo = useNavigate();
 
   return (
@@ -28,41 +15,27 @@ const Top = ( {userInfo}) => {
             Welcome to the <i>_oftyn shop</i>.
           </h1>
           <p>
-            Hello <span className="welcomeUser">{userInfo ? userInfo.username : <></>}</span>, Welcome back!
+            Hello{" "}
+            <span className="welcomeUser">
+              {userInfo ? userInfo.username : <></>}
+            </span>
+            , you want one of my prods ?
           </p>
-        </div>
-        <div className="searchBar flex">
-          <input type="text" placeholder="Search" />
-          <IconSearch className="icon" />
         </div>
 
         <div className="adminDiv flex">
-          <a onClick={() => {userInfo ? navigateTo(`/u/${userInfo.id}`) : navigateTo('/login')}}>
+          <a
+            onClick={() => {
+              userInfo ? navigateTo(`/u/${userInfo.id}`) : navigateTo("/login");
+            }}
+          >
             <IconUser className="icon" />
           </a>
         </div>
       </div>
-
-      <div className="cardSection flex">
-        <div className="rightCard flex">
-          <h1>Use the best production</h1>
-          <p>With my prods, get the result you want !</p>
-
-          <div className="buttons flex">
-            <button onClick={() => navigateTo("/home")} className="btn">
-              Explore More
-            </button>
-            <button onClick={() => navigateTo("/prods")} className="btn transparent">
-              All Prods
-            </button>
-          </div>
-
-          <div className="videoDiv">
-            <video src={randomVideo} autoPlay muted loop></video>
-          </div>
-        </div>
-        <StatsProd />
-      </div>
+      go directly to this link to buy my prods
+      <br />
+      <a href="https://www.instrurap.fr/p/_Oftyn">link</a>
     </div>
   );
 };

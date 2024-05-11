@@ -61,7 +61,7 @@
 
 /* autre */
 
-.cursor{
+.cursor {
   cursor: pointer;
 }
 
@@ -115,11 +115,11 @@
           color: var(--blackColor);
           font-weight: 600;
           justify-content: space-between;
-          margin-bottom: .5rem;
+          margin-bottom: 0.5rem;
         }
 
         .prod {
-          padding: 1rem 1rem .8rem 1rem;
+          padding: 1rem 1rem 0.8rem 1rem;
           border-radius: 1rem;
 
           .imgName {
@@ -201,14 +201,14 @@
           img {
             border-radius: 1vw;
             transition: transform 0.3s ease;
-            margin-top: -2.5vw;
+            margin-top: -2vw;
           }
         }
 
         &:hover {
           .playlist {
             img {
-              transform: scale(1.7);
+              transform: scale(1.8);
             }
 
             .itemPlaylistName {
@@ -254,11 +254,36 @@
             td {
               width: 11vw;
               height: auto;
+
               img {
                 width: 10vw;
                 height: 10vw;
-                border-radius: 0.25rem;
+                border-radius: 1vw;
                 object-fit: cover;
+              }
+
+              img.top {
+                margin-bottom: 1rem;
+              }
+
+              img.prod1:hover {
+                transform: translate(55%, 57%) scale(2.5);
+                border-radius: 0;
+              }
+
+              img.prod2:hover {
+                transform: translate(-55%, 57%) scale(2.5);
+                border-radius: 0;
+              }
+
+              img.prod3:hover {
+                transform: translate(55%, -57%) scale(2.5);
+                border-radius: 0;
+              }
+
+              img.prod4:hover {
+                transform: translate(-55%, -57%) scale(2.5);
+                border-radius: 0;
               }
             }
           }

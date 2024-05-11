@@ -12,11 +12,6 @@ const Payment = ({ userInfo }: { userInfo: UserInfo }) => {
         <Sidebar {...{ userInfo }} />
         <div className="mainContent">
           <Top {...{ userInfo }} />
-          <div className="bottom flex">
-            {/* <Listening />
-            <Activity /> */}
-            <p>Maintenance</p>
-          </div>
         </div>
       </div>
     </div>

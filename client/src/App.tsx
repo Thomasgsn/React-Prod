@@ -1,3 +1,5 @@
+import { UserInfo } from "./utils/type";
+import { useEffect, useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Login from "./Components/User/Login/Login";
@@ -14,18 +16,16 @@ import Recommendation from "./Components/Recommendation/Recommendation";
 import AboutMe from "./Components/AboutMe/AboutMe";
 import U from "./Components/User/U/U";
 
+import axios from "axios";
 import Edit from "./Edit/Edit";
-
+import Payment from "./Components/Payment/Payment";
 import AudioPlayer from "./AudioPlayer/AudioPlayer";
+import Contacts from "./Components/Contacts/Contacts";
 
 import "./App.css";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import Contacts from "./Components/Contacts/Contacts";
-import Payment from "./Components/Payment/Payment";
 
 function App() {
-  const [id, setId] = useState(null);
+  const [id, setId] = useState<number>(0);
 
   axios.defaults.withCredentials = true;
   useEffect(() => {
@@ -33,13 +33,17 @@ function App() {
       .get("http://localhost:8081/user")
       .then((res) => {
         if (res.data.valid) {
-          setId(res.data.id)
+          setId(res.data.id);
         }
       })
       .catch((err) => console.log(err));
   }, []);
 
-  const [userInfo, setUserInfo] = useState(null);
+  const [userInfo, setUserInfo] = useState<UserInfo>({
+    id: 0,
+    username: "",
+    role: "",
+  });
 
   useEffect(() => {
     if (id) {
@@ -60,156 +64,80 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: (
-        <div>
-          <OnEnter />
-        </div>
-      ),
+      element: <OnEnter />,
     },
     {
       path: "/login",
-      element: (
-        <div>
-          <Login />
-        </div>
-      ),
+      element: <Login />,
     },
     {
       path: "/register",
-      element: (
-        <div>
-          <Register />
-        </div>
-      ),
+      element: <Register />,
     },
     {
       path: "/home",
-      element: (
-        <div>
-          <Home {...{ userInfo }} />
-        </div>
-      ),
+      element: <Home {...{ userInfo }} />,
     },
     {
       path: "/shop",
-      element: (
-        <div>
-          <Shop {...{ userInfo }} />
-        </div>
-      ),
+      element: <Shop {...{ userInfo }} />,
     },
     {
       path: "/prods",
-      element: (
-        <div>
-          <Prods {...{ userInfo }} />
-        </div>
-      ),
+      element: <Prods {...{ userInfo }} />,
     },
     {
       path: "/prod/:id",
       element: (
-        <div>
+        <>
           <Prod {...{ userInfo }} />
           <AudioPlayer />
-        </div>
+        </>
       ),
     },
     {
       path: "/playlists",
-      element: (
-        <div>
-          <Playlists {...{ userInfo }} />
-        </div>
-      ),
+      element: <Playlists {...{ userInfo }} />,
     },
     {
       path: "/playlist/:playlistName",
-      element: (
-        <div>
-          <Playlist {...{ userInfo }} />
-        </div>
-      ),
+      element: <Playlist {...{ userInfo }} />,
     },
     {
       path: "/recommendations",
-      element: (
-        <div>
-          <Recommendations {...{ userInfo }} />
-        </div>
-      ),
+      element: <Recommendations {...{ userInfo }} />,
     },
     {
       path: "/r/:id",
-      element: (
-        <div>
-          <Recommendation {...{ userInfo }} />
-        </div>
-      ),
+      element: <Recommendation {...{ userInfo }} />,
     },
     {
       path: "/aboutme",
-      element: (
-        <div>
-          <AboutMe {...{ userInfo }} />
-        </div>
-      ),
+      element: <AboutMe {...{ userInfo }} />,
     },
     {
       path: "/u/:id",
-      element: (
-        <div>
-          <U {...{ userInfo }} />
-        </div>
-      ),
+      element: <U {...{ userInfo }} />,
     },
-  {
+    {
       path: "/edit",
-      element: (
-        <div>
-          <Edit {...{ userInfo }} />
-        </div>
-      ),
+      element: <Edit {...{ userInfo }} />,
     },
     {
       path: "/edit/:section",
-      element: (
-        <div>
-          <Edit {...{ userInfo }} />
-        </div>
-      ),
+      element: <Edit {...{ userInfo }} />,
     },
     {
       path: "/contacts",
-      element: (
-        <div>
-          <Contacts {...{ userInfo }} />
-        </div>
-      ),
+      element: <Contacts {...{ userInfo }} />,
     },
     {
       path: "/payment",
-      element: (
-        <div>
-          <Payment {...{ userInfo }} />
-        </div>
-      ),
-    },
-    {
-      path: "/audio",
-      element: (
-        <div>
-          <AudioPlayer />
-        </div>
-      ),
+      element: <Payment {...{ userInfo }} />,
     },
   ]);
 
-  return (
-    <div>
-      <RouterProvider router={router} />
-    </div>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

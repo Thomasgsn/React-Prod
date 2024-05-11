@@ -110,7 +110,7 @@ const MyProd = ({ prod }: { prod: Prods }) => {
                   <div className="menuLink flex">
                     <div className="flex typeInfo">
                       <IconShoppingBag className="icon" />
-                      <p>Buy hit</p>
+                      <p>Buy it</p>
                     </div>
                     <span>
                       <a
