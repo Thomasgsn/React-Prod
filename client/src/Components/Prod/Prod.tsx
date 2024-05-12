@@ -8,6 +8,14 @@ import Sidebar from "../assets/Sidebar/Sidebar";
 
 import "./Prod.css";
 
+interface Comments {
+  id: number;
+  text: string;
+  idUser: number;
+  idProd: number;
+  username: string;
+}
+
 const Prod = ({ userInfo }: { userInfo: UserInfo }) => {
   const navigateTo = useNavigate();
 
@@ -30,11 +38,14 @@ const Prod = ({ userInfo }: { userInfo: UserInfo }) => {
     typebeat: "",
   });
 
+  const [comment, setComment] = useState<Comments[]>([]);
+
   useEffect(() => {
     fetch(`http://localhost:8081/prod/${id}`)
       .then((response) => response.json())
-      .then((prodDetail) => {
-        setProd(prodDetail[0]);
+      .then((result) => {
+        setProd(result.prodDetail[0]);
+        setComment(result.prodComment);
       })
       .catch((error) =>
         console.error("Erreur lors de la récupération des données :", error)
@@ -68,7 +79,7 @@ const Prod = ({ userInfo }: { userInfo: UserInfo }) => {
         <div className="mainContent">
           <Top {...{ userInfo }} />
           <div className="bottom flex">
-            <MyProd {...{ prod }} />
+            <MyProd {...{ userInfo, prod, comment, setComment }} />
           </div>
         </div>
       </div>

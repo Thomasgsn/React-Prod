@@ -218,11 +218,61 @@ app.get("/prods", (req, res) => {
 app.get("/prod/:id", (req, res) => {
   const id = req.params.id;
   const SQL = `SELECT p.name, p.key, p.BPM, p.price, p.releaseDate, p.id, p.cover, p.instrurapLink, T.name AS typebeat from prod p INNER JOIN typebeat T on T.id = p.idTB WHERE p.id = ${id}`;
+  const SQLcomment = `SELECT C.*, U.username from prod p
+  INNER JOIN comment C on C.idProd = p.id
+  INNER JOIN user U on U.id = C.idUser
+  WHERE p.id = ${id}`;
 
   db.query(SQL, (errProd, prodDetail) => {
-    if (errProd) return res.json(errProd);
+    db.query(SQLcomment, (errComment, prodComment) => {
+      if (errProd) return res.json(errProd);
+      if (errComment) return res.json(errComment);
 
-    res.json(prodDetail);
+      const result = {
+        prodDetail: prodDetail,
+        prodComment: prodComment,
+      };
+      return res.json(result);
+    });
+  });
+});
+
+app.post("/newcomment", (req, res) => {
+  const comment = req.body;
+
+  const SQL =
+    "INSERT INTO `comment` (`id`, `text`, `idUser`, `idProd`) VALUES (NULL, ?, ?, ?)";
+  const Values = [comment.text, comment.idUser, comment.idProd];
+  const message = "Comment successfully added !";
+
+  db.query(SQL, Values, (err, results) => {
+    if (err) return res.send(err);
+    console.log(message);
+    return res.json(message);
+  });
+});
+
+app.delete("/comment/:id", (req, res) => {
+  const id = req.params.id;
+
+  const SQL = "DELETE FROM `comment` WHERE id = ?";
+  const message = "Comment successfully removed !";
+
+  db.query(SQL, [id], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.send(err);
+    }
+
+    if (results.affectedRows === 0) {
+      console.log("No comment found with the provided ID.");
+      return res
+        .status(404)
+        .json({ error: "No comment found with the provided ID." });
+    }
+
+    console.log(message);
+    return res.json({ message });
   });
 });
 
@@ -438,8 +488,7 @@ app.get("/activities", (req, res) => {
 // FIXME: Audio Player
 app.get("/audioplayer/:id", (req, res) => {
   const id = req.params.id;
-  const SQLplayer =
-    `SELECT p.name, p.id, p.cover, p.prodFile, p.tag, T.name AS typebeat FROM prod P INNER JOIN typebeat T ON T.id = p.idTB ORDER BY CASE WHEN p.id = ${id} THEN 0 ELSE 1 END, id DESC;`;
+  const SQLplayer = `SELECT p.name, p.id, p.cover, p.prodFile, p.tag, T.name AS typebeat FROM prod P INNER JOIN typebeat T ON T.id = p.idTB ORDER BY CASE WHEN p.id = ${id} THEN 0 ELSE 1 END, id DESC;`;
 
   db.query(SQLplayer, (errPlayer, dataPlayer) => {
     if (errPlayer) return res.json(errPlayer);

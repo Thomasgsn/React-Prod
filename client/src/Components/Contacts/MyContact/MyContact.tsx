@@ -41,9 +41,9 @@ const MyContact = () => {
         <h1>My Contacts</h1>
       </div>
       <div className="secContainer flex">
-        <div className="flex" style={{ flexDirection: "column"}}>
+        <div className="flex" style={{ flexDirection: "column" }}>
           {contacts.map((c) => (
-            <a href={c.link} className="flex contact">
+            <a target="_blank" href={c.link} className="flex contact">
               {c.img}
               <h4>{c.name}</h4>
             </a>

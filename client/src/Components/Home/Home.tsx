@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 
 import Top from "./Top/Top";
-import Activity from "../assets/Activity/Activity";
 import MyPlaylists from "./MyPlaylists/MyPlaylists";
 import Sidebar from "../assets/Sidebar/Sidebar";
 import Recommendation from "../assets/Recommendation/Recommendation";
@@ -32,7 +31,6 @@ const Body = ({ userInfo }: { userInfo: UserInfo }) => {
           <Top {...{ userInfo }} />
           <div className="bottom flex">
             <MyPlaylists {...{ playlist }} />
-            <Activity />
           </div>
           <Recommendation />
         </div>
