@@ -23,14 +23,39 @@ const Top = ({ userInfo }: { userInfo: UserInfo }) => {
           </p>
         </div>
 
-        <div className="adminDiv flex">
-          <a
-            onClick={() => {
-              userInfo ? navigateTo(`/u/${userInfo.id}`) : navigateTo("/login");
-            }}
-          >
-            <IconUser className="icon" />
+        <div className="user flex">
+        {userInfo.role === "admin" && (
+          <span style={{ color: "red", fontWeight: "700" }}>ADMIN</span>
+        )}
+        <span className="name">
+          {userInfo.username ? (
+            <a href={`/u/${userInfo.id}`}>
+              {userInfo.username}
+            </a>
+          ) : (
+            <div className="flex">
+              <a href={`/login`}>
+                <span style={{ fontWeight: "700" }}>LOGIN</span>
+              </a>
+              <p>or</p>
+              <a href={`/register`}>
+                <span style={{ fontWeight: "700", marginLeft: ".5rem" }}>
+                  REGISTER
+                </span>
+              </a>
+            </div>
+          )}
+        </span>
+        {userInfo.avatar && (
+          <a href={userInfo.avatar ? `/u/${userInfo.id}` : "/login"}>
+            <div className="avatar flex">
+              <img
+                src={`/avatars/${userInfo.avatar}`}
+                alt={`${userInfo.username} avatar`}
+              />
+            </div>
           </a>
+        )}
         </div>
       </div>
     </div>

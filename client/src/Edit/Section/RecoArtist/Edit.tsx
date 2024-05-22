@@ -1,15 +1,12 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ArtistReco } from "../../../utils/type";
 import { IconArrowBarRight, IconArrowRight, IconX } from "@tabler/icons-react";
+
 import axios from "axios";
 
-interface Artist {
-  id: number;
-  artistName: string;
-}
-
 interface EditProps {
-  artistReco: Artist[];
+  artistReco: ArtistReco[];
   idEdit: number;
   setIdEdit: (id: number) => void;
   setEdit: (edit: boolean) => void;
@@ -22,7 +19,7 @@ const Edit: React.FC<EditProps> = ({
   setEdit,
 }) => {
   const navigateTo = useNavigate();
-  const [artist, setArtist] = useState<Artist>({ id: 0, artistName: "" });
+  const [artist, setArtist] = useState<ArtistReco>({ id: 0, name: "", img: '' });
   const [file, setFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
@@ -96,7 +93,7 @@ const Edit: React.FC<EditProps> = ({
             <tbody>
               <tr>
                 <th scope="row">{artistReco[0].id}</th>
-                <td>{artistReco[0].artistName}</td>
+                <td>{artistReco[0].name}</td>
               </tr>
             </tbody>
           </table>
@@ -111,7 +108,7 @@ const Edit: React.FC<EditProps> = ({
             <tbody>
               <tr>
                 <th scope="row">{artist.id}</th>
-                <td>{artist.artistName}</td>
+                <td>{artist.name}</td>
               </tr>
             </tbody>
           </table>
@@ -129,13 +126,13 @@ const Edit: React.FC<EditProps> = ({
             <tbody>
               <tr>
                 <th scope="row">{artist.id}</th>
-                <td>{artist.artistName}</td>
+                <td>{artist.name}</td>
                 <td>
                   {imagePreview && (
                     <img
                       src={imagePreview}
                       className="square"
-                      alt={artist.artistName}
+                      alt={artist.name}
                     />
                   )}
                 </td>
@@ -157,17 +154,17 @@ const Edit: React.FC<EditProps> = ({
       <form onSubmit={handleSubmit}>
         <ul className="editTable">
           <li className="necessary">
-            <label htmlFor="artistName">Artist name</label>
+            <label htmlFor="name">Artist name</label>
             <div className="input flex">
               <input
                 required
                 type="text"
-                name="artistName"
+                name="name"
                 onChange={handleChange}
-                value={artist.artistName}
+                value={artist.name}
                 placeholder={
                   artistReco.length === 1
-                    ? artistReco[0].artistName
+                    ? artistReco[0].name
                     : "Artist name"
                 }
               />
@@ -182,13 +179,11 @@ const Edit: React.FC<EditProps> = ({
                 onChange={handleFileChange}
                 required={idEdit == 0}
               />
-              {imagePreview && (
                 <img
-                  src={imagePreview}
+                  src={imagePreview ? imagePreview : `/recommendations/${artist.img}`}
                   alt="Preview"
                   style={{ maxWidth: "100px" }}
                 />
-              )}
             </div>
           </li>
           <li>

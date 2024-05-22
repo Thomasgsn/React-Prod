@@ -1,28 +1,36 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  IconArrowRight,
-  IconEdit,
-  IconColorFilter,
-  IconInfoSquareRounded,
-  IconUser,
-  IconUserEdit,
-  IconLogout,
-} from "@tabler/icons-react";
+import { UserInfo, UserVisit } from "../../../utils/type";
 
+import axios from "axios";
 import Cookies from "js-cookie";
-
-import Axios from "axios";
-
-import Top from "./Top/Top";
-
 import Sidebar from "../../assets/Sidebar/Sidebar";
 
 import "./U.css";
 
-const U = ({ userInfo }) => {
-  const { id } = useParams();
+const U = ({ userInfo }: { userInfo: UserInfo }) => {
+  const id = Number(useParams().id);
   const navigateTo = useNavigate();
+
+  const [userVisit, setUserVisit] = useState<UserVisit>({
+    id: 0,
+    username: "",
+    avatar: "",
+    detail: "",
+    email: "",
+    role: "",
+  });
+
+  useEffect(() => {
+    fetch(`http://localhost:8081/u/${id}`)
+      .then((response) => response.json())
+      .then((results) => {
+        setUserVisit(results.userVisit);
+      })
+      .catch((error) =>
+        console.error("Erreur lors de la récupération des données :", error)
+      );
+  }, [id]);
 
   if (isNaN(id)) {
     if (userInfo) {
@@ -30,41 +38,95 @@ const U = ({ userInfo }) => {
     } else navigateTo("/login");
   }
 
-  const [userVisit, setUserVisit] = useState();
+  const [displayEdit, setDisplayEdit] = useState<boolean>(false);
 
+  const [newUser, setNewUser] = useState<UserVisit>({
+    id: 0,
+    username: "",
+    avatar: "",
+    detail: "",
+    email: "",
+    role: "",
+  });
   useEffect(() => {
-    fetch(`http://localhost:8081/u/${id}`)
-      .then((response) => response.json())
-      .then((userVisit) => {
-        setUserVisit(userVisit[0]);
-      })
-      .catch((error) =>
-        console.error("Erreur lors de la récupération des données :", error)
-      );
-  }, [id]);
+    setNewUser(userInfo);
+  }, [userInfo]);
 
-  const [displayEdit, setDisplayEdit] = useState(false);
+  const [emailError, setEmailError] = useState<string | null>(null);
 
-  const [newUsername, setNewUsername] = useState(
-    userInfo ? userInfo.username : ""
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setNewUser((prevState) => ({ ...prevState, [name]: value }));
+
+    if (name === "email") {
+      if (!validateEmail(value)) {
+        setEmailError("Invalid email address");
+      } else {
+        setEmailError(null);
+      }
+    }
+  };
+  const [file, setFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | undefined>(
+    undefined
   );
-  const [newDetail, setNewDetail] = useState(userInfo ? userInfo.detail : "");
-  const [newColor, setNewColor] = useState(userInfo ? userInfo.color : "");
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const fileList = event.target.files;
+    if (fileList && fileList.length > 0) {
+      const selectedFile = fileList[0];
 
-  const editUser = (e: { preventDefault: () => void }) => {
+      if (!selectedFile.type.startsWith("image/")) {
+        alert("Only image files are allowed.");
+        event.target.value = "";
+        return;
+      }
+
+      setFile(selectedFile);
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(selectedFile);
+    }
+  };
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    Axios.post("http://localhost:8081/editu", {
-      Username: newUsername,
-      Detail: newDetail,
-      Color: newColor,
-      Id: userInfo ? userInfo?.id : "",
-    })
-      .then(() => {
-        navigateTo("/home");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+
+    if (emailError) {
+      alert("Check your email address");
+      return;
+    }
+
+    if (newUser.username != userInfo.username) {
+      const confirmEdit = window.confirm(
+        "Will changing your username log you out, are you sure?"
+      );
+      if (!confirmEdit) {
+        return;
+      }
+      Cookies.remove("connectId", { path: "/", domain: "localhost" });
+      navigateTo("/login");
+    }
+
+    const formData = new FormData();
+    formData.append("newUser", JSON.stringify(newUser));
+
+    if (file) {
+      formData.append("file", file);
+    }
+
+    try {
+      await axios.post("http://localhost:8081/updateuser", formData);
+      window.location.reload();
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   const logout = () => {
@@ -72,139 +134,148 @@ const U = ({ userInfo }) => {
     navigateTo("/login");
   };
 
+  const text = (text: string) => {
+    return text.split("\n").map((item, index) => (
+      <span key={index}>
+        {item}
+        <br />
+      </span>
+    ));
+  };
+
   return (
     <div className="homePage flex">
       <div className="container">
         <Sidebar {...{ userInfo }} />
-        <div className="userContent">
-          {userVisit != null ? (
-            <>
-              <Top {...{ userInfo, userVisit, id }} />
-            </>
-          ) : (
-            <></>
-          )}
-          <div className="bottom flex">
-            {userInfo && userVisit?.id == userInfo.id ? (
-              <button
-                className="btn edit"
-                onClick={() => setDisplayEdit(!displayEdit)}
-              >
-                <IconEdit className="icon" />
-              </button>
-            ) : (
-              <></>
-            )}
-            <div className="userSeeInfo flex">
-              {userVisit != null ? (
-                <div className="seeInfo">
-                  {displayEdit ? (
-                    <div className="actualEdit">
-                      <div>
-                        <div className="flex" style={{ gap: "1rem" }}>
-                          <IconUserEdit
-                            className="icn"
-                            style={{ color: newColor }}
-                          />
-                          <p className="username">
-                            {newUsername ? newUsername : userInfo.username}
-                          </p>
-                        </div>
-                        <p className="detail">{newDetail}</p>
-                      </div>
-                      {userInfo && displayEdit === true ? (
-                        <div className="editUser">
-                          <form action="" className="form grid">
-                            <div className="inputDiv">
-                              <label htmlFor="username">Username</label>
-                              <div className="input flex">
-                                <IconUser className="iconUser" />
+        <div className="mainContent">
+          <div className="bottom u">
+            {userVisit != undefined ? (
+              <>
+                <div className=" userSeeInfo flex">
+                  {userVisit != null ? (
+                    <div>
+                      {displayEdit ? (
+                        <div className="seeInfo">
+                          <form className="flex top" onSubmit={handleSubmit}>
+                            <div className="avatar flex">
+                              <img
+                                src={
+                                  imagePreview
+                                    ? imagePreview
+                                    : `/avatars/${userInfo.avatar}`
+                                }
+                                alt="Preview"
+                                style={{ maxWidth: "100px" }}
+                              />
+                            </div>
+                            <input
+                              type="file"
+                              name="file"
+                              className="file"
+                              onChange={handleFileChange}
+                            />
+                            <div className="flex userInfo">
+                              <div className="flex">
                                 <input
                                   type="text"
-                                  id="username"
-                                  defaultValue={userInfo.username}
-                                  autoComplete={userInfo.username}
-                                  placeholder={userInfo.username}
-                                  onChange={(event) => {
-                                    setNewUsername(event.target.value);
-                                  }}
+                                  maxLength={23}
+                                  name="username"
+                                  onChange={handleChange}
+                                  placeholder={newUser.username}
+                                  defaultValue={newUser.username}
                                 />
-                              </div>
-
-                              <label htmlFor="Detail">Detail</label>
-                              <div className="input flex">
-                                <IconInfoSquareRounded className="iconUser" />
-                                <textarea
-                                  id="Detail"
-                                  defaultValue={userInfo.detail}
-                                  autoComplete={userInfo.detail}
-                                  placeholder={userInfo.detail}
-                                  onChange={(event) => {
-                                    setNewDetail(event.target.value);
-                                  }}
-                                />
-                              </div>
-
-                              <div className="inputDiv">
-                                <label htmlFor="password">Color</label>
-                                <div className="input flex">
-                                  <IconColorFilter className="iconUser" />
-                                  <input
-                                    type="color"
-                                    id="color"
-                                    defaultValue={userInfo.color}
-                                    onChange={(event) => {
-                                      setNewColor(event.target.value);
-                                    }}
-                                  />
+                                <div className="btns flex">
+                                  <button type="submit" className="btn edit">
+                                    Update profil
+                                  </button>
+                                  <button
+                                    onClick={() => setDisplayEdit(!displayEdit)}
+                                    className="btn edit"
+                                  >
+                                    Cancel
+                                  </button>
                                 </div>
-
-                                <button
-                                  type="submit"
-                                  className="btn flex"
-                                  onClick={editUser}
-                                >
-                                  <span>Update Account</span>
-                                  <IconArrowRight className="icon" />
-                                </button>
                               </div>
                             </div>
                           </form>
+                          <div className="detail">
+                            <div className="flex">
+                              <input
+                                type="email"
+                                name="email"
+                                onChange={handleChange}
+                                placeholder={newUser.email}
+                                defaultValue={newUser.email}
+                              />
+                            </div>
+                            <textarea
+                              type="text"
+                              name="detail"
+                              onChange={handleChange}
+                              placeholder={newUser.detail}
+                              defaultValue={newUser.detail}
+                              style={{ width: "80%", height: "10rem" }}
+                            ></textarea>
+                          </div>
                         </div>
                       ) : (
-                        <></>
+                        <div className="seeInfo">
+                          <div className="flex top">
+                            <div className="avatar flex">
+                              <img
+                                src={`/avatars/${userVisit.avatar}`}
+                                alt={`${userVisit.username} avatar`}
+                              />
+                            </div>
+                            <div className="flex userInfo">
+                              <div>
+                                <div className="flex">
+                                  <h3>{userVisit.username}</h3>
+                                  <div className="btns flex">
+                                    {userVisit?.id == userInfo.id ? (
+                                      <>
+                                        <button
+                                          className="btn edit"
+                                          onClick={() =>
+                                            setDisplayEdit(!displayEdit)
+                                          }
+                                        >
+                                          Edit profil
+                                        </button>
+                                        <button
+                                          className="btn edit"
+                                          onClick={logout}
+                                        >
+                                          Logout
+                                        </button>
+                                      </>
+                                    ) : (
+                                      <></>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="detail">
+                            <div className="flex">
+                              <p>{userVisit.email}</p>
+                            </div>
+                            {userVisit.detail && (
+                              <p>{text(userVisit.detail)}</p>
+                            )}
+                          </div>
+                        </div>
                       )}
                     </div>
                   ) : (
-                    <>
-                      <IconUser
-                        className="icn"
-                        style={{
-                          color: userVisit.color,
-                          marginBottom: "1rem",
-                        }}
-                      />
-                      <h3>Username</h3>
-                      <p className="info">{userVisit?.username}</p>
-                      <h3>Detail</h3>
-                      <p className="info">{userVisit?.detail}</p>
-                      <h3>Role</h3>
-                      <p className="info">{userVisit?.role}</p>
-                    </>
+                    <>user not found</>
                   )}
                 </div>
-              ) : (
-                <>user not found</>
-              )}
-              {displayEdit ? (
-                <></>
-              ) : (
-                <button className="btn flex" onClick={logout}>
-                  <span>Logout</span>
-                  <IconLogout className="icon" />
-                </button>
-              )}
-            </div>
+              </>
+            ) : (
+              <>user not found</>
+            )}
           </div>
         </div>
       </div>

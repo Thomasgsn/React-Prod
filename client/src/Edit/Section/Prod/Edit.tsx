@@ -1,6 +1,8 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Prods } from "../../../utils/type";
 import { useNavigate } from "react-router-dom";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { IconArrowBarDown, IconX, IconArrowRight } from "@tabler/icons-react";
+
 import axios from "axios";
 
 interface TypeBeat {
@@ -8,23 +10,8 @@ interface TypeBeat {
   name: string;
 }
 
-interface Prod {
-  id: number;
-  name: string;
-  tag: string;
-  cover: string;
-  prodFile: string;
-  instrurapLink: string;
-  BPM: number;
-  key: string;
-  price: number;
-  releaseDate: string;
-  idTB: number;
-  TypeBeatName: string;
-}
-
 interface EditProps {
-  prod: Prod[];
+  prod: Prods[];
   idEdit: number;
   setIdEdit: Dispatch<SetStateAction<number>>;
   setEdit: Dispatch<SetStateAction<boolean>>;
@@ -34,19 +21,20 @@ const Edit: React.FC<EditProps> = ({ prod, idEdit, setIdEdit, setEdit }) => {
   const navigateTo = useNavigate();
 
   const [typeBeat, setTypeBeat] = useState<TypeBeat[]>([]);
-  const [newProd, setNewProd] = useState<Prod>({
+  const [newProd, setNewProd] = useState<Prods>({
     id: idEdit,
     name: "",
     tag: "",
-    cover: "",
+    coverProdFile: "",
     prodFile: "",
     instrurapLink: "",
     BPM: 0,
     key: "",
     price: 0,
+    cover: "",
     releaseDate: "",
     idTB: 0,
-    TypeBeatName: "",
+    typebeat: "",
   });
   const Gamme = [
     "C",
@@ -169,6 +157,10 @@ const Edit: React.FC<EditProps> = ({ prod, idEdit, setIdEdit, setEdit }) => {
       formData.append("audio", audioFile);
     }
 
+    for (const value of formData.values()) {
+      console.log(value);
+    }
+
     try {
       await axios.post("http://localhost:8081/crudprodtest", formData);
       navigateTo("/edit/prod");
@@ -202,7 +194,6 @@ const Edit: React.FC<EditProps> = ({ prod, idEdit, setIdEdit, setEdit }) => {
                 <th scope="col">BPM</th>
                 <th scope="col">Key</th>
                 <th scope="col">Price</th>
-                <th scope="col">Release Date</th>
                 <th scope="col">
                   Type Beat <sub>id Type Beat</sub>
                 </th>
@@ -236,9 +227,8 @@ const Edit: React.FC<EditProps> = ({ prod, idEdit, setIdEdit, setEdit }) => {
                 <td>{prod[0].BPM}</td>
                 <td>{prod[0].key}</td>
                 <td>{prod[0].price}</td>
-                <td>{prod[0].releaseDate}</td>
                 <td>
-                  {prod[0].TypeBeatName}{" "}
+                  {prod[0].typebeat}{" "}
                   <sub>
                     <b>{prod[0].idTB}</b>
                   </sub>
@@ -259,7 +249,6 @@ const Edit: React.FC<EditProps> = ({ prod, idEdit, setIdEdit, setEdit }) => {
                 <th scope="col">BPM</th>
                 <th scope="col">Key</th>
                 <th scope="col">Price</th>
-                <th scope="col">Release Date</th>
                 <th scope="col">
                   Type Beat <sub>id Type Beat</sub>
                 </th>
@@ -311,9 +300,8 @@ const Edit: React.FC<EditProps> = ({ prod, idEdit, setIdEdit, setEdit }) => {
                 <td>{newProd.BPM}</td>
                 <td>{newProd.key}</td>
                 <td>{newProd.price}</td>
-                <td>{newProd.releaseDate}</td>
                 <td>
-                  {newProd.TypeBeatName}{" "}
+                  {newProd.typebeat}{" "}
                   <sub>
                     <b>{newProd.idTB}</b>
                   </sub>
@@ -385,7 +373,7 @@ const Edit: React.FC<EditProps> = ({ prod, idEdit, setIdEdit, setEdit }) => {
                 <td>{newProd.price}</td>
                 <td>{newProd.releaseDate}</td>
                 <td>
-                  {newProd.TypeBeatName}
+                  {newProd.typebeat}
                   <sub>{newProd.idTB}</sub>
                 </td>
               </tr>
@@ -418,7 +406,7 @@ const Edit: React.FC<EditProps> = ({ prod, idEdit, setIdEdit, setEdit }) => {
                 name="name"
                 placeholder="Name"
                 onChange={handleChange}
-                defaultValue={prod.length == 1 ? prod[0].name : ""}
+                defaultValue={newProd.name}
               />
             </div>
           </li>
@@ -431,7 +419,7 @@ const Edit: React.FC<EditProps> = ({ prod, idEdit, setIdEdit, setEdit }) => {
                 name="tag"
                 placeholder="Tags"
                 onChange={handleChange}
-                defaultValue={prod.length == 1 ? prod[0].tag : ""}
+                defaultValue={newProd.tag}
               />
             </div>
           </li>
@@ -444,13 +432,12 @@ const Edit: React.FC<EditProps> = ({ prod, idEdit, setIdEdit, setEdit }) => {
                 onChange={handleCoverChange}
                 required={idEdit == 0}
               />
-              {imagePreview && (
-                <img
-                  src={imagePreview}
-                  alt="Preview"
-                  style={{ maxWidth: "100px" }}
-                />
-              )}
+              <img
+                src={imagePreview ? imagePreview : `/prods/${newProd.cover}`}
+                alt={`${newProd.name} By. _oftyn`}
+                className="square"
+                style={{ maxWidth: "100px" }}
+              />
             </div>
           </li>
           <li className={idEdit != 0 ? "necessary" : ""}>
@@ -462,6 +449,14 @@ const Edit: React.FC<EditProps> = ({ prod, idEdit, setIdEdit, setEdit }) => {
                 onChange={handleAudioChange}
                 required={idEdit == 0}
               />
+              <audio controls>
+                <source
+                  type="audio/mpeg"
+                  src={
+                    audioPreview ? audioPreview : `/prods/${newProd.prodFile}`
+                  }
+                />
+              </audio>
             </div>
           </li>
           <li className="necessary">
@@ -496,18 +491,13 @@ const Edit: React.FC<EditProps> = ({ prod, idEdit, setIdEdit, setEdit }) => {
           <li className="necessary">
             <label>Key</label>
             <div className="input flex">
-              <select
-                required={idEdit == 0}
-                name="key"
-                onChange={handleChange}
-                defaultValue={prod.length == 1 ? prod[0].key : 0}
-              >
+              <select required={idEdit == 0} name="key" onChange={handleChange}>
                 <option disabled value="0">
                   Select a key
                 </option>
                 {Gamme.map((g) => {
                   return (
-                    <option key={g} value={g}>
+                    <option key={g} value={g} selected={newProd.key == g}>
                       {g}
                     </option>
                   );
@@ -539,32 +529,22 @@ const Edit: React.FC<EditProps> = ({ prod, idEdit, setIdEdit, setEdit }) => {
             )}
           </li>
           <li className="necessary">
-            <label>Date</label>
-            <div className="input flex">
-              <input
-                required={idEdit == 0}
-                type="date"
-                name="releaseDate"
-                placeholder="Realease Date"
-                onChange={handleChange}
-                defaultValue={prod.length == 1 ? prod[0].releaseDate : ""}
-              />
-            </div>
-          </li>
-          <li className="necessary">
             <label>Type Beat</label>
             <div className="input flex">
               <select
                 required={idEdit == 0}
                 name="idTB"
                 onChange={handleChange}
-                defaultValue={prod.length == 1 ? prod[0].name : 0}
               >
                 <option disabled value="0">
                   Select a Type Beat
                 </option>
                 {typeBeat.map((t) => (
-                  <option key={t.id} value={t.id}>
+                  <option
+                    key={t.id}
+                    value={t.id}
+                    selected={newProd.idTB == t.id}
+                  >
                     {t.name}
                   </option>
                 ))}

@@ -7,6 +7,8 @@ const bodyParser = require("body-parser");
 const multer = require("multer");
 const path = require("path");
 var sha1 = require("js-sha1");
+var uuid = require("react-uuid");
+const fs = require("fs");
 
 const port = "8081";
 
@@ -52,27 +54,159 @@ const db = mysql.createConnection({
   database: "oftynprod",
 });
 
-// TODO: Connection
-app.post("/register", (req, res) => {
-  const sendEmail = req.body.Mail;
-  const sendUsername = req.body.Username;
-  const sendPassword = sha1(req.body.Password);
+// ASSETS
+app.get("/recovignette", (req, res) => {
+  const SQLartistReco =
+    "SELECT DISTINCT recommendation_artist.* FROM recommendation JOIN recommendation_artist ON recommendation.idArtist = recommendation_artist.id ORDER BY recommendation.id DESC LIMIT 5;";
+  const SQLnbReco = "SELECT COUNT(*) as nb FROM `recommendation`";
+  const SQLnbArtist =
+    "SELECT COUNT(*) AS nbArtist FROM `recommendation_artist`";
 
-  const SQL = "INSERT INTO `user` (email, username, password) VALUES (?,?,?)";
-  const Values = [sendEmail, sendUsername, sendPassword];
+  db.query(SQLartistReco, (errArtistReco, dataArtistReco) => {
+    db.query(SQLnbReco, (errNbReco, dataNbReco) => {
+      db.query(SQLnbArtist, (errNbArtist, dataNbArtist) => {
+        if (errArtistReco) return res.json(errArtistReco);
+        if (errNbReco) return res.json(errNbReco);
+        if (errNbArtist) return res.json(errNbArtist);
 
-  db.query(SQL, Values, (err, results) => {
-    if (err) return res.send(err);
-    return res.send({ Message: "User added!" });
+        const result = {
+          artistReco: dataArtistReco,
+          nbReco: dataNbReco,
+          nbArtist: dataNbArtist,
+        };
+        return res.json(result);
+      });
+    });
+  });
+});
+app.get("/statsprod", (req, res) => {
+  const SQLprodMonth = `SELECT COUNT(*) as nbProdMounth from prod WHERE MONTH(releaseDate) = ${currentMonth}`;
+  const SQLprodTotal = "SELECT COUNT(*) as nbProd from `prod`";
+
+  db.query(SQLprodMonth, (errProdMonth, dataProdMonth) => {
+    db.query(SQLprodTotal, (errProdTotal, dataProdTotal) => {
+      if (errProdMonth) return res.json(errProdMonth);
+      if (errProdTotal) return res.json(errProdTotal);
+
+      const result = {
+        prodTotal: dataProdTotal,
+        prodMonth: dataProdMonth,
+      };
+      return res.json(result);
+    });
+  });
+});
+app.get("/activities", (req, res) => {
+  const SQL = `SELECT * FROM activity ORDER BY id DESC LIMIT 7`;
+
+  db.query(SQL, (errSQL, data) => {
+    if (errSQL) return res.json(errSQL);
+
+    return res.json(data);
+  });
+});
+// END ASSETS
+
+// FIXME: Audio Player
+app.get("/audioplayer/:id", (req, res) => {
+  const id = req.params.id;
+  const SQLplayer = `SELECT p.name, p.id, p.cover, p.prodFile, p.tag, T.name AS typebeat FROM prod P INNER JOIN typebeat T ON T.id = p.idTB ORDER BY CASE WHEN p.id = ${id} THEN 0 ELSE 1 END, id DESC;`;
+
+  db.query(SQLplayer, (errPlayer, dataPlayer) => {
+    if (errPlayer) return res.json(errPlayer);
+
+    return res.json(dataPlayer);
   });
 });
 
-app.post("/login", (req, res) => {
-  const sentLoginUsername = req.body.LoginUsername;
-  const sentLoginPassword = sha1(req.body.LoginPassword);
+// TODO: Repository
 
-  const SQL = "SELECT * FROM `user` WHERE username = ? and password = ?";
-  const Values = [sentLoginUsername, sentLoginPassword];
+//Prod image
+const prodsDirectory = path.join(__dirname, "../client/public/prods");
+const storageProds = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, prodsDirectory);
+  },
+  filename: function (req, file, cb) {
+    const uniqueFilename = `${uuid()}-${file.originalname}`;
+    cb(null, uniqueFilename);
+  },
+});
+const uploadNewProd = multer({ storage: storageProds });
+
+// Artist image
+const recoDirectory = path.join(__dirname, "../client/public/recommendations");
+const storageReco = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, recoDirectory);
+  },
+  filename: function (req, file, cb) {
+    const uniqueFilename = `${uuid()}-${file.originalname}`;
+    cb(null, uniqueFilename);
+  },
+});
+const uploadNewReco = multer({ storage: storageReco });
+
+// User avatar
+const avatarDir = path.join(__dirname, "../client/public/avatars");
+const storageAvatar = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, avatarDir);
+  },
+  filename: function (req, file, cb) {
+    const uniqueFilename = `${uuid()}-${file.originalname}`;
+    cb(null, uniqueFilename);
+  },
+});
+const uploadAvatar = multer({
+  storage: storageAvatar,
+});
+
+// TODO: API
+
+// REGISTER PAGE
+app.post("/register", uploadAvatar.single("file"), (req, res) => {
+  const u = JSON.parse(req.body.user);
+  const file = req.file.filename;
+
+  const checkUsernameSQL = "SELECT id FROM `user` WHERE username = ?";
+
+  db.query(checkUsernameSQL, [u.username], (err, results) => {
+    if (err) {
+      fs.unlink(path.join(avatarDir, file), (unlinkErr) => {
+        if (unlinkErr) console.log(unlinkErr);
+        return res.send(err);
+      });
+    } else if (results.length > 0) {
+      fs.unlink(path.join(avatarDir, file), (unlinkErr) => {
+        if (unlinkErr) console.log(unlinkErr);
+        console.log("Username already exists");
+        return res.status(400).json({ error: "Username already exists" });
+      });
+    } else {
+      const message = "User successfully created: " + u.username;
+
+      const SQL =
+        "INSERT INTO `user` (id, username, avatar, email, password, role) VALUES (null, ?, ?, ?, ?, 'user')";
+      const Values = [u.username, file, u.email, sha1(u.password)];
+
+      db.query(SQL, Values, (err, results) => {
+        if (err) return res.send(err);
+        console.log(message);
+        return res.json({ message: message });
+      });
+    }
+  });
+});
+// END REGISTER PAGE
+
+// LOGIN
+app.post("/login", (req, res) => {
+  const u = req.body;
+
+  const SQL =
+    "SELECT username FROM `user` WHERE (username = ? OR email = ?) AND password = ?";
+  const Values = [u.username_email, u.username_email, sha1(u.password)];
 
   db.query(SQL, Values, (err, result) => {
     if (err) return res.json({ Message: err });
@@ -81,29 +215,29 @@ app.post("/login", (req, res) => {
         maxAge: 10000 * 60 * 60 * 24,
         httpOnly: false,
       });
+      console.log("User successfully logged in: " + result[0].username);
       return res.json({ Login: true, username: req.cookies.connectId });
     } else {
+      console.log("Wrong username or password");
       return res.json({ Login: false });
     }
   });
 });
-
 app.get("/user", (req, res) => {
   if (req.cookies.connectId) {
     const sql = `SELECT id FROM user WHERE username = '${req.cookies.connectId}'`;
     db.query(sql, (err, result) => {
       return res.json({
         valid: true,
-        id: result[0].id !== null ? result[0].id : "",
+        id: result[0].id,
       });
     });
   } else {
     return res.json({ valid: false });
   }
 });
-
 app.get("/api/user/:id", (req, res) => {
-  const sql = `SELECT id, username, detail, color, role FROM user WHERE id = ?`;
+  const sql = `SELECT id, username, avatar, detail, email, role FROM user WHERE id = ?`;
   db.query(sql, [req.params.id], (err, result) => {
     if (err) {
       console.error(
@@ -120,8 +254,9 @@ app.get("/api/user/:id", (req, res) => {
     res.json({ result });
   });
 });
+// END LOGIN
 
-// page
+// HOME PAGE
 app.get("/home", (req, res) => {
   const SQLPlaylist =
     "SELECT tb.id AS id, tb.name AS name, p.id AS prod_id, p.name AS prod_name, p.cover FROM typebeat tb JOIN prod p ON tb.id = p.idTb JOIN (SELECT idTb, MAX(releaseDate) AS maxReleaseDate FROM prod WHERE releaseDate IS NOT NULL GROUP BY idTb) latest_prod ON p.idTb = latest_prod.idTb AND p.releaseDate = latest_prod.maxReleaseDate WHERE p.releaseDate IS NOT NULL;";
@@ -132,7 +267,9 @@ app.get("/home", (req, res) => {
     return res.json(dataPlaylist);
   });
 });
+// END HOME PAGE
 
+// SHOP PAGE
 app.get("/shop", (req, res) => {
   const SQLPlaylist =
     "SELECT tb.id AS id, tb.name AS name, p.id AS prod_id, p.name AS prod_name, p.cover FROM typebeat tb JOIN prod p ON tb.id = p.idTb JOIN (SELECT idTb, MAX(releaseDate) AS maxReleaseDate FROM prod WHERE releaseDate IS NOT NULL GROUP BY idTb) latest_prod ON p.idTb = latest_prod.idTb AND p.releaseDate = latest_prod.maxReleaseDate WHERE p.releaseDate IS NOT NULL;";
@@ -161,7 +298,9 @@ app.get("/shop", (req, res) => {
     });
   });
 });
+// END SHOP PAGE
 
+// PROD PAGE
 app.get("/prods", (req, res) => {
   const filterBy = req.query.filterBy;
   const searchBy = req.query.searchBy;
@@ -214,7 +353,6 @@ app.get("/prods", (req, res) => {
     res.json(dataProds);
   });
 });
-
 app.get("/prod/:id", (req, res) => {
   const id = req.params.id;
   const SQL = `SELECT p.name, p.key, p.BPM, p.price, p.releaseDate, p.id, p.cover, p.instrurapLink, T.name AS typebeat from prod p INNER JOIN typebeat T on T.id = p.idTB WHERE p.id = ${id}`;
@@ -236,7 +374,6 @@ app.get("/prod/:id", (req, res) => {
     });
   });
 });
-
 app.post("/newcomment", (req, res) => {
   const comment = req.body;
 
@@ -251,7 +388,6 @@ app.post("/newcomment", (req, res) => {
     return res.json(message);
   });
 });
-
 app.delete("/comment/:id", (req, res) => {
   const id = req.params.id;
 
@@ -275,7 +411,9 @@ app.delete("/comment/:id", (req, res) => {
     return res.json({ message });
   });
 });
+// END PROD PAGE
 
+// PLAYLIST PAGE
 app.get("/playlists", (req, res) => {
   const searchBy = req.query.searchBy;
   const SQLprod = `SELECT p.* FROM prod p WHERE p.idTB IN (SELECT tb.id FROM typebeat tb) AND p.id IN (SELECT id FROM (SELECT id, idTB, ROW_NUMBER() OVER(PARTITION BY idTB ORDER BY id DESC) AS row_num FROM prod) AS ranked WHERE row_num <= 8) ORDER BY p.idTB, p.id DESC;`;
@@ -294,7 +432,6 @@ app.get("/playlists", (req, res) => {
     });
   });
 });
-
 app.get("/playlist/:playlistName", (req, res) => {
   const playlistName = req.params.playlistName;
   const filterBy = req.query.filterBy;
@@ -343,7 +480,6 @@ app.get("/playlist/:playlistName", (req, res) => {
     res.json(playlistProd);
   });
 });
-
 app.get("/recommendations", (req, res) => {
   const filterBy = req.query.filterBy;
   const searchBy = req.query.searchBy;
@@ -397,7 +533,6 @@ app.get("/recommendations", (req, res) => {
     return res.json(dataArtistReco);
   });
 });
-
 app.get("/r/:id", (req, res) => {
   const id = req.params.id;
 
@@ -418,137 +553,101 @@ app.get("/r/:id", (req, res) => {
     });
   });
 });
+// END PLAYLIST PAGE
 
+// U PAGE
 app.get("/u/:id", (req, res) => {
-  const id = req.params.id;
+  const user = req.params.id;
 
-  const SQL = `SELECT id, username, email, detail, color, role FROM user WHERE id = ${id}`;
+  const SQL = `SELECT id, username, email, detail, role, avatar FROM user WHERE id = ?`;
 
-  db.query(SQL, (errVisit, userVisit) => {
+  db.query(SQL, [user], (errVisit, userVisit) => {
     if (errVisit) return res.json(errVisit);
 
-    res.json(userVisit);
-  });
-});
+    const results = {
+      userVisit: userVisit[0],
+    };
 
-// assets
-app.get("/recovignette", (req, res) => {
-  const SQLartistReco =
-    "SELECT DISTINCT recommendation_artist.* FROM recommendation JOIN recommendation_artist ON recommendation.idArtist = recommendation_artist.id ORDER BY recommendation.id DESC LIMIT 5;";
-  const SQLnbReco = "SELECT COUNT(*) as nb FROM `recommendation`";
-  const SQLnbArtist =
-    "SELECT COUNT(*) AS nbArtist FROM `recommendation_artist`";
-
-  db.query(SQLartistReco, (errArtistReco, dataArtistReco) => {
-    db.query(SQLnbReco, (errNbReco, dataNbReco) => {
-      db.query(SQLnbArtist, (errNbArtist, dataNbArtist) => {
-        if (errArtistReco) return res.json(errArtistReco);
-        if (errNbReco) return res.json(errNbReco);
-        if (errNbArtist) return res.json(errNbArtist);
-
-        const result = {
-          artistReco: dataArtistReco,
-          nbReco: dataNbReco,
-          nbArtist: dataNbArtist,
-        };
-        return res.json(result);
+    if (userVisit.length != 1)
+      return res.json({
+        userVisit: {
+          id: 0,
+        },
       });
-    });
+
+    return res.json(results);
   });
 });
 
-app.get("/statsprod", (req, res) => {
-  const SQLprodMonth = `SELECT COUNT(*) as nbProdMounth from prod WHERE MONTH(releaseDate) = ${currentMonth}`;
-  const SQLprodTotal = "SELECT COUNT(*) as nbProd from `prod`";
+app.post("/updateuser", uploadAvatar.single("file"), (req, res) => {
+  const u = JSON.parse(req.body.newUser);
+  const file = req.file ? req.file.filename : null;
 
-  db.query(SQLprodMonth, (errProdMonth, dataProdMonth) => {
-    db.query(SQLprodTotal, (errProdTotal, dataProdTotal) => {
-      if (errProdMonth) return res.json(errProdMonth);
-      if (errProdTotal) return res.json(errProdTotal);
+  const checkUsernameSQL = "SELECT id, avatar FROM `user` WHERE username = ?";
 
-      const result = {
-        prodTotal: dataProdTotal,
-        prodMonth: dataProdMonth,
-      };
-      return res.json(result);
-    });
+  db.query(checkUsernameSQL, [u.username], (err, results) => {
+    if (err) {
+      if (file) {
+        fs.unlink(path.join(avatarDir, file), (unlinkErr) => {
+          if (unlinkErr) console.log(unlinkErr);
+        });
+      }
+      return res.send(err);
+    } else if (results.length > 1 && results[0].id != u.id) {
+      if (file) {
+        fs.unlink(path.join(avatarDir, file), (unlinkErr) => {
+          if (unlinkErr) console.log(unlinkErr);
+        });
+      }
+      console.log("Username already exists");
+      return res.status(400).json({ error: "Username already exists" });
+    } else {
+      const oldAvatar = results.length > 0 ? results[0].avatar : null;
+      const message = "User successfully updated: " + u.username;
+
+      let SQL = "UPDATE `user` SET  `username` = ?, `detail` = ?, `email` = ?";
+      let Values = [u.username, u.detail, u.email];
+
+      if (file) {
+        SQL += ", `avatar` = ?";
+        Values.push(file);
+      }
+
+      SQL += " WHERE `user`.`id` = ?";
+      Values.push(u.id);
+
+      db.query(SQL, Values, (err, results) => {
+        if (err) {
+          if (file) {
+            fs.unlink(path.join(avatarDir, file), (unlinkErr) => {
+              if (unlinkErr) console.log(unlinkErr);
+            });
+          }
+          return res.send(err);
+        }
+
+        if (oldAvatar && file) {
+          fs.unlink(path.join(avatarDir, oldAvatar), (unlinkErr) => {
+            if (unlinkErr) console.log(unlinkErr);
+          });
+        }
+
+        console.log(message);
+        return res.json({ message: message });
+      });
+    }
   });
 });
+// END U PAGE
 
-app.get("/activities", (req, res) => {
-  const SQL = `SELECT * FROM activity ORDER BY id DESC LIMIT 7`;
+// TODO: EDIT PAGES
 
-  db.query(SQL, (errSQL, data) => {
-    if (errSQL) return res.json(errSQL);
-
-    return res.json(data);
-  });
-});
-
-// FIXME: Audio Player
-app.get("/audioplayer/:id", (req, res) => {
-  const id = req.params.id;
-  const SQLplayer = `SELECT p.name, p.id, p.cover, p.prodFile, p.tag, T.name AS typebeat FROM prod P INNER JOIN typebeat T ON T.id = p.idTB ORDER BY CASE WHEN p.id = ${id} THEN 0 ELSE 1 END, id DESC;`;
-
-  db.query(SQLplayer, (errPlayer, dataPlayer) => {
-    if (errPlayer) return res.json(errPlayer);
-
-    return res.json(dataPlayer);
-  });
-});
-
-// TODO: for prod upload
-const prodsDirectory = path.join(__dirname, "../client/public/prods");
-const storageProds = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, prodsDirectory);
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  },
-});
-const uploadNewProd = multer({ storage: storageProds });
-
-// TODO: for reco upload
-const recoDirectory = path.join(__dirname, "../client/public/recommendations");
-const storageReco = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, recoDirectory);
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  },
-});
-const uploadNewReco = multer({ storage: storageReco });
-
-// TODO: Edit User
-app.post("/editu", (req, res) => {
-  const newUsername = req.body.Username;
-  const newDetail = req.body.Detail;
-  const newColor = req.body.Color;
-  const id = req.body.Id;
-
-  const SQL =
-    "UPDATE `user` SET `username` = ?, `detail` = ?, `color` = ? WHERE `user`.`id` = ?";
-  const Values = [newUsername, newDetail, newColor, id];
-
-  res.cookie("connectId", newUsername, {
-    maxAge: 900000,
-    httpOnly: true,
-  });
-
-  db.query(SQL, Values, (err, results) => {
-    if (err) return res.send(err);
-    return res.send({ Message: "User updated!" });
-  });
-});
-
-// TODO: Prods
+// PROD
 app.get("/allprods", (req, res) => {
   const id = req.query.id;
 
   let SQL =
-    "SELECT p.*, t.name as TypeBeatName FROM prod p INNER JOIN typebeat t ON t.id = p.idTB ";
+    "SELECT p.*, t.name as typebeat FROM prod p INNER JOIN typebeat t ON t.id = p.idTB ";
 
   if (id && id != 0) SQL += `WHERE p.id = ${id} `;
 
@@ -560,12 +659,8 @@ app.get("/allprods", (req, res) => {
     return res.json(data);
   });
 });
-
-const uploadhh = multer({});
-
 app.post(
   "/crudprodtest",
-  // uploadhh.fields([
   uploadNewProd.fields([
     {
       name: "cover",
@@ -602,7 +697,7 @@ app.post(
       message += "added !";
     } else {
       SQL =
-        "UPDATE `prod` SET `name` = ?, `tag` = ?, `instrurapLink` = ?, `BPM` = ?, `key` = ?, `price` = ?, `releaseDate` = ?, `idTB` = ?";
+        "UPDATE `prod` SET `name` = ?, `tag` = ?, `instrurapLink` = ?, `BPM` = ?, `key` = ?, `price` = ?, `idTB` = ?";
       Values = [
         prod.name,
         prod.tag,
@@ -610,18 +705,29 @@ app.post(
         prod.BPM,
         prod.key,
         prod.price,
-        prod.releaseDate,
         prod.idTB,
       ];
 
       if (files.cover) {
         SQL += ", `cover` = ?";
-        Values.push(files.cover[0].originalname);
+        Values.push(files.cover[0].filename);
+
+        if (prod.id != 0) {
+          fs.unlink(path.join(prodsDirectory, prod.cover), (unlinkErr) => {
+            if (unlinkErr) console.log(unlinkErr);
+          });
+        }
       }
 
       if (files.audio) {
         SQL += ", `prodFile` = ?";
         Values.push(files.audio[0].filename);
+
+        if (prod.id != 0) {
+          fs.unlink(path.join(prodsDirectory, prod.prodFile), (unlinkErr) => {
+            if (unlinkErr) console.log(unlinkErr);
+          });
+        }
       }
 
       SQL += " WHERE `prod`.`id` = ?";
@@ -659,8 +765,9 @@ app.delete("/prod/:id", (req, res) => {
     return res.json({ message });
   });
 });
+// END PROD
 
-// TODO: Type Beat / Playlist
+// TYPE BEAT
 app.get("/alltypebeat", (req, res) => {
   const id = req.query.id;
 
@@ -732,8 +839,9 @@ app.delete("/playlist/:id", (req, res) => {
     }
   });
 });
+// END TYPE BEAT
 
-// TODO: Song Recommendation
+// SONG RECO
 app.get("/allreco", (req, res) => {
   const id = req.query.id;
 
@@ -811,12 +919,13 @@ app.delete("/reco/:id", (req, res) => {
     return res.json({ message });
   });
 });
+// END SONG RECO
 
-// TODO: Artist Recommendation
+// ARTIST RECO
 app.get("/allartistreco", (req, res) => {
   const id = req.query.id;
 
-  let SQL = "SELECT id, name as artistName, img FROM `recommendation_artist` ";
+  let SQL = "SELECT id, name, img FROM `recommendation_artist` ";
 
   if (id && id != 0) SQL += `WHERE id = ${id} `;
 
@@ -839,16 +948,20 @@ app.post("/crudArtistReco", uploadNewReco.single("file"), (req, res) => {
     if (artist.id === 0) {
       SQL =
         "INSERT INTO `recommendation_artist` (`id`, `name`, `img`) VALUES (NULL, ?, ?)";
-      Values = [artist.artistName, req.file.originalname];
+      Values = [artist.name, req.file.filename];
       message += "added !";
     } else {
       SQL = `UPDATE recommendation_artist SET name = ?, img = ? WHERE recommendation_artist.id = ?`;
-      Values = [artist.artistName, req.file.originalname, artist.id];
+      Values = [artist.name, req.file.filename, artist.id];
       message += "updated !";
+
+      fs.unlink(path.join(recoDirectory, artist.img), (unlinkErr) => {
+        if (unlinkErr) console.log(unlinkErr);
+      });
     }
   } else {
     SQL = `UPDATE recommendation_artist SET name = ? WHERE recommendation_artist.id = ?`;
-    Values = [artist.artistName, artist.id];
+    Values = [artist.name, artist.id];
     message += "updated !";
   }
 
@@ -881,3 +994,6 @@ app.delete("/artistreco/:id", (req, res) => {
     return res.json({ message });
   });
 });
+// END ARTIST RECO
+
+// END EDIT PAGES

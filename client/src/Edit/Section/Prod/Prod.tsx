@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import {
   IconChevronDown,
   IconChevronUp,
@@ -7,31 +6,19 @@ import {
   IconPlus,
   IconTablePlus,
 } from "@tabler/icons-react";
+import { useEffect, useState } from "react";
+import { Prods } from "../../../utils/type";
+
 import Edit from "./Edit";
 import axios from "axios";
-
-interface Prod {
-  id: number;
-  name: string;
-  tag: string;
-  cover: string;
-  prodFile: string;
-  instrurapLink: string;
-  BPM: number;
-  key: string;
-  price: number;
-  releaseDate: string;
-  idTB: number;
-  TypeBeatName: string;
-}
 
 const Prod = () => {
   const [edit, setEdit] = useState<boolean>(false);
   const [idEdit, setIdEdit] = useState<number>(0);
-  const [prod, setProd] = useState<Prod[]>([]);
+  const [prod, setProd] = useState<Prods[]>([]);
 
   useEffect(() => {
-    const fetchArtistReco = async () => {
+    const fetchProd = async () => {
       try {
         const response = await axios.get(
           `http://localhost:8081/allprods?id=${idEdit}`
@@ -42,7 +29,7 @@ const Prod = () => {
       }
     };
 
-    fetchArtistReco();
+    fetchProd();
   }, [idEdit]);
 
   const handleDelete = async (id: number) => {
@@ -99,7 +86,6 @@ const Prod = () => {
                   <th scope="col">BPM</th>
                   <th scope="col">Key</th>
                   <th scope="col">Price</th>
-                  <th scope="col">Release Date</th>
                   <th scope="col">Type Beat</th>
                   <th scope="col">Edit</th>
                 </tr>
@@ -140,9 +126,8 @@ const Prod = () => {
                     <td>{p.BPM}</td>
                     <td>{p.key}</td>
                     <td>{p.price}</td>
-                    <td>{p.releaseDate}</td>
                     <td>
-                      {p.TypeBeatName}{" "}
+                      {p.typebeat}{" "}
                       <sub>
                         <b>{p.idTB}</b>
                       </sub>

@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import {
   IconChevronDown,
   IconChevronUp,
@@ -7,19 +6,16 @@ import {
   IconPlus,
   IconTablePlus,
 } from "@tabler/icons-react";
-import Edit from "./Edit";
-import axios from "axios";
+import { useEffect, useState } from "react";
+import { ArtistReco } from "../../../utils/type";
 
-interface Artist {
-  id: number;
-  artistName: string;
-  img: string;
-}
+import axios from "axios";
+import Edit from "./Edit";
 
 const RecoArtist = () => {
   const [edit, setEdit] = useState<boolean>(false);
   const [idEdit, setIdEdit] = useState<number>(0);
-  const [artistReco, setArtistReco] = useState<Artist[]>([]);
+  const [artistReco, setArtistReco] = useState<ArtistReco[]>([]);
 
   useEffect(() => {
     const fetchArtistReco = async () => {
@@ -86,12 +82,12 @@ const RecoArtist = () => {
                 {artistReco.map((r, i) => (
                   <tr key={i}>
                     <th scope="row">{r.id}</th>
-                    <td>{r.artistName}</td>
+                    <td>{r.name}</td>
                     <td>
                       <img
                         className="square"
                         src={`/recommendations/${r.img}`}
-                        alt={r.artistName}
+                        alt={r.name}
                       />
                     </td>
                     <td>

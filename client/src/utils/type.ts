@@ -1,8 +1,20 @@
 export interface UserInfo {
   id: number;
   username: string;
+  avatar: string;
+  detail: string;
+  email: string;
   role: string;
 }
+export interface UserVisit {
+  id: number;
+  username: string;
+  avatar: string;
+  detail: string;
+  email: string;
+  role: string;
+}
+
 
 export interface Prods {
   id: number;
@@ -14,7 +26,6 @@ export interface Prods {
   BPM: number;
   key: string;
   price: number;
-  prod_name: string;
   cover: string;
   releaseDate: string;
   idTB: number;
